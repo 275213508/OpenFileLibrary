@@ -14,11 +14,12 @@
 ```
     //引用项目必须添加一下依赖
     implementation(name: 'openfilelibrary-release', ext: 'aar')
-    implementation 'com.github.bumptech.glide:glide:4.12.0'
     implementation 'androidx.appcompat:appcompat:1.3.1'
     implementation 'com.google.android.material:material:1.4.0'
     implementation 'androidx.recyclerview:recyclerview:1.2.1'
-
+    implementation("com.blankj:utilcodex:1.31.1")
+    implementation 'com.github.bumptech.glide:glide:4.12.0'
+    implementation("com.github.getActivity:Toaster:12.6")
     implementation('com.github.CarGuo.GSYVideoPlayer:gsyVideoPlayer-java:v8.3.5-release-jitpack') {
         exclude group: 'androidx.appcompat'
         exclude group: 'androidx.core'
