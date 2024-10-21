@@ -14,22 +14,10 @@
 ```
     //引用项目必须添加一下依赖
     implementation(name: 'openfilelibrary-release', ext: 'aar')
-    implementation("com.blankj:utilcodex:1.31.1")
     implementation 'com.github.bumptech.glide:glide:4.12.0'
-    implementation("com.github.getActivity:Toaster:12.6")
-
-    implementation 'com.wx.android.common:common:1.0.1'
-    implementation 'com.squareup.retrofit2:retrofit:2.9.0'
-    implementation("com.squareup.okhttp3:okhttp:3.12.13")
-    implementation("com.google.code.gson:gson:2.10.1")
-
     implementation 'androidx.appcompat:appcompat:1.3.1'
     implementation 'com.google.android.material:material:1.4.0'
     implementation 'androidx.recyclerview:recyclerview:1.2.1'
-
-    //[通用弹窗 https://github.com/li-xiaojun/XPopup]
-    implementation 'com.github.li-xiaojun:XPopup:2.10.0'
-
 
     implementation('com.github.CarGuo.GSYVideoPlayer:gsyVideoPlayer-java:v8.3.5-release-jitpack') {
         exclude group: 'androidx.appcompat'
