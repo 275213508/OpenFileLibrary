@@ -31,12 +31,16 @@ public class MainFragment extends Fragment {
     }
 
     public static String[] titles = new String[]{
-            "打开文本", "打开图片", "打开视频"
+            "打开文本", "打开图片", "打开视频", "打开'民航航路图.pdf'", "打开'测试.doc'", "打开'VPN.txt'", "打开'测试.jpg'"
     };
     public static String[] fileUrls = new String[]{
             "https://dj-aers-gaefb.oss-cn-beijing.aliyuncs.com/gaefb_annex/20240923/1946ef14-be68-4c88-a4b7-591d74e1cfd8.txt",
             "https://www.baidu.com/img/PCtm_d9c8750bed0b3c7d089fa7d55720d6cf.png",
             "https://dj-aers-gaefb.oss-cn-beijing.aliyuncs.com/gaefb_annex/20240925/a0166ee6-8f65-4643-ba33-3cd7a9597c0c.mp4",
+            Environment.getExternalStorageDirectory() + "/efb/民航航路图.pdf",
+            Environment.getExternalStorageDirectory() + "/efb/测试.doc",
+            Environment.getExternalStorageDirectory() + "/efb/VPN.txt",
+            Environment.getExternalStorageDirectory() + "/efb/测试.jpg",
     };
 
 
