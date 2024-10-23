@@ -68,8 +68,6 @@ dependencies {
     // Java 8支持的 DefaultLifecycleObserver
     implementation "androidx.lifecycle:lifecycle-common-java8:$lifecycle_version"
 
-    embed("com.bm.photoview:library:1.4.1")
-    embed 'com.github.barteksc:android-pdf-viewer:2.8.1'
 
     implementation("com.github.getActivity:GsonFactory:9.5")
     implementation("com.blankj:utilcodex:1.31.1")
@@ -87,20 +85,7 @@ dependencies {
 
     //[通用弹窗 https://github.com/li-xiaojun/XPopup]
     embed 'com.github.li-xiaojun:XPopup:2.10.0'
-
-    //视频播放器
-    /*def exoplayerVersion = "1.4.1"
-    embed "androidx.media3:media3-exoplayer:$exoplayerVersion"
-    embed "androidx.media3:media3-exoplayer-dash:$exoplayerVersion"
-    embed "androidx.media3:media3-ui:$exoplayerVersion"*/
-    //https://github.com/CarGuo/GSYVideoPlayer/blob/master/doc/USE.md
-    implementation('com.github.CarGuo.GSYVideoPlayer:gsyVideoPlayer-java:v8.3.5-release-jitpack') {
-        exclude group: 'androidx.appcompat'
-        exclude group: 'androidx.core'
-    }
-    implementation('com.github.CarGuo.GSYVideoPlayer:gsyVideoPlayer-arm64:v8.3.5-release-jitpack') {
-        exclude group: 'androidx.appcompat'
-        exclude group: 'androidx.core'
-    }
+    embed("com.bm.photoview:library:1.4.1")
+    embed 'com.github.barteksc:android-pdf-viewer:2.8.1'
 
 }

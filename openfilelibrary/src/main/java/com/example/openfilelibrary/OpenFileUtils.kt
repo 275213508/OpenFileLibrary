@@ -15,8 +15,6 @@ import com.example.openfilelibrary.utile.common.ZipType
 import com.example.openfilelibrary.utile.common.getSuffixName1
 import com.hjq.toast.Toaster
 import com.lxj.xpopup.XPopup
-import com.shuyu.gsyvideoplayer.cache.ICacheManager
-import tv.danmaku.ijk.media.player.IjkMediaPlayer
 import java.io.File
 
 
@@ -42,8 +40,16 @@ object OpenFileUtils {
         openFile(context, context.filesDir.path, fileUrl, name)
     }
 
+    /**
+     * @param savePath 本地路径
+     * @param downUri 文件下载地址
+     * @param fileName 文件名,后台反馈的下载路径有时没有文件名,识别文件格式需要传文件名, 没有文件名可以传null
+     * */
     fun openFile(context: FragmentActivity, savePath: String?, downUri: String, fileName: String?) {
         try {
+            if (!Toaster.isInit()){
+                Toaster.init(context.application)
+            }
             LogUtils.e("OpenFileUtils", "downUri:$downUri fileName:$fileName")
             var suffix = getSuffixName1(downUri)
             if (!fileName.isNullOrBlank()) {
@@ -53,7 +59,7 @@ object OpenFileUtils {
 //                FileType.DOCX.name->{}
 //                FileType.DOC.name->{}
                 FileType.TXT.name -> {
-                    openFileViewModel.openTxt(context, downUri)
+                    openFileViewModel.openTxt(context, downUri,savePath)
                 }
 //                FileType.XLSX.name->{}
 //                FileType.XLS.name->{}

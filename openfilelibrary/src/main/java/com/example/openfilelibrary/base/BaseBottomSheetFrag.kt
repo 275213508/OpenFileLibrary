@@ -67,7 +67,7 @@ internal abstract class BaseBottomSheetFrag : BottomSheetDialogFragment() {
         initView()
         resetView()
         //设置View重新关联
-        dialog!!.setContentView(rootView!!)
+        dialog?.setContentView(rootView!!)
         mBehavior = BottomSheetBehavior.from(rootView?.parent as View)
         mBehavior?.setSkipCollapsed(true)
         mBehavior?.setHideable(true)
@@ -78,10 +78,10 @@ internal abstract class BaseBottomSheetFrag : BottomSheetDialogFragment() {
         //重置高度
         if (dialog != null) {
             val bottomSheet = dialog!!.findViewById<View>(R.id.design_bottom_sheet)
-            bottomSheet!!.layoutParams.height = getLayoutHeight()
-            rootView!!.post {
-                mBehavior?.setPeekHeight(rootView!!.height)
-                bottomSheet.setBackgroundColor(Color.TRANSPARENT)
+            bottomSheet?.layoutParams?.height = getLayoutHeight()
+            rootView?.post {
+                mBehavior?.setPeekHeight(rootView?.height?:100)
+                bottomSheet?.setBackgroundColor(Color.TRANSPARENT)
             }
         }
 

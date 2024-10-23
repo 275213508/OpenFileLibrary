@@ -27,11 +27,6 @@ class OpenFileViewModel {
     }
 
     fun openPDF(context: FragmentActivity, savePath: String, downUri: String, fileName: String?) {
-        val isValid = URLUtil.isValidUrl(downUri) && Patterns.WEB_URL.matcher(downUri).matches()
-        if (!isValid) {
-            PDFPreView(File(downUri).toUri()).show(context.supportFragmentManager)
-            return
-        }
         DownLoadUtile.downloadFile(context, savePath, downUri, fileName, object : ICell<File> {
             override fun cell(cell: File) {
                 PDFPreView(cell.toUri()).show(context.supportFragmentManager)
@@ -48,15 +43,11 @@ class OpenFileViewModel {
         VideoPreView(videoUrl.toUri()).show(context.supportFragmentManager, null)
     }
 
-    fun openTxt(context: FragmentActivity, txtUrl: String) {
-        val isValid = URLUtil.isValidUrl(txtUrl) && Patterns.WEB_URL.matcher(txtUrl).matches()
-        if (!isValid) {
-            TxtPreView(txtUrl, null).show(context.supportFragmentManager)
-            return
-        }
+    fun openTxt(context: FragmentActivity, txtUrl: String,savePath: String? = context.filesDir.path) {
+
         DownLoadUtile.downloadFile(
             context,
-            context.filesDir.path,
+            savePath?:context.filesDir.path,
             txtUrl,
             null,
             object : ICell<File> {
@@ -69,11 +60,6 @@ class OpenFileViewModel {
     }
 
     fun openHTML(context: FragmentActivity, txtUrl: String) {
-        val isValid = URLUtil.isValidUrl(txtUrl) && Patterns.WEB_URL.matcher(txtUrl).matches()
-        if (!isValid) {
-            TxtPreView(txtUrl, 1).show(context.supportFragmentManager)
-            return
-        }
         DownLoadUtile.downloadFile(
             context,
             context.filesDir.path,

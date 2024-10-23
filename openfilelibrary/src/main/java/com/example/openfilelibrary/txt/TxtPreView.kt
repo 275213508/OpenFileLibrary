@@ -1,14 +1,11 @@
 package com.example.openfilelibrary.txt
 
 import android.text.Html
-import com.blankj.utilcode.util.FileIOUtils
 import com.example.openfilelibrary.R
-import com.example.openfilelibrary.databinding.TxtPlayerBinding
 import com.example.openfilelibrary.base.BaseBottomSheetFrag
-import com.example.openfilelibrary.base.ICell
+import com.example.openfilelibrary.databinding.TxtPlayerBinding
 import com.example.openfilelibrary.utile.ScreenUtils
-import com.example.openfilelibrary.utile.common.DownLoadUtile
-import java.io.File
+import com.hjq.toast.Toaster
 
 /**
  * @author zyju
@@ -32,6 +29,11 @@ internal class TxtPreView(var str: String, var type: Int?) : BaseBottomSheetFrag
 
     override fun initView() {
         binding = TxtPlayerBinding.bind(rootView!!)
+        if (str.isNullOrBlank()){
+            Toaster.show("内容为空")
+            dismiss()
+            return
+        }
         when (type) {
             1 -> {//富文本
                 binding.txt.text = Html.fromHtml(str)

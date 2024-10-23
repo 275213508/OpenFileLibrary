@@ -20,14 +20,6 @@
     implementation("com.blankj:utilcodex:1.31.1")
     implementation 'com.github.bumptech.glide:glide:4.12.0'
     implementation("com.github.getActivity:Toaster:12.6")
-    implementation('com.github.CarGuo.GSYVideoPlayer:gsyVideoPlayer-java:v8.3.5-release-jitpack') {
-        exclude group: 'androidx.appcompat'
-        exclude group: 'androidx.core'
-    }
-    implementation('com.github.CarGuo.GSYVideoPlayer:gsyVideoPlayer-arm64:v8.3.5-release-jitpack') {
-        exclude group: 'androidx.appcompat'
-        exclude group: 'androidx.core'
-    }
 
 ```
 

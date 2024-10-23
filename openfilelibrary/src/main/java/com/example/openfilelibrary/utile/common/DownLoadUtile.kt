@@ -1,16 +1,23 @@
 package com.example.openfilelibrary.utile.common
 
+import android.os.Build
+import android.util.Patterns
+import android.webkit.URLUtil
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.net.toUri
 import androidx.fragment.app.FragmentActivity
 import com.blankj.utilcode.util.FileIOUtils
 import com.blankj.utilcode.util.FileUtils
 import com.blankj.utilcode.util.LogUtils
+import com.blankj.utilcode.util.PermissionUtils
 import com.blankj.utilcode.util.ThreadUtils
 import com.example.openfilelibrary.base.ICell
 import com.example.openfilelibrary.http.FileDownloadService
 import com.example.openfilelibrary.pdf.PDFPreView
+import com.example.openfilelibrary.txt.TxtPreView
+import com.hjq.toast.Toaster
 import com.lxj.xpopup.XPopup
+import com.lxj.xpopup.impl.LoadingPopupView
 import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Callback
@@ -29,6 +36,11 @@ object DownLoadUtile {
         var filepath = dirpath + "/" + getFileName1(downUri)
         if (!fileName.isNullOrBlank()) {
             filepath = "$dirpath/$fileName"
+        }
+        val isValid = URLUtil.isValidUrl(downUri) && Patterns.WEB_URL.matcher(downUri).matches()
+        if (!isValid) {
+            icell.cell(File(downUri))
+            return
         }
         if (FileUtils.isFileExists(filepath)) {
             XPopup.Builder(context).asConfirm(
@@ -64,14 +76,39 @@ object DownLoadUtile {
             return
         }
         var base = urs[0] +downUri.toUri().authority
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            PermissionUtils.requestWriteSettings(object : PermissionUtils.SimpleCallback {
+                override fun onGranted() {
+                    download(base, downUri, dirpath, fileName, dialog, icell)
+                }
+
+                override fun onDenied() {
+                    dialog.dismiss()
+                   Toaster.show("需要读写权限才能下载文件")
+                }
+
+            })
+        }else {
+            download(base, downUri, dirpath, fileName, dialog, icell)
+        }
+    }
+
+    private fun download(
+        base: String,
+        downUri: String,
+        dirpath: String,
+        fileName: String?,
+        dialog: LoadingPopupView,
+        icell: ICell<File>
+    ) {
         ThreadUtils.getIoPool().submit {
             val retrofit: Retrofit = Retrofit.Builder()
                 .baseUrl(base)
                 .build()
             val fileDownloadService = retrofit.create(FileDownloadService::class.java)
-            val call: Call<ResponseBody>? = fileDownloadService.downloadFile(downUri.replace(base,""))
+            val call: Call<ResponseBody>? = fileDownloadService.downloadFile(downUri.replace(base, ""))
             var file = getSaveFilePath(dirpath, downUri, fileName)
-            LogUtils.i("文件:${base}${downUri.replace(base,"")}")
+            LogUtils.i("文件:${base}${downUri.replace(base, "")}")
             call?.enqueue(object : Callback<ResponseBody> {
                 override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
                     // 处理响应体

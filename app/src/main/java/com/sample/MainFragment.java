@@ -37,9 +37,9 @@ public class MainFragment extends Fragment {
             "https://dj-aers-gaefb.oss-cn-beijing.aliyuncs.com/gaefb_annex/20240923/1946ef14-be68-4c88-a4b7-591d74e1cfd8.txt",
             "https://www.baidu.com/img/PCtm_d9c8750bed0b3c7d089fa7d55720d6cf.png",
             "https://dj-aers-gaefb.oss-cn-beijing.aliyuncs.com/gaefb_annex/20240925/a0166ee6-8f65-4643-ba33-3cd7a9597c0c.mp4",
-            Environment.getExternalStorageDirectory() + "/efb/民航航路图.pdf",
+            Environment.getExternalStorageDirectory() + "/efb/flight_data/民航航路图/V5.10_20241003.pdf",
             Environment.getExternalStorageDirectory() + "/efb/测试.doc",
-            Environment.getExternalStorageDirectory() + "/efb/VPN.txt",
+            Environment.getExternalStorageDirectory() + "/efb/flight_data/text1.txt",
             Environment.getExternalStorageDirectory() + "/efb/测试.jpg",
     };
 
@@ -71,7 +71,7 @@ public class MainFragment extends Fragment {
                     List<String> titleList = Arrays.asList(titles);
                     int index = titleList.indexOf(text);
                     if (index == -1) return;
-                    OpenFileUtils.INSTANCE.openFile(requireActivity(), fileUrls[index]);
+                    OpenFileUtils.INSTANCE.openFile(requireActivity(), Environment.getExternalStorageDirectory() + "/efb/flight_data/", fileUrls[index],null);
                 }
             });
         } else {

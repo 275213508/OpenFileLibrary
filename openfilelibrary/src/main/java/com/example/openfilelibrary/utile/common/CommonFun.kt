@@ -38,3 +38,13 @@ internal fun getFileName1(fileuri: String): String {
         return ""
     }
 }
+
+fun Long.toTimeString(): String {
+    val hours = this / (1000 * 60 * 60)
+    val minutes = (this % (1000 * 60 * 60)) / (1000 * 60)
+    val seconds = (this % (1000 * 60)) / 1000
+    return String.format("%02d:%02d:%02d", hours, minutes, seconds)
+}
+fun Int.toTimeString(): String {
+   return this.toLong().toTimeString()
+}
