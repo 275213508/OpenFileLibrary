@@ -64,17 +64,20 @@ internal class PDFPreView(var FileLocalUri: Uri): BaseBottomSheetFrag() {
 //            .onPageScroll(onPageScrollListener)
             .onError(object :OnErrorListener{
                 override fun onError(t: Throwable?) {
+                    bind.loadProgress.visibility = android.view.View.GONE
                     Log.i(TAG, "onError: ${t?.message}")
                 }
 
             })
 //            .onPageError(onPageErrorListener)
-//            .onRender(object :OnRenderListener{
-//                override fun onInitiallyRendered(nbPages: Int) {
-//                    Log.i(TAG, "onInitiallyRendered: $nbPages")
-//                }
-//
-//            }) // called after document is rendered for the first time
+            .onRender(object :OnRenderListener{
+
+                override fun onInitiallyRendered(nbPages: Int, pageWidth: Float, pageHeight: Float) {
+                    bind.loadProgress.visibility = android.view.View.GONE
+                    Log.i(TAG, "onInitiallyRendered: $nbPages")
+                }
+
+            }) // called after document is rendered for the first time
             // called on single tap, return true if handled, false to toggle scroll handle visibility
 //            .onTap(onTapListener)
 //            .onLongPress(onLongPressListener)
