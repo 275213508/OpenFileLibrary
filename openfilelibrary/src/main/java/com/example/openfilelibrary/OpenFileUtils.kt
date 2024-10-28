@@ -28,16 +28,16 @@ object OpenFileUtils {
     /**
      * @param fileUrl 文件下载地址
      * */
-    fun openFile(context: FragmentActivity, fileName: String) {
-        openFile(context, context.filesDir.path, fileName, null)
+    fun openFile(context: FragmentActivity, fileName: String,filePrivate:String = "") {
+        openFile(context, context.filesDir.path, fileName, null,filePrivate)
     }
 
     /**
      * @param fileUrl 文件下载地址
      * @param name 文件名 有时下载地址没有文件名
      * */
-    fun openFile(context: FragmentActivity, fileUrl: String, name: String) {
-        openFile(context, context.filesDir.path, fileUrl, name)
+    fun openFile(context: FragmentActivity, fileUrl: String, name: String,filePrivate:String = "") {
+        openFile(context, context.filesDir.path, fileUrl, name,filePrivate)
     }
 
     /**
@@ -45,7 +45,7 @@ object OpenFileUtils {
      * @param downUri 文件下载地址
      * @param fileName 文件名,后台反馈的下载路径有时没有文件名,识别文件格式需要传文件名, 没有文件名可以传null
      * */
-    fun openFile(context: FragmentActivity, savePath: String?, downUri: String, fileName: String?) {
+    fun openFile(context: FragmentActivity, savePath: String?, downUri: String, fileName: String?,filePrivate:String = "") {
         try {
             if (!Toaster.isInit()){
                 Toaster.init(context.application)
@@ -56,16 +56,29 @@ object OpenFileUtils {
                 suffix = getSuffixName1(fileName)
             }
             when (suffix.uppercase()) {
-//                FileType.DOCX.name->{}
-//                FileType.DOC.name->{}
                 FileType.TXT.name -> {
                     openFileViewModel.openTxt(context, downUri,savePath)
                 }
-//                FileType.XLSX.name->{}
-//                FileType.XLS.name->{}
-//                FileType.PPT.name->{}
+                FileType.DOC.name,
+                FileType.DOCX.name,
+                FileType.PPT.name,
+                FileType.PPTX.name,
+                FileType.XLS.name,
+                FileType.XLSX.name,
+                FileType.CSV.name,
+                FileType.DWG.name,
+                FileType.CHM.name,
+
+                FileType.RTF.name -> {
+                    openFileViewModel.openTBS(context, downUri,filePrivate)
+                }
+
                 FileType.PDF.name -> {
+//                    openFileViewModel.openTBS(context, downUri,filePrivate)
                     savePath?.let { openFileViewModel.openPDF(context, it, downUri, fileName) }
+                }
+                FileType.EPUB.name->{
+                    openFileViewModel.openEpub(context, downUri)
                 }
 //
 //                ZipType.ZIP.name->{}
@@ -76,13 +89,14 @@ object OpenFileUtils {
                     openFileViewModel.openHTML(context, downUri)
                 }
 
-//                ImageType.TIFF.name->{}
+//                ImageType.TIFF.name,
                 ImageType.JPG.name,
                 ImageType.PNG.name,
+//                ImageType.BMP.name,
+                ImageType.JPEG.name,
                 ImageType.GIF.name -> {
                     openFileViewModel.openImage(context, downUri)
                 }
-//                ImageType.BMP.name->{}
 //                ImageType.WAV.name->{}
 //                ImageType.WMA.name->{}
 
@@ -95,7 +109,7 @@ object OpenFileUtils {
 //                ImageType.AVI.name->{}
 //                ImageType.FLV.name->{}
                 else -> {
-                    openOther(context, downUri)
+                    openOther(context, downUri,filePrivate)
                 }
             }
         } catch (e: Exception) {
@@ -105,13 +119,18 @@ object OpenFileUtils {
 
     }
 
-    private fun openOther(context: FragmentActivity, downUri: String) {
+    private fun openOther(context: FragmentActivity, downUri: String,filePrivate: String="") {
+        var filePrivater = if (filePrivate.isBlank()) {
+            context.packageName + ".fileprovider"
+        } else {
+            filePrivate
+        }
         val isValid = URLUtil.isValidUrl(downUri) && Patterns.WEB_URL.matcher(downUri).matches()
         if (!isValid) {
             try {
                 val file = File(downUri)
                 val intent = Intent(Intent.ACTION_VIEW)
-                val fileUri = FileProvider.getUriForFile(context, context.packageName + ".fileprovider", file)
+                val fileUri = FileProvider.getUriForFile(context,filePrivater , file)
                 intent.setDataAndType(fileUri, getFileIntentType(file.extension))
                 intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY)
                 context.startActivity(intent)

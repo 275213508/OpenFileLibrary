@@ -13,8 +13,6 @@ import com.blankj.utilcode.util.PermissionUtils
 import com.blankj.utilcode.util.ThreadUtils
 import com.example.openfilelibrary.base.ICell
 import com.example.openfilelibrary.http.FileDownloadService
-import com.example.openfilelibrary.pdf.PDFPreView
-import com.example.openfilelibrary.txt.TxtPreView
 import com.hjq.toast.Toaster
 import com.lxj.xpopup.XPopup
 import com.lxj.xpopup.impl.LoadingPopupView

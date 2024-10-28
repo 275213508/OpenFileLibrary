@@ -9,9 +9,15 @@ enum class FileType {
     DOC,
     TXT,
     XLSX,
+    RTF,
+    DWG,
     XLS,
     PPT,
+    PPTX,
     PDF,
+    CSV,
+    CHM,
+    EPUB,
 }
 enum class ZipType{
     ZIP,
@@ -26,6 +32,7 @@ enum class ImageType{
     TIFF,
     BMP,
     PNG,
+    JPEG,
     GIF,
     MP3,
     MP4,

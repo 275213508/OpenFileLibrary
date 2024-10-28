@@ -61,8 +61,14 @@ dep.common ='com.wx.android.common:common:1.0.1'
 dep.pdfViewer = "com.github.barteksc:android-pdf-viewer:2.8.1"
 //视频播放器
 //https://github.com/CarGuo/GSYVideoPlayer/blob/master/doc/USE.md
-dep.gsyVideoPlayer_java = "com.github.CarGuo.GSYVideoPlayer:gsyVideoPlayer-java:v8.3.5-release-jitpack"
-dep.gsyVideoPlayer_arm64 = "com.github.CarGuo.GSYVideoPlayer:gsyVideoPlayer-arm64:v8.3.5-release-jitpack"
+def GSYVideoVersion = 'v8.3.5'
+dep.GSYVideoPlayer = "com.github.CarGuo.GSYVideoPlayer:GSYVideoPlayer:$GSYVideoVersion-release-jitpack"
+dep.gsyVideoPlayer_java = "com.github.CarGuo.GSYVideoPlayer:gsyVideoPlayer-java:$GSYVideoVersion-release-jitpack"
+dep.gsyVideoPlayer_arm64 = "com.github.CarGuo.GSYVideoPlayer:gsyVideoPlayer-arm64:$GSYVideoVersion-release-jitpack"
+dep.gsyVideoPlayer_aliplay = "com.github.CarGuo.GSYVideoPlayer:GSYVideoPlayer-aliplay:$GSYVideoVersion-release-jitpack"
+dep.gsyVideoPlayer_exo2 = "com.github.CarGuo.GSYVideoPlayer:GSYVideoPlayer-exo2:$GSYVideoVersion-release-jitpack"
+dep.GSYIjkJava = "com.github.CarGuo:GSYIjkJava:1.0.0"
+
 def refreshVersion = '2.0.3'
 dep.refresh = [
         "com.scwang.smart:refresh-layout-kernel:$refreshVersion",
@@ -89,7 +95,7 @@ dep.filedownloader ='com.liulishuo.filedownloader:library:1.7.4'
 dep.qmui ="com.qmuiteam:qmui:2.0.1"
 dep.photoview ="com.bm.photoview:library:1.4.1"
 dep.XPopup ="com.github.li-xiaojun:XPopup:2.10.0"
-
+dep.folioreader ="com.folioreader:folioreader:0.5.4"
 def opens = [:]
 opens.openfile = [
         dep.mmkv,
@@ -101,8 +107,8 @@ opens.openfile = [
         (dep.Toaster),
         (dep.GsonFactory),
         (dep.pdfViewer),
-        dep.gsyVideoPlayer_java ,
-        dep.gsyVideoPlayer_arm64 ,
+        (dep.folioreader),
+//        (dep.GSYVideoPlayer),
 ]
 
 ext {

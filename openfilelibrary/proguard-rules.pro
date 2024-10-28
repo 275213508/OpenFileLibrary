@@ -171,30 +171,17 @@ public static ** valueOf(java.lang.String);
     public <init>(android.content.Context, android.util.AttributeSet);
     public <init>(android.content.Context, android.util.AttributeSet, int);
 }
--keep class com.shuyu.gsyvideoplayer.video.** { *; }
--dontwarn com.shuyu.gsyvideoplayer.video.**
--keep class com.shuyu.gsyvideoplayer.video.base.** { *; }
--dontwarn com.shuyu.gsyvideoplayer.video.base.**
--keep class com.shuyu.gsyvideoplayer.utils.** { *; }
--dontwarn com.shuyu.gsyvideoplayer.utils.**
--keep class com.shuyu.gsyvideoplayer.player.** {*;}
--dontwarn com.shuyu.gsyvideoplayer.player.**
--keep class tv.danmaku.ijk.** { *; }
--dontwarn tv.danmaku.ijk.**
 
--keep class androidx.media3.** {*;}
--keep interface androidx.media3.**
 
--keep class com.google.android.exoplayer2.** {*;}
--keep interface com.google.android.exoplayer2.**
+#tbs start
+-dontwarn dalvik.**
+-dontwarn com.tencent.smtt.**
 
--keep class com.shuyu.alipay.** {*;}
--keep interface com.shuyu.alipay.**
+-keep class com.tencent.smtt.** {
+    *;
+}
 
--keep class com.alivc.**{*;}
--keep class com.aliyun.**{*;}
--keep class com.cicada.**{*;}
--dontwarn com.alivc.**
--dontwarn com.aliyun.**
--dontwarn com.cicada.**
-#https://github.com/CarGuo/GSYVideoPlayer/blob/master/app/proguard-rules.pro  GSYVideoPlayer end  ===============
+-keep class com.tencent.tbs.** {
+    *;
+}
+#tbs end

@@ -5,14 +5,13 @@ import android.util.Log
 import androidx.fragment.app.FragmentManager
 import com.blankj.utilcode.util.LogUtils
 import com.example.openfilelibrary.R
-import com.example.openfilelibrary.databinding.PdfLayoutBinding
 import com.example.openfilelibrary.base.BaseBottomSheetFrag
+import com.example.openfilelibrary.databinding.PdfLayoutBinding
 import com.example.openfilelibrary.utile.ScreenUtils
 import com.example.openfilelibrary.utile.common.SingleClick
 import com.github.barteksc.pdfviewer.listener.OnErrorListener
 import com.github.barteksc.pdfviewer.listener.OnLoadCompleteListener
 import com.github.barteksc.pdfviewer.listener.OnRenderListener
-
 
 /**
  * @author zyju
@@ -100,5 +99,6 @@ internal class PDFPreView(var FileLocalUri: Uri): BaseBottomSheetFrag() {
     override fun show(manager: FragmentManager) {
         super.show(manager)
     }
+
 
 }

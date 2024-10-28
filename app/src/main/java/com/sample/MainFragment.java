@@ -31,7 +31,7 @@ public class MainFragment extends Fragment {
     }
 
     public static String[] titles = new String[]{
-            "打开文本", "打开图片", "打开视频", "打开'民航航路图.pdf'", "打开'测试.doc'", "打开'VPN.txt'", "打开'测试.jpg'"
+            "打开文本", "打开图片", "打开视频", "打开'民航航路图.pdf'", "打开'测试.doc'", "打开'VPN.txt'", "打开'测试.jpg'","打开epub文件"
     };
     public static String[] fileUrls = new String[]{
             "https://dj-aers-gaefb.oss-cn-beijing.aliyuncs.com/gaefb_annex/20240923/1946ef14-be68-4c88-a4b7-591d74e1cfd8.txt",
@@ -42,6 +42,7 @@ public class MainFragment extends Fragment {
             Environment.getExternalStorageDirectory() + "/efb/测试.doc",
             Environment.getExternalStorageDirectory() + "/efb/flight_data/text1.txt",
             Environment.getExternalStorageDirectory() + "/efb/测试.jpg",
+            Environment.getExternalStorageDirectory() + "/efb/flight_data/三体3：死神永生.epub",
     };
 
 
@@ -72,7 +73,7 @@ public class MainFragment extends Fragment {
                     List<String> titleList = Arrays.asList(titles);
                     int index = titleList.indexOf(text);
                     if (index == -1) return;
-                    OpenFileUtils.INSTANCE.openFile(requireActivity(), Environment.getExternalStorageDirectory() + "/efb/flight_data/", fileUrls[index],null);
+                    OpenFileUtils.INSTANCE.openFile(requireActivity(), Environment.getExternalStorageDirectory() + "/efb/flight_data/", fileUrls[index],null,"");
                 }
             });
         } else {

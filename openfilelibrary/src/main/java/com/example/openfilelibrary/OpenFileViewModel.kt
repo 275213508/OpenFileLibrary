@@ -1,16 +1,19 @@
 package com.example.openfilelibrary
 
-import android.util.Patterns
-import android.webkit.URLUtil
+import android.content.Intent
+import android.net.Uri
 import androidx.core.net.toUri
 import androidx.fragment.app.FragmentActivity
 import com.blankj.utilcode.util.FileIOUtils
 import com.example.openfilelibrary.base.ICell
 import com.example.openfilelibrary.image.PreImageDialog
 import com.example.openfilelibrary.pdf.PDFPreView
+import com.example.openfilelibrary.tbs.TBSPreView
 import com.example.openfilelibrary.txt.TxtPreView
 import com.example.openfilelibrary.utile.common.DownLoadUtile
-import com.example.openfilelibrary.video.VideoPreView
+import com.folioreader.Config
+import com.folioreader.FolioReader
+import com.folioreader.util.AppUtil
 import java.io.File
 
 
@@ -35,19 +38,47 @@ class OpenFileViewModel {
     }
 
     /**
+     * 打开腾讯Tbs阅读器
+     * */
+    fun openTBS(context: FragmentActivity, fileUrl: String, APP_File_Provider: String) {
+        TBSPreView(fileUrl.toUri(), APP_File_Provider).show(context.supportFragmentManager)
+    }
+
+    var folioReader: FolioReader? = null
+    fun openEpub(context: FragmentActivity,path: String) {
+        folioReader = FolioReader.get()
+            .setOnClosedListener {
+                if (folioReader != null) {
+                    FolioReader.clear()
+                    FolioReader.stop()
+                }
+            }
+        var config = AppUtil.getSavedConfig(context)
+        if (config == null) {
+            config = Config()
+        }
+        config.setAllowedDirection(Config.AllowedDirection.VERTICAL_AND_HORIZONTAL)
+        folioReader?.setConfig(config, true)?.openBook(path)
+    }
+
+    /**
      * 打开视频/音频
      * @param videoUrl 视频地址
      * 视频不做存储，直接展示
      * */
     fun openVideo(context: FragmentActivity, videoUrl: String) {
-        VideoPreView(videoUrl.toUri()).show(context.supportFragmentManager, null)
+        var uri = Uri.parse(videoUrl);
+        var intent = Intent(Intent.ACTION_VIEW);
+        intent.setDataAndType(uri, "video/*");
+        context.startActivity(intent);
+//        VideoPreView(videoUrl.toUri()).show(context.supportFragmentManager, null)
     }
 
-    fun openTxt(context: FragmentActivity, txtUrl: String,savePath: String? = context.filesDir.path) {
+    fun openTxt(context: FragmentActivity, txtUrl: String, savePath: String? = context.filesDir.path) {
 
         DownLoadUtile.downloadFile(
             context,
-            savePath?:context.filesDir.path,
+            savePath ?: context.filesDir.path,
             txtUrl,
             null,
             object : ICell<File> {

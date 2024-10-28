@@ -15,8 +15,7 @@
 ```
     //引用项目必须添加一下依赖
     复制 versions.gradle 到 project根目录
-    model.build.gradle:
-    根级添加 
+    model.build.gradle:根级添加 
     apply from: '../versions.gradle'
     dependencies {
         implementation files('libs/openfilelibrary-release.aar')
