@@ -1,6 +1,8 @@
 package com.sample;
 
 
+import static com.sample.BuildConfig.APP_File_Provider;
+
 import android.os.Bundle;
 import android.os.Environment;
 import android.view.Gravity;
@@ -73,7 +75,7 @@ public class MainFragment extends Fragment {
                     List<String> titleList = Arrays.asList(titles);
                     int index = titleList.indexOf(text);
                     if (index == -1) return;
-                    OpenFileUtils.INSTANCE.openFile(requireActivity(), Environment.getExternalStorageDirectory() + "/efb/flight_data/", fileUrls[index],null,"");
+                    OpenFileUtils.INSTANCE.openFile(requireActivity(), Environment.getExternalStorageDirectory() + "/efb/flight_data/", fileUrls[index],null,APP_File_Provider);
                 }
             });
         } else {

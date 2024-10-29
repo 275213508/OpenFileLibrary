@@ -76,11 +76,10 @@ dependencies {
 
     //[权限处理 https://github.com/guolindev/PermissionX]
     implementation 'com.guolindev.permissionx:permissionx:1.5.0'
-
+    implementation files('libs/TbsFileSdk_base_armeabi__release_1.0.5.6000022.20230906113337.aar')
 //    implementation project(path: ':openfilelibrary')
-    implementation fileTree(dir: 'libs', include: ['*.jar', '*.aar'])
+    implementation files('libs/openfilelibrary-release.aar')
     implementation(openfilelibs.openfile)
-    implementation deps.XPopup
     //=============================集成openfilelibrary.aar时添加
 
 //    implementation("com.blankj:utilcodex:1.31.1")

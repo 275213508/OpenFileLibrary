@@ -3,6 +3,8 @@ package com.example.openfilelibrary.pdf
 import android.net.Uri
 import android.util.Log
 import androidx.fragment.app.FragmentManager
+import com.blankj.utilcode.util.FileIOUtils
+import com.blankj.utilcode.util.FileUtils
 import com.blankj.utilcode.util.LogUtils
 import com.example.openfilelibrary.R
 import com.example.openfilelibrary.base.BaseBottomSheetFrag
@@ -16,6 +18,7 @@ import com.github.barteksc.pdfviewer.listener.OnRenderListener
 /**
  * @author zyju
  * @date 2024/8/27 10:23
+ * @see 效果不如第三方的wps让用户下载个wps
  */
 internal class PDFPreView(var FileLocalUri: Uri): BaseBottomSheetFrag() {
 
@@ -39,6 +42,7 @@ internal class PDFPreView(var FileLocalUri: Uri): BaseBottomSheetFrag() {
 
     override fun initView() {
         bind = PdfLayoutBinding.bind(rootView!!)
+        bind.tvTitle.text = FileUtils.getFileName(FileLocalUri.path)
         SingleClick(bind.imgCancel){
             dismiss()
         }

@@ -33,9 +33,9 @@ import java.io.File
  * @author zyju
  * @date 2024/8/27 10:23
  */
-internal class TBSPreView(var FileLocalUri: Uri,var APP_File_Provider:String): BaseBottomSheetFrag() {
+internal class TBSPreView(var FileLocalUri: Uri, var APP_File_Provider: String) : BaseBottomSheetFrag() {
 
-    private var TAG ="TbsPreView"
+    private var TAG = "TbsPreView"
     private lateinit var bind: TbsLayoutBinding
     private var filePath = ""
 
@@ -50,13 +50,14 @@ internal class TBSPreView(var FileLocalUri: Uri,var APP_File_Provider:String): B
     override fun IsScrollable(): Boolean {
         return false
     }
+
     override fun getLayoutResId(): Int {
-       return R.layout.tbs_layout
+        return R.layout.tbs_layout
     }
 
     override fun initView() {
         bind = TbsLayoutBinding.bind(rootView!!)
-        SingleClick(bind.imgCancel){
+        SingleClick(bind.imgCancel) {
             dismiss()
         }
         LogUtils.i("打开PDF: $FileLocalUri")
@@ -72,7 +73,7 @@ internal class TBSPreView(var FileLocalUri: Uri,var APP_File_Provider:String): B
         if (SPUtils.getInstance().getInt(TbsInstance.TBS, 0) == 0) {
             if (TbsInstance.getInstance().initEngine(context) != 0) {
                 //再次失败跳转第三方
-                startIntent(context,fileExt, filePath)
+                startIntent(context, fileExt, filePath)
                 SPUtils.getInstance().put(TbsInstance.TBS, 0)
                 return
             } else {
@@ -109,7 +110,7 @@ internal class TBSPreView(var FileLocalUri: Uri,var APP_File_Provider:String): B
                 val height: Int = bind.tbsView.getHeight()
                 param.putInt("set_content_view_height", height) // 文档内容的显示区域高度，自定义layout模式必须传入这个值
                 val ret = TbsFileInterfaceImpl.getInstance().openFileReader(
-                   context, param, callback, bind.tbsView
+                    context, param, callback, bind.tbsView
                 )
             })
         } else {
@@ -117,11 +118,12 @@ internal class TBSPreView(var FileLocalUri: Uri,var APP_File_Provider:String): B
             Toaster.show("不支持的文档格式")
         }
     }
-    private fun startIntent(context: FragmentActivity,fileType: String, filePath: String) {
-        if (APP_File_Provider.isBlank()){
+
+    private fun startIntent(context: FragmentActivity, fileType: String, filePath: String) {
+        if (APP_File_Provider.isBlank()) {
             APP_File_Provider = context.packageName + ".fileprovider"
         }
-        if (fileType == FileType.EPUB.name.lowercase()&&File(filePath).exists()) {
+        if (fileType == FileType.EPUB.name.lowercase() && File(filePath).exists()) {
             try {
                 val intent = Intent(Intent.ACTION_VIEW)
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
@@ -141,23 +143,23 @@ internal class TBSPreView(var FileLocalUri: Uri,var APP_File_Provider:String): B
                 }
                 context.startActivity(intent)
             } catch (e: Exception) {
-                com.wx.android.common.util.LogUtils.e("feifei=======打开: ${e.message}")
+                LogUtils.e("feifei=======打开: ${e.message}")
             }
         } else {
-            val intent = Intent(Intent.ACTION_VIEW)
-            intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY)
-            com.wx.android.common.util.LogUtils.e("ShowPdfActivity--buildTbsReaderView: fileType:$fileType")
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                val apkUri = FileProvider.getUriForFile(context, APP_File_Provider, File(filePath))
-                intent.setDataAndType(apkUri, OpenFileUtils.getFileIntentType(fileType))
-                intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
-            } else {
-                intent.setDataAndType(Uri.fromFile(File(filePath)), OpenFileUtils.getFileIntentType(fileType))
-            }
             try {
+                val intent = Intent(Intent.ACTION_VIEW)
+                intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY)
+                LogUtils.e("ShowPdfActivity--buildTbsReaderView: fileType:$fileType")
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                    val apkUri = FileProvider.getUriForFile(context, APP_File_Provider, File(filePath))
+                    intent.setDataAndType(apkUri, OpenFileUtils.getFileIntentType(fileType))
+                    intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+                } else {
+                    intent.setDataAndType(Uri.fromFile(File(filePath)), OpenFileUtils.getFileIntentType(fileType))
+                }
                 this.startActivity(intent)
             } catch (e: Exception) {
-                Toaster.show("未安装可打开此文件的应用")
+                OpenFileUtils.openOther(context, filePath, APP_File_Provider)
             }
         }
         dismiss()

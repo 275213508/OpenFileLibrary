@@ -9,12 +9,15 @@ import android.webkit.URLUtil
 import androidx.core.content.FileProvider
 import androidx.fragment.app.FragmentActivity
 import com.blankj.utilcode.util.LogUtils
+import com.blankj.utilcode.util.SPUtils
+import com.example.openfilelibrary.utile.TbsInstance
 import com.example.openfilelibrary.utile.common.FileType
 import com.example.openfilelibrary.utile.common.ImageType
 import com.example.openfilelibrary.utile.common.ZipType
 import com.example.openfilelibrary.utile.common.getSuffixName1
 import com.hjq.toast.Toaster
 import com.lxj.xpopup.XPopup
+import com.tencent.tbs.reader.TbsFileInterfaceImpl
 import java.io.File
 
 
@@ -28,16 +31,16 @@ object OpenFileUtils {
     /**
      * @param fileUrl 文件下载地址
      * */
-    fun openFile(context: FragmentActivity, fileName: String,filePrivate:String = "") {
-        openFile(context, context.filesDir.path, fileName, null,filePrivate)
+    fun openFile(context: FragmentActivity, fileName: String, filePrivate: String = "") {
+        openFile(context, context.filesDir.path, fileName, null, filePrivate)
     }
 
     /**
      * @param fileUrl 文件下载地址
      * @param name 文件名 有时下载地址没有文件名
      * */
-    fun openFile(context: FragmentActivity, fileUrl: String, name: String,filePrivate:String = "") {
-        openFile(context, context.filesDir.path, fileUrl, name,filePrivate)
+    fun openFile(context: FragmentActivity, fileUrl: String, name: String, filePrivate: String = "") {
+        openFile(context, context.filesDir.path, fileUrl, name, filePrivate)
     }
 
     /**
@@ -45,9 +48,9 @@ object OpenFileUtils {
      * @param downUri 文件下载地址
      * @param fileName 文件名,后台反馈的下载路径有时没有文件名,识别文件格式需要传文件名, 没有文件名可以传null
      * */
-    fun openFile(context: FragmentActivity, savePath: String?, downUri: String, fileName: String?,filePrivate:String = "") {
+    fun openFile(context: FragmentActivity, savePath: String?, downUri: String, fileName: String?, filePrivate: String = "") {
         try {
-            if (!Toaster.isInit()){
+            if (!Toaster.isInit()) {
                 Toaster.init(context.application)
             }
             LogUtils.e("OpenFileUtils", "downUri:$downUri fileName:$fileName")
@@ -57,8 +60,9 @@ object OpenFileUtils {
             }
             when (suffix.uppercase()) {
                 FileType.TXT.name -> {
-                    openFileViewModel.openTxt(context, downUri,savePath)
+                    openFileViewModel.openTxt(context, downUri, savePath)
                 }
+
                 FileType.DOC.name,
                 FileType.DOCX.name,
                 FileType.PPT.name,
@@ -68,16 +72,19 @@ object OpenFileUtils {
                 FileType.CSV.name,
                 FileType.DWG.name,
                 FileType.CHM.name,
-
                 FileType.RTF.name -> {
-                    openFileViewModel.openTBS(context, downUri,filePrivate)
+                    if (!openFileViewModel.openTBS(context, downUri, filePrivate)) {
+                        openOther(context, downUri, filePrivate)
+                    }
                 }
 
                 FileType.PDF.name -> {
-//                    openFileViewModel.openTBS(context, downUri,filePrivate)
-                    savePath?.let { openFileViewModel.openPDF(context, it, downUri, fileName) }
+                    if (!openFileViewModel.openTBS(context, downUri, filePrivate)) {
+                        savePath?.let { openFileViewModel.openPDF(context, it, downUri, fileName) }
+                    }
                 }
-                FileType.EPUB.name->{
+
+                FileType.EPUB.name -> {
                     openFileViewModel.openEpub(context, downUri)
                 }
 //
@@ -100,7 +107,10 @@ object OpenFileUtils {
 //                ImageType.WAV.name->{}
 //                ImageType.WMA.name->{}
 
-                ImageType.MP3.name,
+                ImageType.MP3.name -> {
+                    openFileViewModel.openVideo(context, downUri)
+                }
+
                 ImageType.MP4.name -> {
                     openFileViewModel.openVideo(context, downUri)
                 }
@@ -109,7 +119,12 @@ object OpenFileUtils {
 //                ImageType.AVI.name->{}
 //                ImageType.FLV.name->{}
                 else -> {
-                    openOther(context, downUri,filePrivate)
+                    var tbsCanOpen = TbsFileInterfaceImpl.canOpenFileExt(getSuffixName1(downUri))
+                    if (TbsInstance.getInstance().initEngine(context) == 0 && tbsCanOpen) {
+                        openFileViewModel.openTBS(context, downUri, filePrivate)
+                    } else {
+                        openOther(context, downUri, filePrivate)
+                    }
                 }
             }
         } catch (e: Exception) {
@@ -119,7 +134,7 @@ object OpenFileUtils {
 
     }
 
-    private fun openOther(context: FragmentActivity, downUri: String,filePrivate: String="") {
+    fun openOther(context: FragmentActivity, downUri: String, filePrivate: String = "") {
         var filePrivater = if (filePrivate.isBlank()) {
             context.packageName + ".fileprovider"
         } else {
@@ -130,13 +145,13 @@ object OpenFileUtils {
             try {
                 val file = File(downUri)
                 val intent = Intent(Intent.ACTION_VIEW)
-                val fileUri = FileProvider.getUriForFile(context,filePrivater , file)
+                val fileUri = FileProvider.getUriForFile(context, filePrivater, file)
                 intent.setDataAndType(fileUri, getFileIntentType(file.extension))
                 intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY)
                 context.startActivity(intent)
             } catch (e: Exception) {
                 LogUtils.e("openOther", "error:${e.message}")
-                Toaster.show("未安装可打开此文件的应用")
+                Toaster.show("未找到可打开此文件的应用")
             }
             return
         }
@@ -152,7 +167,7 @@ object OpenFileUtils {
 
     fun getFileIntentType(filePath: String?): String {
         if (filePath.isNullOrEmpty()) return ""
-        return when (filePath) {
+        return when (filePath.lowercase()) {
             "wps" -> "application/vnd.ms-works"
             "pdf", "PDF" -> "application/pdf"
             "doc" -> "application/msword"

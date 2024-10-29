@@ -1,15 +1,18 @@
 package com.example.openfilelibrary
 
+import android.app.Dialog
 import android.content.Intent
 import android.net.Uri
 import androidx.core.net.toUri
 import androidx.fragment.app.FragmentActivity
 import com.blankj.utilcode.util.FileIOUtils
+import com.blankj.utilcode.util.ThreadUtils
 import com.example.openfilelibrary.base.ICell
 import com.example.openfilelibrary.image.PreImageDialog
 import com.example.openfilelibrary.pdf.PDFPreView
 import com.example.openfilelibrary.tbs.TBSPreView
 import com.example.openfilelibrary.txt.TxtPreView
+import com.example.openfilelibrary.utile.TbsInstance
 import com.example.openfilelibrary.utile.common.DownLoadUtile
 import com.folioreader.Config
 import com.folioreader.FolioReader
@@ -39,9 +42,14 @@ class OpenFileViewModel {
 
     /**
      * 打开腾讯Tbs阅读器
+     * @return true:打开腾讯阅读器 false:tbs没有使用权限,需要购买
      * */
-    fun openTBS(context: FragmentActivity, fileUrl: String, APP_File_Provider: String) {
-        TBSPreView(fileUrl.toUri(), APP_File_Provider).show(context.supportFragmentManager)
+    fun openTBS(context: FragmentActivity, fileUrl: String, APP_File_Provider: String):Boolean {
+        if (TbsInstance.getInstance().initEngine(context) == 0) {
+            TBSPreView(fileUrl.toUri(), APP_File_Provider).show(context.supportFragmentManager)
+            return true
+        }
+        return false
     }
 
     var folioReader: FolioReader? = null
@@ -62,7 +70,7 @@ class OpenFileViewModel {
     }
 
     /**
-     * 打开视频/音频
+     * 打开视频
      * @param videoUrl 视频地址
      * 视频不做存储，直接展示
      * */
@@ -70,6 +78,17 @@ class OpenFileViewModel {
         var uri = Uri.parse(videoUrl);
         var intent = Intent(Intent.ACTION_VIEW);
         intent.setDataAndType(uri, "video/*");
+        context.startActivity(intent);
+//        VideoPreView(videoUrl.toUri()).show(context.supportFragmentManager, null)
+    }
+    /**
+     * 打开音频
+     * @param videoUrl 音频地址
+     * */
+    fun openAudio(context: FragmentActivity, videoUrl: String) {
+        var uri = Uri.parse(videoUrl);
+        var intent = Intent(Intent.ACTION_VIEW);
+        intent.setDataAndType(uri, "audio/*");
         context.startActivity(intent);
 //        VideoPreView(videoUrl.toUri()).show(context.supportFragmentManager, null)
     }

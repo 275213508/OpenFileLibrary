@@ -101,14 +101,12 @@ opens.openfile = [
         dep.mmkv,
         dep.qmui,
         dep.filedownloader,
-        //AOP 插件库
         (dep.utilcodex),
         (dep.glide),
         (dep.Toaster),
         (dep.GsonFactory),
         (dep.pdfViewer),
         (dep.folioreader),
-//        (dep.GSYVideoPlayer),
 ]
 
 ext {
