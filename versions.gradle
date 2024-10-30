@@ -106,7 +106,6 @@ opens.openfile = [
         (dep.Toaster),
         (dep.GsonFactory),
         (dep.pdfViewer),
-        (dep.folioreader),
 ]
 
 ext {

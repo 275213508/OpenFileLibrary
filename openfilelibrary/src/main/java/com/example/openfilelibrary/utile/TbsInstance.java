@@ -1,5 +1,7 @@
 package com.example.openfilelibrary.utile;
 
+import static com.example.openfilelibrary.utile.common.CommonFunKt.getOpenFilePrivate;
+
 import android.content.Context;
 
 import com.blankj.utilcode.util.SPUtils;
@@ -13,6 +15,7 @@ import com.wx.android.common.util.LogUtils;
 /**
  * 集成腾讯文件浏览服务
  * https://cloud.tencent.com/document/product/1645/83900
+ *
  * @author CodeK 2023/10/16
  */
 public class TbsInstance {
@@ -29,9 +32,11 @@ public class TbsInstance {
         }
         return instance;
     }
+
     public int initEngine(Context applicationContext) {
+        String key = getOpenFilePrivate(applicationContext);
         //设置licenseKey
-        TbsFileInterfaceImpl.setLicenseKey("nGQic8OPFLleGnz7gW7Rpesab5bmjb2mzxeb9mqwC0t2W6YMn9tiOeTQq2dX83i7");
+        TbsFileInterfaceImpl.setLicenseKey(key);
 
         int ret = -1;
 
@@ -49,22 +54,23 @@ public class TbsInstance {
             //设置licenseKey
             //102419,102420,102421,102422
             //sanhu 环境下的licenseKey
-            TbsFileInterfaceImpl.setLicenseKey("nGQic8OPFLleGnz7gW7Rpesab5bmjb2mzxeb9mqwC0t2W6YMn9tiOeTQq2dX83i7");
-            ITbsReaderCallback callback=new ITbsReaderCallback() {
+            String key = getOpenFilePrivate(applicationContext);
+            TbsFileInterfaceImpl.setLicenseKey(key);
+            ITbsReaderCallback callback = new ITbsReaderCallback() {
                 @Override
                 public void onCallBackAction(Integer actionType, Object args, Object result) {
                     LogUtils.e("actionType=" + actionType + "，args=" + args + "，result=" + result);
                     // ITbsReader.OPEN_FILEREADER_ASYNC_LOAD_READER_ENTRY_CALLBACK 的值为 7002，不是错误码
-                    if (ITbsReader.OPEN_FILEREADER_ASYNC_LOAD_READER_ENTRY_CALLBACK==actionType){
-                        int ret = (int)args; // 错误码为actionType == 7002时 args的值
+                    if (ITbsReader.OPEN_FILEREADER_ASYNC_LOAD_READER_ENTRY_CALLBACK == actionType) {
+                        int ret = (int) args; // 错误码为actionType == 7002时 args的值
                         if (ret == 0) {
                             // 初始化成功
                             LogUtils.e("腾讯TBS初始化成功");
-                            SPUtils.getInstance().put(TBS,1);
+                            SPUtils.getInstance().put(TBS, 1);
                         } else {
                             // 初始化失败
                             LogUtils.e("腾讯TBS初始化失败");
-                            SPUtils.getInstance().put(TBS,0);
+                            SPUtils.getInstance().put(TBS, 0);
                         }
 
                     }
@@ -78,5 +84,6 @@ public class TbsInstance {
             e.printStackTrace();
         }
     }
+
     public static final String TBS = "TBS";
 }

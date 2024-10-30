@@ -1,12 +1,15 @@
 package com.example.openfilelibrary
 
-import android.app.Dialog
 import android.content.Intent
 import android.net.Uri
+import android.util.Patterns
+import android.webkit.URLUtil
+import androidx.core.content.FileProvider
 import androidx.core.net.toUri
 import androidx.fragment.app.FragmentActivity
 import com.blankj.utilcode.util.FileIOUtils
-import com.blankj.utilcode.util.ThreadUtils
+import com.blankj.utilcode.util.LogUtils
+import com.blankj.utilcode.util.SPUtils
 import com.example.openfilelibrary.base.ICell
 import com.example.openfilelibrary.image.PreImageDialog
 import com.example.openfilelibrary.pdf.PDFPreView
@@ -14,9 +17,12 @@ import com.example.openfilelibrary.tbs.TBSPreView
 import com.example.openfilelibrary.txt.TxtPreView
 import com.example.openfilelibrary.utile.TbsInstance
 import com.example.openfilelibrary.utile.common.DownLoadUtile
+import com.example.openfilelibrary.utile.common.config
 import com.folioreader.Config
 import com.folioreader.FolioReader
 import com.folioreader.util.AppUtil
+import com.hjq.toast.Toaster
+import com.lxj.xpopup.XPopup
 import java.io.File
 
 
@@ -45,8 +51,9 @@ class OpenFileViewModel {
      * @return true:打开腾讯阅读器 false:tbs没有使用权限,需要购买
      * */
     fun openTBS(context: FragmentActivity, fileUrl: String, APP_File_Provider: String):Boolean {
+        var filePrivater = getfilePrivate(context)
         if (TbsInstance.getInstance().initEngine(context) == 0) {
-            TBSPreView(fileUrl.toUri(), APP_File_Provider).show(context.supportFragmentManager)
+            TBSPreView(fileUrl.toUri(), filePrivater).show(context.supportFragmentManager)
             return true
         }
         return false
@@ -127,4 +134,46 @@ class OpenFileViewModel {
     fun openImage(context: FragmentActivity, downUri: String) {
         PreImageDialog(context, mutableListOf(downUri), 1).show()
     }
+
+    fun openOther(context: FragmentActivity, downUri: String, filePrivate: String = "") {
+        var filePrivater = getfilePrivate(context)
+        val isValid = URLUtil.isValidUrl(downUri) && Patterns.WEB_URL.matcher(downUri).matches()
+        if (!isValid) {
+            try {
+                val file = File(downUri)
+                val intent = Intent(Intent.ACTION_VIEW)
+                val fileUri = FileProvider.getUriForFile(context, filePrivater, file)
+                intent.setDataAndType(fileUri, OpenFileUtils.getFileIntentType(file.extension))
+                intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY)
+                context.startActivity(intent)
+            } catch (e: Exception) {
+                LogUtils.e("openOther", "error:${e.message}")
+                Toaster.show("未找到可打开此文件的应用")
+            }
+            return
+        }
+        XPopup.Builder(context).asConfirm(
+            "提示", "即将跳转浏览器\n下载查看文件"
+        ) {
+            val url = downUri
+            val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
+            context.startActivity(intent)
+        }
+            .show()
+    }
+
+
+}
+/**
+ * 获取文件的FileProvider
+ * */
+private fun getfilePrivate(context: FragmentActivity): String {
+    var filePrivater = ""
+    if (filePrivater.isBlank()) {
+        filePrivater = SPUtils.getInstance().getString(config.mFilePrivateKey, "")
+        if (filePrivater.isNullOrBlank()) {
+            filePrivater = context.packageName + ".fileprovider"
+        }
+    }
+    return filePrivater
 }

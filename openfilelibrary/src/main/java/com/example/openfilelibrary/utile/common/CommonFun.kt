@@ -1,7 +1,9 @@
 package com.example.openfilelibrary.utile.common
 
+import android.content.Context
 import android.view.View
 import com.blankj.utilcode.util.ClickUtils
+import com.blankj.utilcode.util.SPUtils
 
 /**
  * @author zyju
@@ -47,4 +49,18 @@ fun Long.toTimeString(): String {
 }
 fun Int.toTimeString(): String {
    return this.toLong().toTimeString()
+}
+
+/**
+ * 获取文件的FileProvider
+ * */
+fun getOpenFilePrivate(context: Context): String {
+    var filePrivater = ""
+    if (filePrivater.isBlank()) {
+        filePrivater = SPUtils.getInstance().getString(config.mFilePrivateKey, "")
+        if (filePrivater.isNullOrBlank()) {
+            filePrivater = context.packageName + ".fileprovider"
+        }
+    }
+    return filePrivater
 }

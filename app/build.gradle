@@ -19,12 +19,18 @@ android {
 
     buildTypes {
         release {
-            minifyEnabled true
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-        }
-        debug {
+            manifestPlaceholders = [APP_NAME     : "飞行导航仪",
+                                    FILE_PROVIDER: "com.efb.views.liaoning.fileprovider",
+                                    qqappid      : "1234"]
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            buildConfigField "String", "APP_File_Provider", '"com.efb.views.liaoning.fileprovider"'
+        }
+        debug{
+            manifestPlaceholders = [APP_NAME     : "飞行导航仪",
+                                    FILE_PROVIDER: "com.efb.views.liaoning.fileprovider",
+                                    qqappid      : "1234"]
+            buildConfigField "String", "APP_File_Provider", '"com.efb.views.liaoning.fileprovider"'
         }
     }
 

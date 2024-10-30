@@ -14,6 +14,8 @@ import com.example.openfilelibrary.utile.TbsInstance
 import com.example.openfilelibrary.utile.common.FileType
 import com.example.openfilelibrary.utile.common.ImageType
 import com.example.openfilelibrary.utile.common.ZipType
+import com.example.openfilelibrary.utile.common.config.mFilePrivateKey
+import com.example.openfilelibrary.utile.common.config.tbsLicenseKey
 import com.example.openfilelibrary.utile.common.getSuffixName1
 import com.hjq.toast.Toaster
 import com.lxj.xpopup.XPopup
@@ -27,6 +29,14 @@ import java.io.File
  */
 object OpenFileUtils {
     private var openFileViewModel = OpenFileViewModel()
+
+    fun setFilePrivate(filePrivate: String) {
+        SPUtils.getInstance().put(mFilePrivateKey, filePrivate)
+    }
+
+    fun setTFBLicenseKey(tbsLicenseKeyed: String) {
+        SPUtils.getInstance().put(tbsLicenseKey, tbsLicenseKeyed)
+    }
 
     /**
      * @param fileUrl 文件下载地址
@@ -74,7 +84,7 @@ object OpenFileUtils {
                 FileType.CHM.name,
                 FileType.RTF.name -> {
                     if (!openFileViewModel.openTBS(context, downUri, filePrivate)) {
-                        openOther(context, downUri, filePrivate)
+                        openFileViewModel.openOther(context, downUri, filePrivate)
                     }
                 }
 
@@ -123,7 +133,7 @@ object OpenFileUtils {
                     if (TbsInstance.getInstance().initEngine(context) == 0 && tbsCanOpen) {
                         openFileViewModel.openTBS(context, downUri, filePrivate)
                     } else {
-                        openOther(context, downUri, filePrivate)
+                        openFileViewModel.openOther(context, downUri, filePrivate)
                     }
                 }
             }
@@ -135,34 +145,7 @@ object OpenFileUtils {
     }
 
     fun openOther(context: FragmentActivity, downUri: String, filePrivate: String = "") {
-        var filePrivater = if (filePrivate.isBlank()) {
-            context.packageName + ".fileprovider"
-        } else {
-            filePrivate
-        }
-        val isValid = URLUtil.isValidUrl(downUri) && Patterns.WEB_URL.matcher(downUri).matches()
-        if (!isValid) {
-            try {
-                val file = File(downUri)
-                val intent = Intent(Intent.ACTION_VIEW)
-                val fileUri = FileProvider.getUriForFile(context, filePrivater, file)
-                intent.setDataAndType(fileUri, getFileIntentType(file.extension))
-                intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY)
-                context.startActivity(intent)
-            } catch (e: Exception) {
-                LogUtils.e("openOther", "error:${e.message}")
-                Toaster.show("未找到可打开此文件的应用")
-            }
-            return
-        }
-        XPopup.Builder(context).asConfirm(
-            "提示", "即将跳转浏览器\n下载查看文件"
-        ) {
-            val url = downUri
-            val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
-            context.startActivity(intent)
-        }
-            .show()
+       openFileViewModel.openOther(context, downUri,filePrivate)
     }
 
     fun getFileIntentType(filePath: String?): String {

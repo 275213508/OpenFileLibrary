@@ -20,9 +20,21 @@
     dependencies {
         implementation files('libs/openfilelibrary-release.aar')
         implementation(openfilelibs.openfile)
+        implementation(deps.folioreader) {
+                 exclude group: 'com.fasterxml.jackson.core', module: 'jackson-core'
+                 exclude group: 'com.fasterxml.jackson.core', module: 'jackson-annotations'
+                 exclude group: 'com.fasterxml.jackson.core', module: 'jackson-databind'
+        }
     }
+ ```   
 
-```
+ ```   
+#### 初始化
+    //初始化:
+    setTFBLicenseKey(key) //使用腾讯tfb播放需要,
+    setFilePrivate(private) //使用第三方播放需要
+
+ ```   
 
 #### 使用混淆
 

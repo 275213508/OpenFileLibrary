@@ -6,7 +6,9 @@ import com.blankj.utilcode.util.FileUtils
  * @author zyju
  * @date 2024/9/5 17:09
  */
-class config {
+object config {
+    var mFilePrivateKey = "openFileLibFilePrivate"
+    var tbsLicenseKey = "tbs_license_key"
     interface filePath {
         companion object {
 //            @JvmField
