@@ -18,13 +18,21 @@
     model.build.gradle:根级添加 
     apply from: '../versions.gradle'
     dependencies {
-        implementation files('libs/openfilelibrary-release.aar')
-        implementation(openfilelibs.openfile)
-        implementation(deps.folioreader) {
-                 exclude group: 'com.fasterxml.jackson.core', module: 'jackson-core'
-                 exclude group: 'com.fasterxml.jackson.core', module: 'jackson-annotations'
-                 exclude group: 'com.fasterxml.jackson.core', module: 'jackson-databind'
-        }
+      implementation deps.common//'com.wx.android.common:common:1.0.1'
+      implementation deps.retrofit2//'com.squareup.retrofit2:retrofit:2.9.0'
+      implementation(deps.okhttp3)
+      implementation(deps.gson)//"com.google.code.gson:gson:2.10.1"
+      //[通用弹窗 https://github.com/li-xiaojun/XPopup]
+      implementation(deps.photoview)//"com.bm.photoview:library:1.4.1")
+      implementation(deps.XPopup)//'com.github.li-xiaojun:XPopup:2.10.0')
+      implementation files('libs/TbsFileSdk_base_armeabi__release_1.0.5.6000022.20230906113337.aar')
+      implementation(openfilelibs.openfile)
+      implementation(deps.folioreader){
+        exclude group: 'com.fasterxml.jackson.core', module: 'jackson-core'
+        exclude group: 'com.fasterxml.jackson.core', module: 'jackson-annotations'
+        exclude group: 'com.fasterxml.jackson.core', module: 'jackson-databind'
+      }
+      implementation files('libs/openfilelibrary-release.aar')
     }
  ```   
 
