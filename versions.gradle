@@ -112,6 +112,7 @@ opens.openfile = [
         dep.mmkv,
         dep.qmui,
         dep.filedownloader,
+        dep.XPopup,
         (dep.utilcodex),
         (dep.glide),
         (dep.Toaster),

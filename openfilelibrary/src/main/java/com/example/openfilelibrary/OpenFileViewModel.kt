@@ -51,7 +51,7 @@ class OpenFileViewModel {
      * @return true:打开腾讯阅读器 false:tbs没有使用权限,需要购买
      * */
     fun openTBS(context: FragmentActivity, fileUrl: String, APP_File_Provider: String):Boolean {
-        var filePrivater = getfilePrivate(context)
+        var filePrivater = getfilePrivate(context,APP_File_Provider)
         if (TbsInstance.getInstance().initEngine(context) == 0) {
             TBSPreView(fileUrl.toUri(), filePrivater).show(context.supportFragmentManager)
             return true
@@ -136,7 +136,7 @@ class OpenFileViewModel {
     }
 
     fun openOther(context: FragmentActivity, downUri: String, filePrivate: String = "") {
-        var filePrivater = getfilePrivate(context)
+        var filePrivater = getfilePrivate(context,filePrivate)
         val isValid = URLUtil.isValidUrl(downUri) && Patterns.WEB_URL.matcher(downUri).matches()
         if (!isValid) {
             try {
@@ -167,8 +167,8 @@ class OpenFileViewModel {
 /**
  * 获取文件的FileProvider
  * */
-private fun getfilePrivate(context: FragmentActivity): String {
-    var filePrivater = ""
+private fun getfilePrivate(context: FragmentActivity,APP_File_Provider: String): String {
+    var filePrivater = APP_File_Provider
     if (filePrivater.isBlank()) {
         filePrivater = SPUtils.getInstance().getString(config.mFilePrivateKey, "")
         if (filePrivater.isNullOrBlank()) {

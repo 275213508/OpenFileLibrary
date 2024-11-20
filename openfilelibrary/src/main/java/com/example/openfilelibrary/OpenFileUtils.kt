@@ -44,6 +44,12 @@ object OpenFileUtils {
     fun openFile(context: FragmentActivity, fileName: String, filePrivate: String = "") {
         openFile(context, context.filesDir.path, fileName, null, filePrivate)
     }
+    /**
+     * @param fileUrl 文件下载地址
+     * */
+    fun openFile(context: FragmentActivity, fileName: String) {
+        openFile(context, context.filesDir.path, fileName, null)
+    }
 
     /**
      * @param fileUrl 文件下载地址
