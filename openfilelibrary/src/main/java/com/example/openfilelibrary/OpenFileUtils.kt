@@ -145,7 +145,7 @@ object OpenFileUtils {
             }
         } catch (e: Exception) {
             e.printStackTrace()
-            Toaster.show("暂不支持此文件类型")
+            Toaster.show("打开文件出错,请检查文件是否正常")
         }
 
     }
