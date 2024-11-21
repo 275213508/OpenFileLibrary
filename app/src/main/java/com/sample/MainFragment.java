@@ -17,10 +17,8 @@ import androidx.fragment.app.Fragment;
 
 import com.example.openfilelibrary.OpenFileUtils;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.function.Predicate;
 
 public class MainFragment extends Fragment {
 
