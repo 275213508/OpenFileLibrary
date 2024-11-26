@@ -91,12 +91,16 @@ object OpenFileUtils {
                 FileType.RTF.name -> {
                     if (!openFileViewModel.openTBS(context, downUri, filePrivate)) {
                         openFileViewModel.openOther(context, downUri, filePrivate)
+                    } else {
+                        openFileViewModel.openOther(context, downUri, filePrivate)
                     }
                 }
 
                 FileType.PDF.name -> {
                     if (!openFileViewModel.openTBS(context, downUri, filePrivate)) {
                         savePath?.let { openFileViewModel.openPDF(context, it, downUri, fileName) }
+                    } else {
+                        openFileViewModel.openOther(context, downUri, filePrivate)
                     }
                 }
 
