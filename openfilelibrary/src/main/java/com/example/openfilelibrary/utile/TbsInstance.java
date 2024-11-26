@@ -6,6 +6,7 @@ import android.content.Context;
 
 import com.blankj.utilcode.util.SPUtils;
 import com.example.openfilelibrary.utile.common.CommonFunKt;
+import com.example.openfilelibrary.utile.common.config;
 import com.tencent.tbs.reader.ITbsReader;
 import com.tencent.tbs.reader.ITbsReaderCallback;
 import com.tencent.tbs.reader.TbsFileInterfaceImpl;
@@ -34,7 +35,7 @@ public class TbsInstance {
     }
 
     public int initEngine(Context applicationContext) {
-        String key = getOpenFilePrivate(applicationContext);
+        String key =SPUtils.getInstance().getString(config.INSTANCE.getTbsLicenseKey());// getOpenFilePrivate(applicationContext);
         //设置licenseKey
         TbsFileInterfaceImpl.setLicenseKey(key);
 

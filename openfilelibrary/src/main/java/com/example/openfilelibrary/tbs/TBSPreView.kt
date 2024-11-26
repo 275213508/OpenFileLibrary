@@ -60,7 +60,7 @@ internal class TBSPreView(var FileLocalUri: Uri, var APP_File_Provider: String) 
         SingleClick(bind.imgCancel) {
             dismiss()
         }
-        LogUtils.i("打开PDF: $FileLocalUri")
+        LogUtils.i("打开Tbs: $FileLocalUri")
         openTbsFile(requireActivity(), FileLocalUri.path!!, getSuffixName1(FileLocalUri.path!!))
     }
 
@@ -113,6 +113,7 @@ internal class TBSPreView(var FileLocalUri: Uri, var APP_File_Provider: String) 
                     context, param, callback, bind.tbsView
                 )
             })
+
         } else {
             //腾讯TBS不支持此格式
             Toaster.show("不支持的文档格式")

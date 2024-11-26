@@ -18,11 +18,13 @@ import com.example.openfilelibrary.txt.TxtPreView
 import com.example.openfilelibrary.utile.TbsInstance
 import com.example.openfilelibrary.utile.common.DownLoadUtile
 import com.example.openfilelibrary.utile.common.config
+import com.example.openfilelibrary.utile.common.getSuffixName1
 import com.folioreader.Config
 import com.folioreader.FolioReader
 import com.folioreader.util.AppUtil
 import com.hjq.toast.Toaster
 import com.lxj.xpopup.XPopup
+import com.tencent.tbs.reader.TbsFileInterfaceImpl
 import java.io.File
 
 
@@ -52,10 +54,14 @@ class OpenFileViewModel {
      * */
     fun openTBS(context: FragmentActivity, fileUrl: String, APP_File_Provider: String): Boolean {
         var filePrivater = getfilePrivate(context, APP_File_Provider)
-        if (TbsInstance.getInstance().initEngine(context) == 0) {
+        var tbsCanOpen = TbsFileInterfaceImpl.canOpenFileExt(getSuffixName1(fileUrl))
+        LogUtils.e("openTBS", "canOpenFileExt开始初始化:$tbsCanOpen/${getSuffixName1(fileUrl)}")
+        if (TbsInstance.getInstance().initEngine(context) == 0&&tbsCanOpen) {
+            LogUtils.e("openTBS", "canOpenFileExt成功:$tbsCanOpen/${getSuffixName1(fileUrl)}")
             TBSPreView(fileUrl.toUri(), filePrivater).show(context.supportFragmentManager)
             return true
         }
+        LogUtils.e("openTBS", "canOpenFileExt初始化失败:$tbsCanOpen/${getSuffixName1(fileUrl)}")
         return false
     }
 
@@ -152,7 +158,7 @@ class OpenFileViewModel {
                 intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY)
                 context.startActivity(intent)
             } catch (e: Exception) {
-                LogUtils.e("openOther", "error:${e.message}")
+                LogUtils.e("openOther", "error:${e.message}\n $filePrivate")
                 Toaster.show("未找到可打开此文件的应用")
             }
             return

@@ -91,16 +91,12 @@ object OpenFileUtils {
                 FileType.RTF.name -> {
                     if (!openFileViewModel.openTBS(context, downUri, filePrivate)) {
                         openFileViewModel.openOther(context, downUri, filePrivate)
-                    } else {
-                        openFileViewModel.openOther(context, downUri, filePrivate)
                     }
                 }
 
                 FileType.PDF.name -> {
                     if (!openFileViewModel.openTBS(context, downUri, filePrivate)) {
                         savePath?.let { openFileViewModel.openPDF(context, it, downUri, fileName) }
-                    } else {
-                        openFileViewModel.openOther(context, downUri, filePrivate)
                     }
                 }
 
@@ -139,10 +135,7 @@ object OpenFileUtils {
 //                ImageType.AVI.name->{}
 //                ImageType.FLV.name->{}
                 else -> {
-                    var tbsCanOpen = TbsFileInterfaceImpl.canOpenFileExt(getSuffixName1(downUri))
-                    if (TbsInstance.getInstance().initEngine(context) == 0 && tbsCanOpen) {
-                        openFileViewModel.openTBS(context, downUri, filePrivate)
-                    } else {
+                    if (!openFileViewModel.openTBS(context, downUri, filePrivate)) {
                         openFileViewModel.openOther(context, downUri, filePrivate)
                     }
                 }

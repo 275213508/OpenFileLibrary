@@ -4,6 +4,7 @@ import android.content.Context
 import android.view.View
 import com.blankj.utilcode.util.ClickUtils
 import com.blankj.utilcode.util.SPUtils
+import com.example.openfilelibrary.utile.common.config.mFilePrivateKey
 
 /**
  * @author zyju
@@ -57,7 +58,7 @@ fun Int.toTimeString(): String {
 fun getOpenFilePrivate(context: Context): String {
     var filePrivater = ""
     if (filePrivater.isBlank()) {
-        filePrivater = SPUtils.getInstance().getString(config.mFilePrivateKey, "")
+        filePrivater = SPUtils.getInstance().getString(mFilePrivateKey, "")
         if (filePrivater.isNullOrBlank()) {
             filePrivater = context.packageName + ".fileprovider"
         }
