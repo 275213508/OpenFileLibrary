@@ -1,26 +1,17 @@
 package com.example.openfilelibrary
 
-import android.content.Intent
-import android.net.Uri
-import android.os.Build
-import android.text.TextUtils
-import android.util.Patterns
-import android.webkit.URLUtil
-import androidx.core.content.FileProvider
 import androidx.fragment.app.FragmentActivity
 import com.blankj.utilcode.util.LogUtils
 import com.blankj.utilcode.util.SPUtils
-import com.example.openfilelibrary.utile.TbsInstance
 import com.example.openfilelibrary.utile.common.FileType
 import com.example.openfilelibrary.utile.common.ImageType
 import com.example.openfilelibrary.utile.common.ZipType
+import com.example.openfilelibrary.utile.common.config.isSanHuApp
 import com.example.openfilelibrary.utile.common.config.mFilePrivateKey
 import com.example.openfilelibrary.utile.common.config.tbsLicenseKey
 import com.example.openfilelibrary.utile.common.getSuffixName1
 import com.hjq.toast.Toaster
-import com.lxj.xpopup.XPopup
-import com.tencent.tbs.reader.TbsFileInterfaceImpl
-import java.io.File
+import com.wx.android.common.util.SharedPreferencesUtils
 
 
 /**
@@ -37,6 +28,9 @@ object OpenFileUtils {
     fun setTFBLicenseKey(tbsLicenseKeyed: String) {
         SPUtils.getInstance().put(tbsLicenseKey, tbsLicenseKeyed)
     }
+    fun setIsSanHuApp(isSanHu : Boolean) {
+        SPUtils.getInstance().put(isSanHuApp, isSanHu)
+    }
 
     /**
      * @param fileUrl 文件下载地址
@@ -44,6 +38,7 @@ object OpenFileUtils {
     fun openFile(context: FragmentActivity, fileName: String, filePrivate: String = "") {
         openFile(context, context.filesDir.path, fileName, null, filePrivate)
     }
+
     /**
      * @param fileUrl 文件下载地址
      * */
@@ -67,9 +62,9 @@ object OpenFileUtils {
     fun openFile(context: FragmentActivity, savePath: String?, downUri: String, fileName: String?, filePrivate: String = "") {
         try {
             if (!Toaster.isInit()) {
+                SharedPreferencesUtils.init(context.application)
                 Toaster.init(context.application)
             }
-            LogUtils.e("OpenFileUtils", "downUri:$downUri fileName:$fileName")
             var suffix = getSuffixName1(downUri)
             if (!fileName.isNullOrBlank()) {
                 suffix = getSuffixName1(fileName)
@@ -89,13 +84,13 @@ object OpenFileUtils {
                 FileType.DWG.name,
                 FileType.CHM.name,
                 FileType.RTF.name -> {
-                    if (!openFileViewModel.openTBS(context, downUri, filePrivate)) {
+                    if (!openFileViewModel.openTBS(context,downUri,fileName, filePrivate)) {
                         openFileViewModel.openOther(context, downUri, filePrivate)
                     }
                 }
 
                 FileType.PDF.name -> {
-                    if (!openFileViewModel.openTBS(context, downUri, filePrivate)) {
+                    if (!openFileViewModel.openTBS(context, downUri,fileName, filePrivate)) {
                         savePath?.let { openFileViewModel.openPDF(context, it, downUri, fileName) }
                     }
                 }
@@ -135,7 +130,7 @@ object OpenFileUtils {
 //                ImageType.AVI.name->{}
 //                ImageType.FLV.name->{}
                 else -> {
-                    if (!openFileViewModel.openTBS(context, downUri, filePrivate)) {
+                    if (!openFileViewModel.openTBS(context, downUri,fileName, filePrivate)) {
                         openFileViewModel.openOther(context, downUri, filePrivate)
                     }
                 }
@@ -148,7 +143,7 @@ object OpenFileUtils {
     }
 
     fun openOther(context: FragmentActivity, downUri: String, filePrivate: String = "") {
-       openFileViewModel.openOther(context, downUri,filePrivate)
+        openFileViewModel.openOther(context, downUri, filePrivate)
     }
 
     fun getFileIntentType(filePath: String?): String {

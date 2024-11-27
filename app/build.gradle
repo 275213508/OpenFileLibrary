@@ -6,6 +6,7 @@ android {
     compileSdk 29
 
     defaultConfig {
+//        applicationId "com.efb.views.sanhu"
         applicationId "com.sample"
         minSdk 24
         targetSdk 29
@@ -20,17 +21,19 @@ android {
     buildTypes {
         release {
             manifestPlaceholders = [APP_NAME     : "飞行导航仪",
-                                    FILE_PROVIDER: "com.efb.views.liaoning.fileprovider",
+//                                    FILE_PROVIDER: "com.efb.views.sanhu.fileprovider",
+                                    FILE_PROVIDER: "com.simple.fileprovider",
                                     qqappid      : "1234"]
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-            buildConfigField "String", "APP_File_Provider", '"com.efb.views.liaoning.fileprovider"'
+            buildConfigField "String", "APP_File_Provider", '"com.simple.fileprovider"'
         }
         debug{
             manifestPlaceholders = [APP_NAME     : "飞行导航仪",
-                                    FILE_PROVIDER: "com.efb.views.liaoning.fileprovider",
+//                                    FILE_PROVIDER: "com.efb.views.sanhu.fileprovider",
+                                    FILE_PROVIDER: "com.simple.fileprovider",
                                     qqappid      : "1234"]
-            buildConfigField "String", "APP_File_Provider", '"com.efb.views.liaoning.fileprovider"'
+            buildConfigField "String", "APP_File_Provider", '"com.simple.fileprovider"'
         }
     }
 

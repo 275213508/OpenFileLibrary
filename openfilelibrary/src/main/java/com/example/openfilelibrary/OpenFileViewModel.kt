@@ -2,6 +2,7 @@ package com.example.openfilelibrary
 
 import android.content.Intent
 import android.net.Uri
+import android.util.Log
 import android.util.Patterns
 import android.webkit.URLUtil
 import androidx.core.content.FileProvider
@@ -24,7 +25,7 @@ import com.folioreader.FolioReader
 import com.folioreader.util.AppUtil
 import com.hjq.toast.Toaster
 import com.lxj.xpopup.XPopup
-import com.tencent.tbs.reader.TbsFileInterfaceImpl
+import com.wx.android.common.util.SharedPreferencesUtils
 import java.io.File
 
 
@@ -52,16 +53,16 @@ class OpenFileViewModel {
      * 打开腾讯Tbs阅读器
      * @return true:打开腾讯阅读器 false:tbs没有使用权限,需要购买
      * */
-    fun openTBS(context: FragmentActivity, fileUrl: String, APP_File_Provider: String): Boolean {
+    fun openTBS(context: FragmentActivity, fileUrl: String,fileName:String?, APP_File_Provider: String): Boolean {
         var filePrivater = getfilePrivate(context, APP_File_Provider)
-        var tbsCanOpen = TbsFileInterfaceImpl.canOpenFileExt(getSuffixName1(fileUrl))
-        LogUtils.e("openTBS", "canOpenFileExt开始初始化:$tbsCanOpen/${getSuffixName1(fileUrl)}")
-        if (TbsInstance.getInstance().initEngine(context) == 0&&tbsCanOpen) {
-            LogUtils.e("openTBS", "canOpenFileExt成功:$tbsCanOpen/${getSuffixName1(fileUrl)}")
+        var isSanHu = SPUtils.getInstance().getBoolean(config.isSanHuApp)
+        val suffix = if (fileName.isNullOrBlank()) getSuffixName1(fileUrl) else fileName
+        var isinit =  SharedPreferencesUtils.getInt(TbsInstance.TBS)
+        Log.i("TbsPreViewCallback :","isSanHu:$isSanHu/$isinit ")
+        if (isSanHu&&isinit==1) {
             TBSPreView(fileUrl.toUri(), filePrivater).show(context.supportFragmentManager)
             return true
         }
-        LogUtils.e("openTBS", "canOpenFileExt初始化失败:$tbsCanOpen/${getSuffixName1(fileUrl)}")
         return false
     }
 

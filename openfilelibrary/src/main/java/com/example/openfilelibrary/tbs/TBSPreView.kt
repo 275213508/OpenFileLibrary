@@ -1,15 +1,13 @@
 package com.example.openfilelibrary.tbs
 
 import android.content.Intent
-import android.database.ContentObserver
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
+import android.util.Log
+import android.view.View
 import androidx.core.content.FileProvider
 import androidx.fragment.app.FragmentActivity
-import androidx.fragment.app.FragmentManager
 import com.blankj.utilcode.util.FileUtils
 import com.blankj.utilcode.util.LogUtils
 import com.blankj.utilcode.util.SPUtils
@@ -35,9 +33,7 @@ import java.io.File
  */
 internal class TBSPreView(var FileLocalUri: Uri, var APP_File_Provider: String) : BaseBottomSheetFrag() {
 
-    private var TAG = "TbsPreView"
     private lateinit var bind: TbsLayoutBinding
-    private var filePath = ""
 
     override fun getLayoutHeight(): Int {
         return ScreenUtils.getScreenHeight(mContext!!)
@@ -57,38 +53,26 @@ internal class TBSPreView(var FileLocalUri: Uri, var APP_File_Provider: String) 
 
     override fun initView() {
         bind = TbsLayoutBinding.bind(rootView!!)
+        bind.tvTitle.text =  FileUtils.getFileName(FileLocalUri.path)
         SingleClick(bind.imgCancel) {
             dismiss()
         }
-        LogUtils.i("打开Tbs: $FileLocalUri")
         openTbsFile(requireActivity(), FileLocalUri.path!!, getSuffixName1(FileLocalUri.path!!))
     }
 
-    override fun show(manager: FragmentManager) {
-        super.show(manager)
-    }
-
     private fun openTbsFile(context: FragmentActivity, filePath: String, fileExt: String) {
+        var code = SPUtils.getInstance().getInt(TbsInstance.TBS)//TbsInstance.getInstance().initEngine(context)
         //判断是否初始化成功
-        if (SPUtils.getInstance().getInt(TbsInstance.TBS, 0) == 0) {
-            if (TbsInstance.getInstance().initEngine(context) != 0) {
-                //再次失败跳转第三方
-                startIntent(context, fileExt, filePath)
-                SPUtils.getInstance().put(TbsInstance.TBS, 0)
-                return
-            } else {
-                SPUtils.getInstance().put(TbsInstance.TBS, 1)
-            }
-        }
+        Log.i("TbsPreViewCallback :","TbsPreViewCallback :" + (code==1))
         //3、设置回调
-        val callback: ITbsReaderCallback = object : ITbsReaderCallback {
-            override fun onCallBackAction(actionType: Int, args: Any?, result: Any?) {
-                if (ITbsReader.OPEN_FILEREADER_STATUS_UI_CALLBACK == actionType) {
-                    if (args is Bundle) {
-                        val id = args.getInt("typeId")
-                        if (ITbsReader.TBS_READER_TYPE_STATUS_UI_SHUTDOWN == id) {
-                            context.finish() //关闭fileReader
-                        }
+        val callback: ITbsReaderCallback = ITbsReaderCallback { actionType, args, result ->
+           Log.i("TbsPreViewCallback :", "actionType:$actionType,args:$args,result:$result")
+            if (ITbsReader.OPEN_FILEREADER_STATUS_UI_CALLBACK == actionType) {
+                bind.loadProgress.visibility = View.GONE
+                if (args is Bundle) {
+                    val id = args.getInt("typeId")
+                    if (ITbsReader.TBS_READER_TYPE_STATUS_UI_SHUTDOWN == id) {
+                        context.finish() //关闭fileReader
                     }
                 }
             }
@@ -166,4 +150,9 @@ internal class TBSPreView(var FileLocalUri: Uri, var APP_File_Provider: String) 
         dismiss()
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        //        }
+        TbsFileInterfaceImpl.getInstance().closeFileReader()
+    }
 }

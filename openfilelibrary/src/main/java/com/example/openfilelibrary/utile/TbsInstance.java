@@ -1,16 +1,16 @@
 package com.example.openfilelibrary.utile;
 
-import static com.example.openfilelibrary.utile.common.CommonFunKt.getOpenFilePrivate;
-
 import android.content.Context;
 
 import com.blankj.utilcode.util.SPUtils;
 import com.example.openfilelibrary.utile.common.CommonFunKt;
 import com.example.openfilelibrary.utile.common.config;
+import com.hjq.toast.Toaster;
 import com.tencent.tbs.reader.ITbsReader;
 import com.tencent.tbs.reader.ITbsReaderCallback;
 import com.tencent.tbs.reader.TbsFileInterfaceImpl;
 import com.wx.android.common.util.LogUtils;
+import com.wx.android.common.util.SharedPreferencesUtils;
 
 
 /**
@@ -55,23 +55,24 @@ public class TbsInstance {
             //设置licenseKey
             //102419,102420,102421,102422
             //sanhu 环境下的licenseKey
-            String key = getOpenFilePrivate(applicationContext);
+            String key = SPUtils.getInstance().getString(config.INSTANCE.getTbsLicenseKey());
             TbsFileInterfaceImpl.setLicenseKey(key);
             ITbsReaderCallback callback = new ITbsReaderCallback() {
                 @Override
                 public void onCallBackAction(Integer actionType, Object args, Object result) {
-                    LogUtils.e("actionType=" + actionType + "，args=" + args + "，result=" + result);
-                    // ITbsReader.OPEN_FILEREADER_ASYNC_LOAD_READER_ENTRY_CALLBACK 的值为 7002，不是错误码
+                   // ITbsReader.OPEN_FILEREADER_ASYNC_LOAD_READER_ENTRY_CALLBACK 的值为 7002，不是错误码
                     if (ITbsReader.OPEN_FILEREADER_ASYNC_LOAD_READER_ENTRY_CALLBACK == actionType) {
                         int ret = (int) args; // 错误码为actionType == 7002时 args的值
                         if (ret == 0) {
                             // 初始化成功
                             LogUtils.e("腾讯TBS初始化成功");
-                            SPUtils.getInstance().put(TBS, 1);
+                            SharedPreferencesUtils.init(applicationContext);
+                            SharedPreferencesUtils.put(TBS, 1);
                         } else {
                             // 初始化失败
                             LogUtils.e("腾讯TBS初始化失败");
-                            SPUtils.getInstance().put(TBS, 0);
+                            SharedPreferencesUtils.init(applicationContext);
+                            SharedPreferencesUtils.put(TBS, 0);
                         }
 
                     }

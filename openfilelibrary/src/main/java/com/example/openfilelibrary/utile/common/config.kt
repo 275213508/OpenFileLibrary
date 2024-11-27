@@ -9,6 +9,7 @@ import com.blankj.utilcode.util.FileUtils
 object config {
     var mFilePrivateKey = "openFileLibFilePrivate"
     var tbsLicenseKey = "tbs_license_key"
+    var isSanHuApp = "isSanHuApp"
     interface filePath {
         companion object {
 //            @JvmField

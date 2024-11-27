@@ -39,7 +39,7 @@ public class MainFragment extends Fragment {
             "https://www.baidu.com/img/PCtm_d9c8750bed0b3c7d089fa7d55720d6cf.png",
 //            "https://dj-aers-gaefb.oss-cn-beijing.aliyuncs.com/gaefb_annex/20240925/a0166ee6-8f65-4643-ba33-3cd7a9597c0c.mp4",
             Environment.getExternalStorageDirectory()+ "/efb/flight_data/bf572b8d266307267d6678f72ec86ded.mp4",
-            Environment.getExternalStorageDirectory() + "/efb/flight_data/民航航路图/V5.10_20241003.pdf",
+            Environment.getExternalStorageDirectory() + "/efb/flight_data/民航航路图/V5.11_20241031.pdf",
             Environment.getExternalStorageDirectory() + "/efb/.nomedia/入职申请书.doc",
             Environment.getExternalStorageDirectory() + "/efb/flight_data/text1.txt",
             Environment.getExternalStorageDirectory() + "/efb/测试.jpg",
@@ -59,7 +59,11 @@ public class MainFragment extends Fragment {
         linearLayout.addView(createLabel(""));
 
         OpenFileUtils.INSTANCE.setTFBLicenseKey("nGQic8OPFLleGnz7gW7Rpesab5bmjb2mzxeb9mqwC0t2W6YMn9tiOeTQq2dX83i7");
+//        OpenFileUtils.INSTANCE.setFilePrivate("com.efb.views.sanhu.fileprovider");
         OpenFileUtils.INSTANCE.setFilePrivate("com.sample.fileprovider");
+        OpenFileUtils.INSTANCE.setIsSanHuApp(true);
+        //[腾讯浏览服务]
+        TbsInstance.getInstance().initX5Environment(getContext());
 
     }
 
