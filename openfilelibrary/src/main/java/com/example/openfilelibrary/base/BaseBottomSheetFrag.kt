@@ -6,7 +6,9 @@ import android.graphics.Color
 import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
+import android.widget.FrameLayout
 import androidx.fragment.app.FragmentManager
+import com.blankj.utilcode.util.ScreenUtils
 import com.google.android.material.R
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
@@ -62,6 +64,7 @@ internal abstract class BaseBottomSheetFrag : BottomSheetDialogFragment() {
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         //每次打开都调用该方法 类似于onCreateView 用于返回一个Dialog实例
         dialog = super.onCreateDialog(savedInstanceState) as BottomSheetDialog
+
         //缓存下来的View 当为空时才需要初始化 并缓存
         rootView = View.inflate(mContext, getLayoutResId(), null)
         initView()
@@ -83,11 +86,29 @@ internal abstract class BaseBottomSheetFrag : BottomSheetDialogFragment() {
                 mBehavior?.setPeekHeight(rootView?.height?:100)
                 bottomSheet?.setBackgroundColor(Color.TRANSPARENT)
             }
+            reviewWidth()
         }
 
         return dialog!!
     }
 
+    private fun reviewWidth() {
+        rootView?.postDelayed(Runnable {
+            var wid = (rootView?.width ?: 0)
+           if (wid!=0&&wid< ScreenUtils.getScreenWidth()) {
+                var pa1 = (rootView?.parent as FrameLayout)
+                pa1.layoutParams.width = ScreenUtils.getScreenWidth()
+                pa1.layoutParams = pa1.layoutParams
+            }else{
+               reviewWidth()
+           }
+        }, 30)
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+    }
     abstract fun getLayoutHeight(): Int
 
     abstract fun getLayoutResId(): Int
@@ -112,7 +133,7 @@ internal abstract class BaseBottomSheetFrag : BottomSheetDialogFragment() {
      * 所以不会每次打开都调用[.initView]方法
      * 但是每次都会调用该方法 给子类能够重置View和数据
      */
-    fun resetView() {
+    open fun resetView() {
     }
 
     val isShowing: Boolean
