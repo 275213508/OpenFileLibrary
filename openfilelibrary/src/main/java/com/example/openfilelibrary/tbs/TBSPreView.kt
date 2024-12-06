@@ -101,6 +101,7 @@ internal class TBSPreView(var FileLocalUri: Uri, var APP_File_Provider: String) 
         } else {
             //腾讯TBS不支持此格式
             Toaster.show("不支持的文档格式")
+            dismiss()
         }
     }
 

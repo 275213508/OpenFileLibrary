@@ -74,7 +74,7 @@
 
 
     <!--背景-->
-    <color name="bg">#F4F4F4</color>
+    <color name="openfile_bg">#F4F4F4</color>
     <color name="bg_line">#1a000000</color>
     <color name="bg_bantoum">#44000000</color>
     <color name="bg_bantoumin">#80000000</color>
@@ -88,6 +88,7 @@
     <color name="common_primary_dark_color">@color/black</color>
     <color name="common_window_background_color">#F4F4F4</color>
     <color name="common_text_color">#333333</color>
+    <color name="openfile_text_color">#333333</color>
     <color name="common_text_hint_color">@color/panda</color>
 
     <!-- 按钮按压时的颜色 -->

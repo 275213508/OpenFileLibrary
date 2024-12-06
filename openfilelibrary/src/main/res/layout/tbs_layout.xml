@@ -12,6 +12,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_height="wrap_content"
+        android:textColor="@color/openfile_text_color"
         app:layout_constraintTop_toTopOf="parent"
         android:text="预览文档"
         android:gravity="center"
