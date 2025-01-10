@@ -61,8 +61,8 @@ object OpenFileUtils {
      * */
     fun openFile(context: FragmentActivity, savePath: String?, downUri: String, fileName: String?, filePrivate: String = "") {
         try {
+            SharedPreferencesUtils.init(context.application)
             if (!Toaster.isInit()) {
-                SharedPreferencesUtils.init(context.application)
                 Toaster.init(context.application)
             }
             var suffix = getSuffixName1(downUri)

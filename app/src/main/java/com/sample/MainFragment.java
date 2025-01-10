@@ -37,8 +37,8 @@ public class MainFragment extends Fragment {
     public static String[] fileUrls = new String[]{
             "https://dj-aers-gaefb.oss-cn-beijing.aliyuncs.com/gaefb_annex/20240923/1946ef14-be68-4c88-a4b7-591d74e1cfd8.txt",
             "https://www.baidu.com/img/PCtm_d9c8750bed0b3c7d089fa7d55720d6cf.png",
-//            "https://dj-aers-gaefb.oss-cn-beijing.aliyuncs.com/gaefb_annex/20240925/a0166ee6-8f65-4643-ba33-3cd7a9597c0c.mp4",
-            Environment.getExternalStorageDirectory()+ "/efb/flight_data/bf572b8d266307267d6678f72ec86ded.mp4",
+            "https://dj-aers-gaefb.oss-cn-beijing.aliyuncs.com/gaefb_annex/20240925/a0166ee6-8f65-4643-ba33-3cd7a9597c0c.mp4",
+//            Environment.getExternalStorageDirectory()+ "/efb/flight_data/953352877-1-30011.mp4",
             Environment.getExternalStorageDirectory() + "/efb/flight_data/民航航路图/V5.11_20241031.pdf",
             Environment.getExternalStorageDirectory() + "/efb/.nomedia/入职申请书.doc",
             Environment.getExternalStorageDirectory() + "/efb/flight_data/text1.txt",

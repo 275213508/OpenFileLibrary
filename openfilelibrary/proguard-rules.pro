@@ -185,3 +185,16 @@ public static ** valueOf(java.lang.String);
     *;
 }
 #tbs end
+
+##====================================videoplayer 播放器混淆 开始========================
+-keep class xyz.doikki.videoplayer.** { *; }
+-dontwarn xyz.doikki.videoplayer.**
+
+# IjkPlayer
+-keep class tv.danmaku.ijk.** { *; }
+-dontwarn tv.danmaku.ijk.**
+
+# ExoPlayer
+-keep class com.google.android.exoplayer2.** { *; }
+-dontwarn com.google.android.exoplayer2.**
+##====================================videoplayer 播放器混淆 结束========================

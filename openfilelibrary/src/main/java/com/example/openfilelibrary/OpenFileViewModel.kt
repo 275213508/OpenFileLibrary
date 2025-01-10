@@ -98,6 +98,8 @@ class OpenFileViewModel {
         intent.setDataAndType(uri, "video/*");
         context.startActivity(intent);
 //        VideoPreView(videoUrl.toUri()).show(context.supportFragmentManager, null)
+//        context.startActivity(Intent(context,OpenVideoPlayActivity::class.java ).putExtra("videoUrl",videoUrl))
+//        context.overridePendingTransition(0,0)
     }
 
     /**
