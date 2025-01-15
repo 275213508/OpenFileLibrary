@@ -1,9 +1,9 @@
 package com.example.openfilelibrary.utile.common
 
 import android.os.Build
+import android.os.Environment
 import android.util.Patterns
 import android.webkit.URLUtil
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.net.toUri
 import androidx.fragment.app.FragmentActivity
 import com.blankj.utilcode.util.FileIOUtils
@@ -11,8 +11,10 @@ import com.blankj.utilcode.util.FileUtils
 import com.blankj.utilcode.util.LogUtils
 import com.blankj.utilcode.util.PermissionUtils
 import com.blankj.utilcode.util.ThreadUtils
+import com.blankj.utilcode.util.ThreadUtils.runOnUiThread
 import com.example.openfilelibrary.base.ICell
 import com.example.openfilelibrary.http.FileDownloadService
+import com.folioreader.util.FileUtil
 import com.hjq.toast.Toaster
 import com.lxj.xpopup.XPopup
 import com.lxj.xpopup.impl.LoadingPopupView
@@ -22,6 +24,9 @@ import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
 import java.io.File
+import java.io.FileOutputStream
+import java.io.IOException
+import java.io.InputStream
 
 
 /**
@@ -118,7 +123,15 @@ object DownLoadUtile {
                             try {
                                 FileUtils.delete(file)
                                 FileUtils.createOrExistsFile(file)
-                                FileIOUtils.writeFileFromIS(file, body?.byteStream())
+//                                FileIOUtils.writeFileFromIS(file, body?.byteStream()){
+//                                    LogUtils.i("下载中：" + it)
+//                                }
+                                saveFile(body!!,file,object :ICell<Int>{
+                                    override fun cell(cell: Int) {
+                                        dialog.setTitle("正在下载中：$cell/100")
+                                    }
+
+                                })
                                 ThreadUtils.runOnUiThread {
                                     LogUtils.d("下载完成：" + file.toUri().path)
                                     dialog.dismiss()
@@ -140,6 +153,50 @@ object DownLoadUtile {
                     t.printStackTrace()
                 }
             })
+        }
+    }
+    private fun saveFile(body: ResponseBody,file: File,iCell: ICell<Int>) {
+        // 创建输入流
+        var inputStream: InputStream? = null
+        var outputStream: FileOutputStream? = null
+        try {
+            // 定义目标文件
+//            val file = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), "downloaded_file.txt")
+            outputStream = FileOutputStream(file)
+            val buffer = ByteArray(4096)
+            val fileSize = body.contentLength()
+            var totalBytesRead: Long = 0
+
+            inputStream = body.byteStream()
+            var bytesRead: Int
+            while ((inputStream.read(buffer).also { bytesRead = it }) != -1) {
+                outputStream.write(buffer, 0, bytesRead)
+                totalBytesRead += bytesRead.toLong()
+                // 计算并显示进度
+                val progress = ((totalBytesRead * 100) / fileSize).toInt()
+                // 在 UI 线程中更新进度条
+                runOnUiThread {iCell.cell(progress) }
+            }
+
+            outputStream.flush()
+        } catch (e: IOException) {
+            e.printStackTrace()
+        } finally {
+            // 关闭流
+            if (inputStream != null) {
+                try {
+                    inputStream.close()
+                } catch (e: IOException) {
+                    e.printStackTrace()
+                }
+            }
+            if (outputStream != null) {
+                try {
+                    outputStream.close()
+                } catch (e: IOException) {
+                    e.printStackTrace()
+                }
+            }
         }
     }
 

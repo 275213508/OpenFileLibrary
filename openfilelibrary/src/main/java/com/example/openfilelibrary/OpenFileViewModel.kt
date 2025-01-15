@@ -20,6 +20,7 @@ import com.example.openfilelibrary.utile.TbsInstance
 import com.example.openfilelibrary.utile.common.DownLoadUtile
 import com.example.openfilelibrary.utile.common.config
 import com.example.openfilelibrary.utile.common.getSuffixName1
+import com.example.openfilelibrary.video.OpenVideoPlayActivity
 import com.folioreader.Config
 import com.folioreader.FolioReader
 import com.folioreader.util.AppUtil
@@ -93,13 +94,13 @@ class OpenFileViewModel {
      * 视频不做存储，直接展示
      * */
     fun openVideo(context: FragmentActivity, videoUrl: String) {
-        var uri = Uri.parse(videoUrl);
-        var intent = Intent(Intent.ACTION_VIEW);
-        intent.setDataAndType(uri, "video/*");
-        context.startActivity(intent);
-//        VideoPreView(videoUrl.toUri()).show(context.supportFragmentManager, null)
-//        context.startActivity(Intent(context,OpenVideoPlayActivity::class.java ).putExtra("videoUrl",videoUrl))
-//        context.overridePendingTransition(0,0)
+//        var uri = Uri.parse(videoUrl);
+//        var intent = Intent(Intent.ACTION_VIEW);
+//        intent.setDataAndType(uri, "video/*");
+//        context.startActivity(intent);
+//        VideoPreView(videoUrl).show(context.supportFragmentManager, null)
+        context.startActivity(Intent(context, OpenVideoPlayActivity::class.java ).putExtra("videoUrl",videoUrl))
+        context.overridePendingTransition(0,0)
     }
 
     /**
