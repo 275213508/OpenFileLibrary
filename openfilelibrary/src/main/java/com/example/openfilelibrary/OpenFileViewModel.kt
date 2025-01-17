@@ -93,13 +93,13 @@ class OpenFileViewModel {
      * @param videoUrl 视频地址
      * 视频不做存储，直接展示
      * */
-    fun openVideo(context: FragmentActivity, videoUrl: String) {
+    fun openVideo(context: FragmentActivity, videoUrl: String,fileName: String?) {
 //        var uri = Uri.parse(videoUrl);
 //        var intent = Intent(Intent.ACTION_VIEW);
 //        intent.setDataAndType(uri, "video/*");
 //        context.startActivity(intent);
 //        VideoPreView(videoUrl).show(context.supportFragmentManager, null)
-        context.startActivity(Intent(context, OpenVideoPlayActivity::class.java ).putExtra("videoUrl",videoUrl))
+        context.startActivity(Intent(context, OpenVideoPlayActivity::class.java ).putExtra("videoUrl",videoUrl).putExtra("fileName",fileName))
         context.overridePendingTransition(0,0)
     }
 

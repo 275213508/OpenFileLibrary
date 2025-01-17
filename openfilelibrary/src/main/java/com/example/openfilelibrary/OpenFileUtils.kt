@@ -119,11 +119,11 @@ object OpenFileUtils {
 //                ImageType.WMA.name->{}
 
                 ImageType.MP3.name -> {
-                    openFileViewModel.openVideo(context, downUri)
+                    openFileViewModel.openVideo(context, downUri,fileName)
                 }
 
                 ImageType.MP4.name -> {
-                    openFileViewModel.openVideo(context, downUri)
+                    openFileViewModel.openVideo(context, downUri,fileName)
                 }
 //                ImageType.MOV.name->{}
 //                ImageType.MPEG.name->{}

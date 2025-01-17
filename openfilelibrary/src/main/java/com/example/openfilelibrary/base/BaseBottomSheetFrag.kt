@@ -18,7 +18,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment
  * @author zyju
  * @date 2024/3/13 15:07
  */
-internal abstract class BaseBottomSheetFrag : BottomSheetDialogFragment() {
+abstract class BaseBottomSheetFrag : BottomSheetDialogFragment() {
     protected var mContext: Context? = null
 
     protected var rootView: View? = null

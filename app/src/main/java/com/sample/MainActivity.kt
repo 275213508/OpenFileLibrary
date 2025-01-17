@@ -11,6 +11,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.main_act)
         replaceFragment()
+//        startActivity(Intent(this, GSYVideoViewDialog::class.java))
     }
 
     private fun replaceFragment() {
