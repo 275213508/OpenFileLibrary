@@ -41,7 +41,7 @@
         android:layout_height="24dp"
         android:layout_gravity="end"
         android:layout_margin="10dp"
-        android:src="@drawable/ic_finish"
+        android:src="@drawable/qmui_icon_popup_close"
         app:layout_constraintEnd_toEndOf="@id/ll_videoView"
         app:layout_constraintTop_toTopOf="@id/ll_videoView" />
 </androidx.constraintlayout.widget.ConstraintLayout>
