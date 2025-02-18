@@ -146,8 +146,10 @@ class OpenFileViewModel {
             })
     }
 
-    fun openImage(context: FragmentActivity, downUri: String) {
-        PreImageDialog(context, mutableListOf(downUri), 1).show()
+    fun openImage(context: FragmentActivity, downUri: String, fileName: String? = "") {
+        context.runOnUiThread {
+            PreImageDialog(context, mutableListOf(downUri),mutableListOf(fileName), 1).show()
+        }
     }
 
     fun openOther(context: FragmentActivity, downUri: String, filePrivate: String = "") {

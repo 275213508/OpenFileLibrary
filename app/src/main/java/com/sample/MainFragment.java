@@ -3,6 +3,7 @@ package com.sample;
 
 import static com.sample.BuildConfig.APP_File_Provider;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Environment;
 import android.view.Gravity;
@@ -17,6 +18,7 @@ import androidx.fragment.app.Fragment;
 
 import com.example.openfilelibrary.OpenFileUtils;
 import com.example.openfilelibrary.utile.TbsInstance;
+import com.faradaj.blurbehind.BlurBehind;
 
 import java.util.Arrays;
 import java.util.List;
@@ -32,7 +34,7 @@ public class MainFragment extends Fragment {
     }
 
     public static String[] titles = new String[]{
-            "打开文本", "打开图片", "打开视频", "打开'民航航路图.pdf'", "打开'测试.doc'", "打开'VPN.txt'", "打开'测试.jpg'","打开epub文件"
+            "打开文本", "打开图片", "打开视频", "打开'民航航路图.pdf'", "打开'测试.doc'", "打开'VPN.txt'", "打开'测试.jpg'", "打开epub文件"
     };
     public static String[] fileUrls = new String[]{
             "https://dj-aers-gaefb.oss-cn-beijing.aliyuncs.com/gaefb_annex/20240923/1946ef14-be68-4c88-a4b7-591d74e1cfd8.txt",
@@ -79,10 +81,17 @@ public class MainFragment extends Fragment {
             button.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+//                    /**打开毛玻璃弹窗*/
+//                    BlurBehind.getInstance().execute(requireActivity(), () -> {
+//                        Intent intent = new Intent(requireActivity(),MainActivity2. class);
+//                        intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+//                        startActivity(intent);
+//                    });
+
                     List<String> titleList = Arrays.asList(titles);
                     int index = titleList.indexOf(text);
                     if (index == -1) return;
-                    OpenFileUtils.INSTANCE.openFile(requireActivity(), Environment.getExternalStorageDirectory() + "/efb/flight_data/", fileUrls[index],null,APP_File_Provider);
+                    OpenFileUtils.INSTANCE.openFile(requireActivity(), Environment.getExternalStorageDirectory() + "/efb/flight_data/", fileUrls[index], null, APP_File_Provider);
                 }
             });
         } else {

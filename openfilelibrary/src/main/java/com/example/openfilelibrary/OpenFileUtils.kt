@@ -113,7 +113,7 @@ object OpenFileUtils {
 //                ImageType.BMP.name,
                 ImageType.JPEG.name,
                 ImageType.GIF.name -> {
-                    openFileViewModel.openImage(context, downUri)
+                    openFileViewModel.openImage(context, downUri,fileName)
                 }
 //                ImageType.WAV.name->{}
 //                ImageType.WMA.name->{}

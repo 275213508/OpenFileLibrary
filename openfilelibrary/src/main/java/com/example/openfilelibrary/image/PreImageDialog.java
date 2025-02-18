@@ -30,6 +30,7 @@ public class PreImageDialog extends Dialog {
 
     private int currentIndex;
     private List<String> path;
+    private List<String> fileName;
     private Context context;
 
     private PreImageDialog(Context context, int theme) {
@@ -37,7 +38,14 @@ public class PreImageDialog extends Dialog {
         this.context = context;
     }
 
-    public PreImageDialog(Context context, List<String> imagePath, int currentIndex) {
+    public PreImageDialog(Context context, List<String> imagePath,List<String> fileName, int currentIndex) {
+        this(context, R.style.Dialog_NoTitleAndBackground);
+        this.context = context;
+        this.fileName = fileName;
+        this.path = imagePath;
+        this.currentIndex = currentIndex;
+    }
+    public PreImageDialog(Context context, List<String> imagePath,int currentIndex) {
         this(context, R.style.Dialog_NoTitleAndBackground);
         this.context = context;
         this.path = imagePath;
@@ -79,6 +87,10 @@ public class PreImageDialog extends Dialog {
         for (int i = 0; i < path.size(); i++) {
             View page1 = LayoutInflater.from(context).inflate(R.layout.dialog_img, null);
             PhotoView pre = page1.findViewById(R.id.phot);
+            TextView name = page1.findViewById(R.id.img_name);
+            if (fileName.size()== path.size()) {
+                name.setText(fileName.get(i));
+            }
             pre.enable();
             pre.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -86,6 +98,7 @@ public class PreImageDialog extends Dialog {
                     dismiss();
                 }
             });
+
             Glide.with(context).load(path.get(i)).apply(new RequestOptions().error(R.drawable.errorimg)).into(pre);
             layoutList.add(page1);
             titleList.add(i + "/" + path.size());
