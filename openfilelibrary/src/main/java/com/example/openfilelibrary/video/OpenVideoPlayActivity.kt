@@ -2,18 +2,20 @@ package com.example.openfilelibrary.video
 
 import android.os.Bundle
 import android.view.View
-import android.widget.MediaController
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.net.toUri
 import com.blankj.utilcode.util.LogUtils
 import com.example.openfilelibrary.base.ICell
 import com.example.openfilelibrary.databinding.ActivityOpenVideoPlayBinding
+import com.example.openfilelibrary.databinding.MediaControllerBinding
 import com.example.openfilelibrary.utile.common.DownLoadUtile
 import com.example.openfilelibrary.utile.common.SingleClick
+import com.example.openfilelibrary.video.view.PlayViews
 import com.hjq.toast.Toaster
 import java.io.File
 
 class OpenVideoPlayActivity : AppCompatActivity() {
+    private lateinit var playViews: PlayViews
     private lateinit var binding: ActivityOpenVideoPlayBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -58,13 +60,18 @@ class OpenVideoPlayActivity : AppCompatActivity() {
 
     private fun openVideo(cell: String) {
         binding.apply {
+           playViews = PlayViews(this@OpenVideoPlayActivity,llMediaController, videoView)
             videoView.apply {
-                val controller = MediaController(this@OpenVideoPlayActivity);
+//                val controller = MediaController(this@OpenVideoPlayActivity);
                 setVideoPath(cell)
-                setMediaController(controller)
-                controller.setMediaPlayer(this)
+//                setMediaController(controller)
+//                controller.setMediaPlayer(this)
+                setOnPreparedListener {
+                    playViews.play()
+                }
                 start() //开始播放，不调用则不自动播放
             }
+
     //            videoView.setUrl("http://101.201.100.220:8080/gaefb/file/download?guid=3db6819f04164c749d7bb60af2aa1d39") //设置视频地址
     //            videoView.setPlayerFactory(IjkPlayerFactory.create());
     //

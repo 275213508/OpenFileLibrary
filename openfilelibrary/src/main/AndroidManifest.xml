@@ -15,6 +15,7 @@
     <application>
         <activity
             android:name=".video.OpenVideoPlayActivity"
+            android:screenOrientation="sensor"
             android:configChanges="orientation|screenSize|keyboardHidden"
             android:exported="false" />
     </application>
