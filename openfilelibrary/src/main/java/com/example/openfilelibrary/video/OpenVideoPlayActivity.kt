@@ -1,7 +1,9 @@
 package com.example.openfilelibrary.video
 
+import android.content.pm.ActivityInfo
 import android.os.Bundle
 import android.view.View
+import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.net.toUri
 import com.blankj.utilcode.util.LogUtils
@@ -23,7 +25,7 @@ class OpenVideoPlayActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityOpenVideoPlayBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        SingleClick(binding.imgCancel){
+        SingleClick(binding.imgCancel) {
             finish()
         }
 
@@ -39,28 +41,40 @@ class OpenVideoPlayActivity : AppCompatActivity() {
 //        urlpath = "http://www.w3school.com.cn/i/movie.mp4"
 
         fileName?.let {
-            if (it.endsWith(".mp3")){
+            if (it.endsWith(".mp3")) {
                 binding.tvMusiceName.text = it
                 binding.tvMusiceName.visibility = View.VISIBLE
             }
         }
         val guid = urlpath.toUri().getQueryParameter("guid")
-        if (guid.isNullOrBlank()||urlpath.toUri().query?.startsWith("guid=")==false||urlpath.endsWith(".mp4")){
+        if (guid.isNullOrBlank() || urlpath.toUri().query?.startsWith("guid=") == false || urlpath.endsWith(".mp4")) {
             openVideo(urlpath)
-        }else {
-            var filename = if(guid.isBlank()) urlpath.substring(urlpath.lastIndexOf("/")+1) else "$guid.mp4"
+        } else {
+            var filename = if (guid.isBlank()) urlpath.substring(urlpath.lastIndexOf("/") + 1) else "$guid.mp4"
             DownLoadUtile.downloadFile(this, this.cacheDir.absolutePath, urlpath, filename, object : ICell<File> {
                 override fun cell(cell: File) {
                     openVideo(cell.path)
                 }
             })
         }
+        SingleClick(binding.imgCancel) {
+            if (requestedOrientation == ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE) {
+                setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+            } else {
+                finish()
+            }
+        }
 
     }
 
     private fun openVideo(cell: String) {
         binding.apply {
-           playViews = PlayViews(this@OpenVideoPlayActivity,llMediaController, videoView)
+            playViews = PlayViews(this@OpenVideoPlayActivity, llMediaController, videoView)
+            playViews.setIsShowChengeListener(object : ICell<Boolean> {
+                override fun cell(cell: Boolean) {
+                   binding.imgCancel.visibility = if (cell) View.VISIBLE else View.GONE
+                }
+            })
             videoView.apply {
 //                val controller = MediaController(this@OpenVideoPlayActivity);
                 setVideoPath(cell)
@@ -72,12 +86,12 @@ class OpenVideoPlayActivity : AppCompatActivity() {
                 start() //开始播放，不调用则不自动播放
             }
 
-    //            videoView.setUrl("http://101.201.100.220:8080/gaefb/file/download?guid=3db6819f04164c749d7bb60af2aa1d39") //设置视频地址
-    //            videoView.setPlayerFactory(IjkPlayerFactory.create());
-    //
-    //            controller.addDefaultControlComponent(File(urlpath).name, false)
-    //            videoView.setVideoController(controller) //设置控制器
-    //            videoView.start()
+            //            videoView.setUrl("http://101.201.100.220:8080/gaefb/file/download?guid=3db6819f04164c749d7bb60af2aa1d39") //设置视频地址
+            //            videoView.setPlayerFactory(IjkPlayerFactory.create());
+            //
+            //            controller.addDefaultControlComponent(File(urlpath).name, false)
+            //            videoView.setVideoController(controller) //设置控制器
+            //            videoView.start()
         }
     }
 
@@ -98,6 +112,6 @@ class OpenVideoPlayActivity : AppCompatActivity() {
 
 
     override fun onBackPressed() {
-            super.onBackPressed()
+        super.onBackPressed()
     }
 }

@@ -1,103 +1,81 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/ll_parent"
     xmlns:tools="http://schemas.android.com/tools"
     android:background="@color/bg_toum"
     tools:background="@color/gray"
     android:paddingBottom="10dp"
     android:orientation="vertical">
-
-    <LinearLayout
-        android:layout_width="match_parent"
+    <TextView
+        android:id="@+id/time_current"
+        android:layout_width="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/mediacontroller_progress"
         android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="@id/mediacontroller_progress"
+        android:text="00:00"
         android:gravity="center"
-        android:orientation="horizontal"
-        android:paddingTop="4dp"
-        tools:visibility="visible"
-        >
-        <ImageButton
-            android:id="@+id/prev"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:visibility="gone"
-            android:src="@drawable/vvc_ic_media_previous"
-            />
-        <ImageButton
-            android:id="@+id/rew"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:visibility="gone"
-            android:src="@drawable/vvc_ic_media_rew"
-            />
-        <ImageButton
-            android:id="@+id/pause"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/vvc_ic_media_play"
-            android:checked="false"
-            />
-        <ImageButton
-            android:id="@+id/ffwd"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:visibility="gone"
-            android:src="@drawable/vvc_ic_media_ff" />
-        <ImageButton
-            android:id="@+id/next"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:visibility="gone"
-            android:src="@drawable/vvc_ic_media_next" />
-    </LinearLayout>
-    <LinearLayout
-        android:layout_width="match_parent"
+        android:textColor="@color/white"
+        android:textSize="14sp"
+        android:textStyle="bold" />
+
+
+    <TextView
+        android:id="@+id/time"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:gravity="center_vertical"
-        android:orientation="horizontal" >
-        <TextView
-            android:id="@+id/time_current"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="wrap_content"
-            android:text="00:00"
-            android:gravity="center"
-            android:textColor="@color/white"
-            android:textSize="14sp"
-            android:textStyle="bold" />
-        <androidx.appcompat.widget.AppCompatSeekBar
-            android:id="@+id/mediacontroller_progress"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:paddingStart="10dp"
-            android:paddingEnd="10dp"
-            android:layout_weight="6"
-            android:foreground="@null"
-            android:maxHeight="2dp"
-            android:paddingVertical="10dp"
-            android:progressDrawable="@drawable/shape_seekbar"
-            android:thumb="@drawable/video_progress_ball_bg" />
+        app:layout_constraintEnd_toEndOf="@id/mediacontroller_progress"
+        android:gravity="center"
+        android:text="00:00"
+        app:layout_constraintBottom_toBottomOf="@id/time_current"
+        app:layout_constraintTop_toTopOf="@id/time_current"
+        android:textColor="@color/white"
+        android:textSize="14sp"
+        android:textStyle="bold" />
+    <ImageButton
+        android:id="@+id/pause"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:background="@drawable/ic_play"
+        android:checked="false"
+        android:layout_marginStart="10dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/mediacontroller_progress"
+        app:layout_constraintBottom_toBottomOf="@id/mediacontroller_progress"
+        app:layout_constraintEnd_toStartOf="@id/pause"
+        />
+    <androidx.appcompat.widget.AppCompatSeekBar
+        android:id="@+id/mediacontroller_progress"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:paddingStart="10dp"
+        android:paddingEnd="10dp"
+        android:layout_marginStart="10dp"
+        android:layout_weight="6"
+        android:foreground="@null"
+        android:maxHeight="8dp"
+        app:layout_constraintStart_toEndOf="@id/pause"
+        app:layout_constraintEnd_toStartOf="@id/is_full_screen"
+        app:layout_constraintTop_toBottomOf="@id/time_current"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:paddingVertical="10dp"
+        android:progressDrawable="@drawable/shape_seekbar"
+        android:thumb="@drawable/video_progress_ball_bg" />
+    <CheckBox
+        android:id="@+id/is_full_screen"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:layout_marginEnd="10dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/mediacontroller_progress"
+        app:layout_constraintBottom_toBottomOf="@id/mediacontroller_progress"
+        app:layout_constraintStart_toEndOf="@id/mediacontroller_progress"
+        android:button="@null"
+        android:text=""
+        android:background="@drawable/video_screen" />
 
-        <TextView
-            android:id="@+id/time"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:text="00:00"
-            android:textColor="@color/white"
-            android:textSize="14sp"
-            android:textStyle="bold" />
-        <CheckBox
-            android:id="@+id/is_full_screen"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_marginEnd="10dp"
-            android:button="@null"
-            android:text=""
-            android:background="@drawable/video_screen" />
-    </LinearLayout>
 
-
-</LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

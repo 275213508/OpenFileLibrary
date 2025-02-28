@@ -1,26 +1,19 @@
 package com.example.openfilelibrary.video.view
 
-import android.app.StatusBarManager
 import android.content.pm.ActivityInfo
-import android.media.MediaPlayer.OnInfoListener
 import android.os.CountDownTimer
-import android.view.MotionEvent
 import android.view.View
-import android.view.Window
 import android.view.WindowManager
 import android.widget.SeekBar
 import android.widget.VideoView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
-import com.blankj.utilcode.util.LogUtils
 import com.example.openfilelibrary.R
+import com.example.openfilelibrary.base.ICell
 import com.example.openfilelibrary.databinding.MediaControllerBinding
 import com.example.openfilelibrary.utile.common.SingleClick
-import com.hjq.toast.Toaster
-import com.wx.android.common.util.CommonUtils
 import java.util.Formatter
 import java.util.Locale
-import kotlin.math.abs
 import kotlin.math.roundToInt
 
 /**
@@ -43,15 +36,6 @@ class PlayViews(var context: AppCompatActivity, var binding: MediaControllerBind
             } else {
                 play()
             }
-        }
-        /**快进*/
-        SingleClick(binding.ffwd) {
-            setProgress(videoView.currentPosition + 3000)
-            Toaster.show("快进 3 秒")
-        }
-        SingleClick(binding.rew) {
-            setProgress(videoView.currentPosition - 3000)
-            Toaster.show("快退 3 秒")
         }
         SingleClick(binding.llParent) {
             refreshHideTime()
@@ -85,7 +69,10 @@ class PlayViews(var context: AppCompatActivity, var binding: MediaControllerBind
 
         })
     }
-
+    private var onchecked:ICell<Boolean>? = null
+    fun setIsShowChengeListener(onchecked:ICell<Boolean>){
+        this.onchecked = onchecked
+    }
     private fun refreshHideTime() {
         binding.timeCurrent.removeCallbacks(delayHide)
         if (isShow()) {
@@ -110,10 +97,12 @@ class PlayViews(var context: AppCompatActivity, var binding: MediaControllerBind
 
     fun Show() {
         binding.root.visibility = View.VISIBLE
+        onchecked?.cell(true)
     }
 
     fun Hide() {
         binding.root.visibility = View.GONE
+        onchecked?.cell(false)
     }
 
     private var countDownTimer: CountDownTimer = object : CountDownTimer(Long.MAX_VALUE, 1000) {
@@ -124,7 +113,7 @@ class PlayViews(var context: AppCompatActivity, var binding: MediaControllerBind
         override fun onFinish() {}
     }
     private var delayHide = Runnable {
-        binding.root.visibility = View.GONE
+        Hide()
     }
 
     /**隐藏延时 毫秒*/
@@ -142,7 +131,7 @@ class PlayViews(var context: AppCompatActivity, var binding: MediaControllerBind
         countDownTimer.start()
         refreshHideTime()
         binding.timeCurrent.postDelayed(delayHide, HideDelay)
-        binding.pause.setImageResource(R.drawable.ic_pause)
+        binding.pause.setBackgroundResource(R.drawable.ic_pause)
     }
 
     /**
@@ -151,7 +140,7 @@ class PlayViews(var context: AppCompatActivity, var binding: MediaControllerBind
     fun pause() {
         videoView.pause()
         refreshHideTime()
-        binding.pause.setImageResource(R.drawable.ic_play_one)
+        binding.pause.setBackgroundResource(R.drawable.ic_play)
         countDownTimer.cancel()
     }
 
