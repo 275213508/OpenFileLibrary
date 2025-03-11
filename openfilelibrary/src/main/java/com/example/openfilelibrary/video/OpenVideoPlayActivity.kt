@@ -1,15 +1,14 @@
 package com.example.openfilelibrary.video
 
 import android.content.pm.ActivityInfo
+import android.content.res.Configuration
 import android.os.Bundle
 import android.view.View
-import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.net.toUri
 import com.blankj.utilcode.util.LogUtils
 import com.example.openfilelibrary.base.ICell
 import com.example.openfilelibrary.databinding.ActivityOpenVideoPlayBinding
-import com.example.openfilelibrary.databinding.MediaControllerBinding
 import com.example.openfilelibrary.utile.common.DownLoadUtile
 import com.example.openfilelibrary.utile.common.SingleClick
 import com.example.openfilelibrary.video.view.PlayViews
@@ -17,7 +16,7 @@ import com.hjq.toast.Toaster
 import java.io.File
 
 class OpenVideoPlayActivity : AppCompatActivity() {
-    private lateinit var playViews: PlayViews
+    private var playViews: PlayViews?=null
     private lateinit var binding: ActivityOpenVideoPlayBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -64,13 +63,16 @@ class OpenVideoPlayActivity : AppCompatActivity() {
                 finish()
             }
         }
-
+    }
+    override fun onConfigurationChanged(newConfig: Configuration) {
+        super.onConfigurationChanged(newConfig)
+        playViews?.refreshFullScreenBt()
     }
 
     private fun openVideo(cell: String) {
         binding.apply {
             playViews = PlayViews(this@OpenVideoPlayActivity, llMediaController, videoView)
-            playViews.setIsShowChengeListener(object : ICell<Boolean> {
+            playViews?.setIsShowChengeListener(object : ICell<Boolean> {
                 override fun cell(cell: Boolean) {
                    binding.imgCancel.visibility = if (cell) View.VISIBLE else View.GONE
                 }
@@ -81,7 +83,7 @@ class OpenVideoPlayActivity : AppCompatActivity() {
 //                setMediaController(controller)
 //                controller.setMediaPlayer(this)
                 setOnPreparedListener {
-                    playViews.play()
+                    playViews?.play()
                 }
                 start() //开始播放，不调用则不自动播放
             }

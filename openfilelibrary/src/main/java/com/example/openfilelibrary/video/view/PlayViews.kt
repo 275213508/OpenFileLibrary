@@ -95,6 +95,11 @@ class PlayViews(var context: AppCompatActivity, var binding: MediaControllerBind
         return binding.root.isVisible
     }
 
+    fun refreshFullScreenBt():Boolean{
+        var ispro = context.requestedOrientation == ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
+        binding.isFullScreen.isChecked = !ispro
+        return ispro
+    }
     fun Show() {
         binding.root.visibility = View.VISIBLE
         onchecked?.cell(true)
