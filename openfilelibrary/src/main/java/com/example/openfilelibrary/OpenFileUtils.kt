@@ -95,9 +95,9 @@ object OpenFileUtils {
                     }
                 }
 
-                FileType.EPUB.name -> {
-                    openFileViewModel.openEpub(context, downUri)
-                }
+//                FileType.EPUB.name -> {
+//                    openFileViewModel.openEpub(context, downUri)
+//                }
 //
 //                ZipType.ZIP.name->{}
 //                ZipType.RAR.name->{}

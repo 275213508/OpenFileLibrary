@@ -92,10 +92,10 @@ public class MainFragment extends Fragment {
                     List<String> titleList = Arrays.asList(titles);
                     int index = titleList.indexOf(text);
                     if (index == -1) return;
-                   String path = fileUrls[index];
-                   File file= new File(path);
+                    String path = fileUrls[index];
+                    File file = new File(path);
                     boolean isex = file.exists();
-                    OpenFileUtils.INSTANCE.openFile(requireActivity(), getContext().getFilesDir() + "/efb/flight_data/",path, null, APP_File_Provider);
+                    OpenFileUtils.INSTANCE.openFile(requireActivity(), getContext().getFilesDir() + "/efb/flight_data/", path, null, APP_File_Provider);
                 }
             });
         } else {
