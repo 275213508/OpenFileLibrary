@@ -75,6 +75,9 @@ dependencies {
     implementation deps.retrofit2//'com.squareup.retrofit2:retrofit:2.9.0'
     implementation(deps.okhttp3)
     implementation(deps.gson)//"com.google.code.gson:gson:2.10.1"
+//    implementation deps.retrofit2
+//    implementation deps.retrofit2_converter_gson
+
 
 
     //[通用弹窗 https://github.com/li-xiaojun/XPopup]

@@ -20,6 +20,7 @@ import com.example.openfilelibrary.OpenFileUtils;
 import com.example.openfilelibrary.utile.TbsInstance;
 import com.faradaj.blurbehind.BlurBehind;
 
+import java.io.File;
 import java.util.Arrays;
 import java.util.List;
 
@@ -91,7 +92,10 @@ public class MainFragment extends Fragment {
                     List<String> titleList = Arrays.asList(titles);
                     int index = titleList.indexOf(text);
                     if (index == -1) return;
-                    OpenFileUtils.INSTANCE.openFile(requireActivity(), Environment.getExternalStorageDirectory() + "/efb/flight_data/", fileUrls[index], null, APP_File_Provider);
+                   String path = fileUrls[index];
+                   File file= new File(path);
+                    boolean isex = file.exists();
+                    OpenFileUtils.INSTANCE.openFile(requireActivity(), getContext().getFilesDir() + "/efb/flight_data/",path, null, APP_File_Provider);
                 }
             });
         } else {

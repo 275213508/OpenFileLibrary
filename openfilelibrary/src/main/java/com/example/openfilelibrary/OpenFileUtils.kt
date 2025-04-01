@@ -66,7 +66,7 @@ object OpenFileUtils {
                 Toaster.init(context.application)
             }
             var suffix = getSuffixName1(downUri)
-            if (!fileName.isNullOrBlank()) {
+            if (!fileName.isNullOrBlank()&& fileName!="null") {
                 suffix = getSuffixName1(fileName)
             }
             when (suffix.uppercase()) {
