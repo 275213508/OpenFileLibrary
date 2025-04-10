@@ -14,7 +14,6 @@ import com.blankj.utilcode.util.ThreadUtils
 import com.blankj.utilcode.util.ThreadUtils.runOnUiThread
 import com.example.openfilelibrary.base.ICell
 import com.example.openfilelibrary.http.FileDownloadService
-import com.folioreader.util.FileUtil
 import com.hjq.toast.Toaster
 import com.lxj.xpopup.XPopup
 import com.lxj.xpopup.impl.LoadingPopupView
@@ -69,33 +68,6 @@ object DownLoadUtile {
             })
         }
     }
-    private fun downloadFiles(context: FragmentActivity, dirpath: String, downUri: String, fileName: String?, icell:ICell<File>) {
-        var dialog = XPopup.Builder(context)
-            .asLoading("正在加载中")
-        dialog.show()
-        var urs = downUri.split(downUri.toUri().host.toString())
-        if (urs.size < 2) {
-            LogUtils.i("下载地址错误")
-            return
-        }
-        var base = urs[0] +downUri.toUri().authority
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            PermissionUtils.requestWriteSettings(object : PermissionUtils.SimpleCallback {
-                override fun onGranted() {
-                    download(base, downUri, dirpath, fileName, dialog, icell)
-                }
-
-                override fun onDenied() {
-                    dialog.dismiss()
-                   Toaster.show("需要读写权限才能下载文件")
-                }
-
-            })
-        }else {
-            download(base, downUri, dirpath, fileName, dialog, icell)
-        }
-    }
-
     private fun download(
         base: String,
         downUri: String,
@@ -153,6 +125,33 @@ object DownLoadUtile {
                     t.printStackTrace()
                 }
             })
+        }
+    }
+
+    private fun downloadFiles(context: FragmentActivity, dirpath: String, downUri: String, fileName: String?, icell:ICell<File>) {
+        var dialog = XPopup.Builder(context)
+            .asLoading("正在加载中")
+        dialog.show()
+        var urs = downUri.split(downUri.toUri().host.toString())
+        if (urs.size < 2) {
+            LogUtils.i("下载地址错误")
+            return
+        }
+        var base = urs[0] +downUri.toUri().authority
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            PermissionUtils.requestWriteSettings(object : PermissionUtils.SimpleCallback {
+                override fun onGranted() {
+                    download(base, downUri, dirpath, fileName, dialog, icell)
+                }
+
+                override fun onDenied() {
+                    dialog.dismiss()
+                   Toaster.show("需要读写权限才能下载文件")
+                }
+
+            })
+        }else {
+            download(base, downUri, dirpath, fileName, dialog, icell)
         }
     }
     private fun saveFile(body: ResponseBody,file: File,iCell: ICell<Int>) {

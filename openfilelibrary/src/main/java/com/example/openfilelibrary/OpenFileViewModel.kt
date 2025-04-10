@@ -21,9 +21,6 @@ import com.example.openfilelibrary.utile.common.DownLoadUtile
 import com.example.openfilelibrary.utile.common.config
 import com.example.openfilelibrary.utile.common.getSuffixName1
 import com.example.openfilelibrary.video.OpenVideoPlayActivity
-import com.folioreader.Config
-import com.folioreader.FolioReader
-import com.folioreader.util.AppUtil
 import com.hjq.toast.Toaster
 import com.lxj.xpopup.XPopup
 import com.wx.android.common.util.SharedPreferencesUtils
@@ -67,26 +64,26 @@ class OpenFileViewModel {
         return false
     }
 
-    var folioReader: FolioReader? = null
-    fun openEpub(context: FragmentActivity, path: String) {
-        try {
-            folioReader = FolioReader.get()
-                .setOnClosedListener {
-                    if (folioReader != null) {
-                        FolioReader.clear()
-                        FolioReader.stop()
-                    }
-                }
-            var config = AppUtil.getSavedConfig(context)
-            if (config == null) {
-                config = Config()
-            }
-            config.setAllowedDirection(Config.AllowedDirection.VERTICAL_AND_HORIZONTAL)
-            folioReader?.setConfig(config, true)?.openBook(path)
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
-    }
+//    var folioReader: FolioReader? = null
+//    fun openEpub(context: FragmentActivity, path: String) {
+//        try {
+//            folioReader = FolioReader.get()
+//                .setOnClosedListener {
+//                    if (folioReader != null) {
+//                        FolioReader.clear()
+//                        FolioReader.stop()
+//                    }
+//                }
+//            var config = AppUtil.getSavedConfig(context)
+//            if (config == null) {
+//                config = Config()
+//            }
+//            config.setAllowedDirection(Config.AllowedDirection.VERTICAL_AND_HORIZONTAL)
+//            folioReader?.setConfig(config, true)?.openBook(path)
+//        } catch (e: Exception) {
+//            e.printStackTrace()
+//        }
+//    }
 
     /**
      * 打开视频
