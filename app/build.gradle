@@ -3,13 +3,13 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
 apply from: '../versions.gradle'
 android {
-    compileSdk 29
+    compileSdk 33
 
     defaultConfig {
 //        applicationId "com.efb.views.sanhu"
         applicationId "com.sample"
         minSdk 24
-        targetSdk 29
+        targetSdk 33
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
@@ -85,7 +85,7 @@ dependencies {
 
     //[权限处理 https://github.com/guolindev/PermissionX]
     implementation 'com.guolindev.permissionx:permissionx:1.5.0'
-    implementation files('libs/TbsFileSdk_base_armeabi__release_1.0.5.6000022.20230906113337.aar')
+    implementation files('libs/TbsFileSdk_base_arm64_release_1.0.5.6000030.20231109143447.aar')
     implementation project(path: ':openfilelibrary')
 //    implementation project(path: ':folioreader')
 //    implementation files('libs/openfilelibrary-release.aar')
@@ -113,4 +113,6 @@ dependencies {
 //    }
 
     implementation files('libs/blur-behind-1.1.aar')
+
+//    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3"
 }

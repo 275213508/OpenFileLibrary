@@ -55,12 +55,11 @@ public class TbsInstance {
             //设置licenseKey
             //102419,102420,102421,102422
             //sanhu 环境下的licenseKey
-            String key = SPUtils.getInstance().getString(config.INSTANCE.getTbsLicenseKey());
-            TbsFileInterfaceImpl.setLicenseKey(key);
-            ITbsReaderCallback callback = new ITbsReaderCallback() {
-                @Override
-                public void onCallBackAction(Integer actionType, Object args, Object result) {
-                   // ITbsReader.OPEN_FILEREADER_ASYNC_LOAD_READER_ENTRY_CALLBACK 的值为 7002，不是错误码
+            if (!TbsFileInterfaceImpl.isEngineLoaded()) {
+                String key = SPUtils.getInstance().getString(config.INSTANCE.getTbsLicenseKey());
+                TbsFileInterfaceImpl.setLicenseKey(key);
+                ITbsReaderCallback callback = (actionType, args, result) -> {
+                    // ITbsReader.OPEN_FILEREADER_ASYNC_LOAD_READER_ENTRY_CALLBACK 的值为 7002，不是错误码
                     if (ITbsReader.OPEN_FILEREADER_ASYNC_LOAD_READER_ENTRY_CALLBACK == actionType) {
                         int ret = (int) args; // 错误码为actionType == 7002时 args的值
                         if (ret == 0) {
@@ -74,11 +73,8 @@ public class TbsInstance {
                             SharedPreferencesUtils.init(applicationContext);
                             SharedPreferencesUtils.put(TBS, 0);
                         }
-
                     }
-                }
-            };
-            if (!TbsFileInterfaceImpl.isEngineLoaded()) {
+                };
                 TbsFileInterfaceImpl.initEngineAsync(applicationContext, callback);
             }
 

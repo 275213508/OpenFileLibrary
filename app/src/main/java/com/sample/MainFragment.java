@@ -17,8 +17,6 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.example.openfilelibrary.OpenFileUtils;
-import com.example.openfilelibrary.utile.TbsInstance;
-import com.faradaj.blurbehind.BlurBehind;
 
 import java.io.File;
 import java.util.Arrays;
@@ -61,12 +59,10 @@ public class MainFragment extends Fragment {
         }
         linearLayout.addView(createLabel(""));
 
-        OpenFileUtils.INSTANCE.setTFBLicenseKey("nGQic8OPFLleGnz7gW7Rpesab5bmjb2mzxeb9mqwC0t2W6YMn9tiOeTQq2dX83i7");
 //        OpenFileUtils.INSTANCE.setFilePrivate("com.efb.views.sanhu.fileprovider");
         OpenFileUtils.INSTANCE.setFilePrivate("com.sample.fileprovider");
         OpenFileUtils.INSTANCE.setIsSanHuApp(true);
-        //[腾讯浏览服务]
-        TbsInstance.getInstance().initX5Environment(getContext());
+        OpenFileUtils.INSTANCE.setTFBLicenseKey(requireContext(),"nGQic8OPFLleGnz7gW7Rpesab5bmjb2mzxeb9mqwC0t2W6YMn9tiOeTQq2dX83i7");
 
     }
 

@@ -1,8 +1,9 @@
 package com.example.openfilelibrary
 
+import android.content.Context
 import androidx.fragment.app.FragmentActivity
-import com.blankj.utilcode.util.LogUtils
 import com.blankj.utilcode.util.SPUtils
+import com.example.openfilelibrary.utile.TbsInstance
 import com.example.openfilelibrary.utile.common.FileType
 import com.example.openfilelibrary.utile.common.ImageType
 import com.example.openfilelibrary.utile.common.ZipType
@@ -25,8 +26,9 @@ object OpenFileUtils {
         SPUtils.getInstance().put(mFilePrivateKey, filePrivate)
     }
 
-    fun setTFBLicenseKey(tbsLicenseKeyed: String) {
+    fun setTFBLicenseKey(context: Context,tbsLicenseKeyed: String) {
         SPUtils.getInstance().put(tbsLicenseKey, tbsLicenseKeyed)
+        TbsInstance.getInstance().initX5Environment(context)
     }
     fun setIsSanHuApp(isSanHu : Boolean) {
         SPUtils.getInstance().put(isSanHuApp, isSanHu)
