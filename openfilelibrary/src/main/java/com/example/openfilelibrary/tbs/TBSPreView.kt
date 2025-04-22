@@ -153,7 +153,10 @@ internal class TBSPreView(var FileLocalUri: Uri, var APP_File_Provider: String) 
 
     override fun onDestroy() {
         super.onDestroy()
-        //        }
-        TbsFileInterfaceImpl.getInstance().closeFileReader()
+        try {
+            TbsFileInterfaceImpl.getInstance().closeFileReader()
+        }catch (e:Throwable){
+            e.printStackTrace()
+        }
     }
 }

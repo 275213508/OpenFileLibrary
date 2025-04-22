@@ -10,6 +10,7 @@ import com.example.openfilelibrary.utile.common.ZipType
 import com.example.openfilelibrary.utile.common.config.isSanHuApp
 import com.example.openfilelibrary.utile.common.config.mFilePrivateKey
 import com.example.openfilelibrary.utile.common.config.tbsLicenseKey
+import com.example.openfilelibrary.utile.common.getOpenFilePrivate
 import com.example.openfilelibrary.utile.common.getSuffixName1
 import com.hjq.toast.Toaster
 import com.wx.android.common.util.SharedPreferencesUtils
@@ -66,6 +67,10 @@ object OpenFileUtils {
             SharedPreferencesUtils.init(context.application)
             if (!Toaster.isInit()) {
                 Toaster.init(context.application)
+            }
+            var filePrivate = filePrivate
+            if (filePrivate.isNullOrBlank()) {
+                filePrivate = getOpenFilePrivate(context)
             }
             var suffix = getSuffixName1(downUri)
             if (!fileName.isNullOrBlank()&& fileName!="null") {
