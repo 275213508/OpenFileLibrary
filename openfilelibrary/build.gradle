@@ -8,7 +8,7 @@ apply plugin: 'com.kezong.fat-aar'
 apply from: '../versions.gradle'
 android {
 //    namespace 'com.example.openfilelibrary'
-    compileSdk 34
+    compileSdk 31
 
     defaultConfig {
         minSdk 21
@@ -82,7 +82,7 @@ dependencies {
 
     //[通用弹窗 https://github.com/li-xiaojun/XPopup]
     embed(deps.photoview)//"com.bm.photoview:library:1.4.1")
-    embed files('libs/TbsFileSdk_base_armeabi__release_1.0.5.6000022.20230906113337.aar')
+    embed files('libs/TbsFileSdk_base_arm64_release_1.0.5.6000030.20231109143447.aar')
     implementation(openfilelibs.openfile)
 //    implementation(deps.folioreader){
 //        exclude group: 'com.fasterxml.jackson.core', module: 'jackson-core'

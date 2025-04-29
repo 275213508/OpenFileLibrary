@@ -59,23 +59,26 @@ public class TbsInstance {
                 String key = SPUtils.getInstance().getString(config.INSTANCE.getTbsLicenseKey());
                 TbsFileInterfaceImpl.setLicenseKey(key);
                 ITbsReaderCallback callback = (actionType, args, result) -> {
+                    LogUtils.e("openfile initX5Environment- actionType:" + actionType + " args:" + args + " result:" + result);
                     // ITbsReader.OPEN_FILEREADER_ASYNC_LOAD_READER_ENTRY_CALLBACK 的值为 7002，不是错误码
                     if (ITbsReader.OPEN_FILEREADER_ASYNC_LOAD_READER_ENTRY_CALLBACK == actionType) {
                         int ret = (int) args; // 错误码为actionType == 7002时 args的值
                         if (ret == 0) {
                             // 初始化成功
-                            LogUtils.e("腾讯TBS初始化成功");
+                            LogUtils.e("openfile initX5Environment- 腾讯TBS初始化成功");
                             SharedPreferencesUtils.init(applicationContext);
                             SharedPreferencesUtils.put(TBS, 1);
                         } else {
                             // 初始化失败
-                            LogUtils.e("腾讯TBS初始化失败");
+                            LogUtils.e("openfile initX5Environment- 腾讯TBS初始化失败");
                             SharedPreferencesUtils.init(applicationContext);
                             SharedPreferencesUtils.put(TBS, 0);
                         }
                     }
                 };
                 TbsFileInterfaceImpl.initEngineAsync(applicationContext, callback);
+            }else{
+                LogUtils.e("已经初始化");
             }
 
         } catch (Exception e) {

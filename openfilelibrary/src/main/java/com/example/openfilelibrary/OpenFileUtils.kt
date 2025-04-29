@@ -13,6 +13,7 @@ import com.example.openfilelibrary.utile.common.config.tbsLicenseKey
 import com.example.openfilelibrary.utile.common.getOpenFilePrivate
 import com.example.openfilelibrary.utile.common.getSuffixName1
 import com.hjq.toast.Toaster
+import com.wx.android.common.util.LogUtils
 import com.wx.android.common.util.SharedPreferencesUtils
 
 
@@ -27,6 +28,29 @@ object OpenFileUtils {
         SPUtils.getInstance().put(mFilePrivateKey, filePrivate)
     }
 
+    /**
+     * @param tbsLicenseKeyed 腾讯TBS授权码
+     * @param isInit 0:初始化成功 1:初始化失败 -1:重新初始化
+     * */
+    fun setTFBLicenseKey(context: Context,tbsLicenseKeyed: String,isInit :Int= -1) {
+        SPUtils.getInstance().put(tbsLicenseKey, tbsLicenseKeyed)
+        SharedPreferencesUtils.init(context)
+        when(isInit){
+            -1->{
+                TbsInstance.getInstance().initX5Environment(context)
+            }
+            0->{
+                // 初始化失败
+                LogUtils.e("openfile setTFBLicenseKey- 腾讯TBS初始化失败")
+                SharedPreferencesUtils.put(TbsInstance.TBS, 0)
+            }
+            1->{
+                // 初始化成功
+                LogUtils.e("openfile setTFBLicenseKey- 腾讯TBS初始化成功")
+                SharedPreferencesUtils.put(TbsInstance.TBS, 1)
+            }
+        }
+    }
     fun setTFBLicenseKey(context: Context,tbsLicenseKeyed: String) {
         SPUtils.getInstance().put(tbsLicenseKey, tbsLicenseKeyed)
         TbsInstance.getInstance().initX5Environment(context)

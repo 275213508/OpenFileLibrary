@@ -23,6 +23,7 @@ import com.example.openfilelibrary.utile.common.getSuffixName1
 import com.example.openfilelibrary.video.OpenVideoPlayActivity
 import com.hjq.toast.Toaster
 import com.lxj.xpopup.XPopup
+import com.tencent.tbs.reader.TbsFileInterfaceImpl
 import com.wx.android.common.util.SharedPreferencesUtils
 import java.io.File
 
@@ -39,14 +40,6 @@ class OpenFileViewModel {
         openPDF(context, context.filesDir.path, downUri, "")
     }
 
-    fun openPDF(context: FragmentActivity, savePath: String, downUri: String, fileName: String?) {
-        DownLoadUtile.downloadFile(context, savePath, downUri, fileName, object : ICell<File> {
-            override fun cell(cell: File) {
-                PDFPreView(cell.toUri()).show(context.supportFragmentManager)
-            }
-        })
-    }
-
     /**
      * 打开腾讯Tbs阅读器
      * @return true:打开腾讯阅读器 false:tbs没有使用权限,需要购买
@@ -56,12 +49,21 @@ class OpenFileViewModel {
         var isSanHu = SPUtils.getInstance().getBoolean(config.isSanHuApp)
         val suffix = if (fileName.isNullOrBlank()) getSuffixName1(fileUrl) else fileName
         var isinit =  SharedPreferencesUtils.getInt(TbsInstance.TBS)
-        Log.i("TbsPreViewCallback :","isSanHu:$isSanHu/$isinit ")
-        if (isSanHu&&isinit==1) {
+        Log.i("TbsPreViewCallback :","isSanHu:$isSanHu/isinit:$isinit/canopen:${TbsFileInterfaceImpl.canOpenFileExt(File(fileUrl).extension)} /${File(fileUrl).extension}")
+        Log.i("TbsPreViewCallback url:", "openTBS: $fileUrl/$fileName/$APP_File_Provider")
+        if (isSanHu&&isinit==1&&TbsFileInterfaceImpl.canOpenFileExt(File(fileUrl).extension)) {
             TBSPreView(fileUrl.toUri(), filePrivater).show(context.supportFragmentManager)
             return true
         }
         return false
+    }
+
+    fun openPDF(context: FragmentActivity, savePath: String, downUri: String, fileName: String?) {
+        DownLoadUtile.downloadFile(context, savePath, downUri, fileName, object : ICell<File> {
+            override fun cell(cell: File) {
+                PDFPreView(cell.toUri()).show(context.supportFragmentManager)
+            }
+        })
     }
 
 //    var folioReader: FolioReader? = null

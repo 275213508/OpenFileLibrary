@@ -57,7 +57,7 @@ internal class TBSPreView(var FileLocalUri: Uri, var APP_File_Provider: String) 
         SingleClick(bind.imgCancel) {
             dismiss()
         }
-        openTbsFile(requireActivity(), FileLocalUri.path!!, getSuffixName1(FileLocalUri.path!!))
+        openTbsFile(requireActivity(), FileLocalUri.path!!, File(FileLocalUri.path).extension)
     }
 
     private fun openTbsFile(context: FragmentActivity, filePath: String, fileExt: String) {
@@ -96,6 +96,7 @@ internal class TBSPreView(var FileLocalUri: Uri, var APP_File_Provider: String) 
                 val ret = TbsFileInterfaceImpl.getInstance().openFileReader(
                     context, param, callback, bind.tbsView
                 )
+                LogUtils.i("TbsFileInterfaceImpl.getInstance().openFileReader: $ret")
             })
 
         } else {
