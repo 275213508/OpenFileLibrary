@@ -5,6 +5,7 @@ import com.example.openfilelibrary.R
 import com.example.openfilelibrary.base.BaseBottomSheetFrag
 import com.example.openfilelibrary.databinding.TxtPlayerBinding
 import com.example.openfilelibrary.utile.ScreenUtils
+import com.example.openfilelibrary.utile.common.SingleClick
 import com.hjq.toast.Toaster
 
 /**
@@ -12,7 +13,7 @@ import com.hjq.toast.Toaster
  * @date 2024/9/12 9:20
  * @param type 1:富文本
  */
-internal class TxtPreView(var str: String, var type: Int?) : BaseBottomSheetFrag() {
+internal class TxtPreView(var name:String = "",var str: String, var type: Int?) : BaseBottomSheetFrag() {
     private lateinit var binding: TxtPlayerBinding
 
     override fun getLayoutHeight(): Int {
@@ -31,9 +32,11 @@ internal class TxtPreView(var str: String, var type: Int?) : BaseBottomSheetFrag
         binding = TxtPlayerBinding.bind(rootView!!)
         if (str.isNullOrBlank()){
             Toaster.show("内容为空")
-            dismiss()
-            return
         }
+        SingleClick(binding.imgCancel){
+            dismiss()
+        }
+        binding.tvTitle.text = name
         when (type) {
             1 -> {//富文本
                 binding.txt.text = Html.fromHtml(str)

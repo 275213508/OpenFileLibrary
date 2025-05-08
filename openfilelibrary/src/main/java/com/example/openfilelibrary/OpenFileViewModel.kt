@@ -124,7 +124,7 @@ class OpenFileViewModel {
             object : ICell<File> {
                 override fun cell(cell: File) {
                     FileIOUtils.readFile2String(cell).let { text ->
-                        TxtPreView(text, null).show(context.supportFragmentManager)
+                        TxtPreView(cell.name,text, null).show(context.supportFragmentManager)
                     }
                 }
             })
@@ -139,7 +139,7 @@ class OpenFileViewModel {
             object : ICell<File> {
                 override fun cell(cell: File) {
                     FileIOUtils.readFile2String(cell).let { text ->
-                        TxtPreView(text, 1).show(context.supportFragmentManager)
+                        TxtPreView(cell.name,text, 1).show(context.supportFragmentManager)
                     }
                 }
             })
