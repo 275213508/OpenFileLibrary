@@ -1,10 +1,14 @@
 package com.example.openfilelibrary.utile.common
 
 import android.content.Context
+import android.os.Environment
 import android.view.View
 import com.blankj.utilcode.util.ClickUtils
+import com.blankj.utilcode.util.LogUtils
 import com.blankj.utilcode.util.SPUtils
 import com.example.openfilelibrary.utile.common.config.mFilePrivateKey
+import java.io.File
+
 
 /**
  * @author zyju
@@ -79,4 +83,27 @@ fun getOpenFilePrivate(context: Context): String {
         }
     }
     return filePrivater
+}
+/**是否内部存储*/
+fun isInternalDirectory(context: Context,file: File): Boolean {
+    // 获取内部存储路径
+    val internalDir: File = context.getFilesDir()
+    val internalPath = internalDir.absolutePath
+// 获取外部存储路径
+    val externalDir = Environment.getExternalStorageDirectory()
+    val externalPath = externalDir.absolutePath
+    // 判断文件路径类型
+    if (file.getAbsolutePath().startsWith(internalPath)) {
+        // 内部存储路径
+        LogUtils.d("File Path", "Internal Storage");
+        return true
+    } else if (file.getAbsolutePath().startsWith(externalPath)) {
+        // 外部存储路径
+        LogUtils.d("File Path", "External Storage");
+        return false
+    } else {
+        // 其他路径
+        LogUtils.d("File Path", "Unknown Storage");
+        return false
+    }
 }

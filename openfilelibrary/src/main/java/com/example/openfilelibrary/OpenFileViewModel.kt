@@ -160,7 +160,7 @@ class OpenFileViewModel {
                 val intent = Intent(Intent.ACTION_VIEW)
                 val fileUri = FileProvider.getUriForFile(context, filePrivater, file)
                 intent.setDataAndType(fileUri, OpenFileUtils.getFileIntentType(file.extension))
-                intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY)
+                intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
                 context.startActivity(intent)
             } catch (e: Exception) {
                 LogUtils.e("openOther", "error:${e.message}\n $filePrivate")

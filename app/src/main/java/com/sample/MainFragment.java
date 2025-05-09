@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.view.Gravity;
 import android.view.View;
+import android.webkit.MimeTypeMap;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -41,11 +42,12 @@ public class MainFragment extends Fragment {
             "https://dj-aers-gaefb.oss-cn-beijing.aliyuncs.com/gaefb_annex/20240925/a0166ee6-8f65-4643-ba33-3cd7a9597c0c.mp4",
 //            Environment.getExternalStorageDirectory()+ "/efb/flight_data/953352877-1-30011.mp4",
             Environment.getExternalStorageDirectory() + "/storage/emulated/0/efb/flight_data/电子飞行图夹使用说明.pdf",
-            Environment.getExternalStorageDirectory() + "/efb/.nomedia/入职申请书.doc",
+            Environment.getExternalStorageDirectory() + "/efb/flight_data/模块开发说明文档.docx",
             Environment.getExternalStorageDirectory() + "/efb/flight_data/text1.txt",
             Environment.getExternalStorageDirectory() + "/efb/测试.jpg",
             Environment.getExternalStorageDirectory() + "/efb/flight_data/三体3：死神永生.epub",
     };
+
 
 
     @Override

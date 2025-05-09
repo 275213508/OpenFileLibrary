@@ -88,7 +88,7 @@ public class PreImageDialog extends Dialog {
             View page1 = LayoutInflater.from(context).inflate(R.layout.dialog_img, null);
             PhotoView pre = page1.findViewById(R.id.phot);
             TextView name = page1.findViewById(R.id.img_name);
-            if (fileName.size()== path.size()) {
+            if (fileName!=null&&fileName.size()== path.size()) {
                 name.setText(fileName.get(i));
             }
             pre.enable();

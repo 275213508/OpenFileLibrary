@@ -140,7 +140,7 @@ internal class TBSPreView(var FileLocalUri: Uri, var APP_File_Provider: String) 
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                     val apkUri = FileProvider.getUriForFile(context, APP_File_Provider, File(filePath))
                     intent.setDataAndType(apkUri, OpenFileUtils.getFileIntentType(fileType))
-                    intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+                    intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
                 } else {
                     intent.setDataAndType(Uri.fromFile(File(filePath)), OpenFileUtils.getFileIntentType(fileType))
                 }
