@@ -27,11 +27,6 @@
       implementation(deps.XPopup)//'com.github.li-xiaojun:XPopup:2.10.0')
       implementation files('libs/TbsFileSdk_base_armeabi__release_1.0.5.6000022.20230906113337.aar')
       implementation(openfilelibs.openfile)
-      implementation(deps.folioreader){
-        exclude group: 'com.fasterxml.jackson.core', module: 'jackson-core'
-        exclude group: 'com.fasterxml.jackson.core', module: 'jackson-annotations'
-        exclude group: 'com.fasterxml.jackson.core', module: 'jackson-databind'
-      }
       implementation files('libs/openfilelibrary-release.aar')
     }
  ```   

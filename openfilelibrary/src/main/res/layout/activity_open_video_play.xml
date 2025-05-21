@@ -42,11 +42,11 @@
 
     <ImageView
         android:id="@+id/img_cancel"
-        android:layout_width="24dp"
-        android:layout_height="24dp"
+        android:layout_width="34dp"
+        android:layout_height="34dp"
         android:layout_gravity="end"
         android:layout_margin="15dp"
         android:src="@drawable/qmui_icon_popup_close"
-        app:layout_constraintStart_toStartOf="@id/videoView"
+        app:layout_constraintEnd_toEndOf="@id/videoView"
         app:layout_constraintTop_toTopOf="@id/videoView" />
 </androidx.constraintlayout.widget.ConstraintLayout>
