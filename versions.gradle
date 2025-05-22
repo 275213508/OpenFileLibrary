@@ -119,6 +119,7 @@ opens.openfile = [
         (dep.GsonFactory),
         (dep.pdfViewer),
         (dep.common),
+//        (dep.folioreader),
 ]
 
 ext {
