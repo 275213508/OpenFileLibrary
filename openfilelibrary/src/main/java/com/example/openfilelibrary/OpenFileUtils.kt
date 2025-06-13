@@ -62,15 +62,14 @@ object OpenFileUtils {
     /**
      * @param fileUrl 文件下载地址
      * */
-    fun openFile(context: FragmentActivity, fileName: String, filePrivate: String = "") {
-        openFile(context, context.filesDir.path, fileName, null, filePrivate)
+    fun openFile(context: FragmentActivity, fileUrl: String, filePrivate: String = "") {
+        openFile(context, context.filesDir.path, fileUrl, null, filePrivate)
     }
-
     /**
      * @param fileUrl 文件下载地址
      * */
-    fun openFile(context: FragmentActivity, fileName: String) {
-        openFile(context, context.filesDir.path, fileName, null)
+    fun openFile(context: FragmentActivity, fileUrl: String) {
+        openFile(context, context.filesDir.path, fileUrl, null, null)
     }
 
     /**
@@ -86,7 +85,7 @@ object OpenFileUtils {
      * @param downUri 文件下载地址
      * @param fileName 文件名,后台反馈的下载路径有时没有文件名,识别文件格式需要传文件名, 没有文件名可以传null
      * */
-    fun openFile(context: FragmentActivity, savePath: String?, downUri: String, fileName: String?, filePrivate: String = "") {
+    fun openFile(context: FragmentActivity, savePath: String?, downUri: String, fileName: String?, filePrivate: String? = "") {
         try {
             SharedPreferencesUtils.init(context.application)
             if (!Toaster.isInit()) {

@@ -62,7 +62,7 @@ public class MainFragment extends Fragment {
         linearLayout.addView(createLabel(""));
 
 //        OpenFileUtils.INSTANCE.setFilePrivate("com.efb.views.sanhu.fileprovider");
-        OpenFileUtils.INSTANCE.setFilePrivate("com.sample.fileprovider");
+        OpenFileUtils.INSTANCE.setFilePrivate(APP_File_Provider);
         OpenFileUtils.INSTANCE.setIsSanHuApp(true);
         OpenFileUtils.INSTANCE.setTFBLicenseKey(requireContext(),"nGQic8OPFLleGnz7gW7Rpesab5bmjb2mzxeb9mqwC0t2W6YMn9tiOeTQq2dX83i7",-1);
 
@@ -93,7 +93,7 @@ public class MainFragment extends Fragment {
                     String path = fileUrls[index];
                     File file = new File(path);
                     boolean isex = file.exists();
-                    OpenFileUtils.INSTANCE.openFile(requireActivity(), getContext().getFilesDir() + "/efb/flight_data/", path, null, APP_File_Provider);
+                    OpenFileUtils.INSTANCE.openFile(requireActivity(), getContext().getFilesDir() + "/efb/flight_data/", path, null,null);
                 }
             });
         } else {
