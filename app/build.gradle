@@ -111,7 +111,8 @@ dependencies {
 //        exclude group: 'androidx.appcompat'
 //        exclude group: 'androidx.core'
 //    }
-
+    implementation 'com.squareup.leakcanary:leakcanary-android:2.14'
+//    implementation "com.squareup.leakcanary:leakcanary-android-no-op:1.5.2"
     implementation files('libs/blur-behind-1.1.aar')
 
     implementation 'com.github.evrencoskun:TableView:v0.8.9.4'

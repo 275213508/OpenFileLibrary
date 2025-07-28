@@ -1,8 +1,11 @@
 package com.example.openfilelibrary
 
 import android.content.Context
+import android.content.Intent
+import androidx.activity.result.ActivityResultLauncher
 import androidx.fragment.app.FragmentActivity
 import com.blankj.utilcode.util.SPUtils
+import com.example.openfilelibrary.base.ICell
 import com.example.openfilelibrary.utile.TbsInstance
 import com.example.openfilelibrary.utile.common.FileType
 import com.example.openfilelibrary.utile.common.ImageType
@@ -13,12 +16,14 @@ import com.example.openfilelibrary.utile.common.config.tbsLicenseKey
 import com.example.openfilelibrary.utile.common.getOpenFilePrivate
 import com.example.openfilelibrary.utile.common.getSuffixName1
 import com.hjq.toast.Toaster
+import com.tencent.tbs.logger.TBSLogger
 import com.wx.android.common.util.LogUtils
 import com.wx.android.common.util.SharedPreferencesUtils
 
 
 /**
  * @author zyju
+ * @description:打开视频,音频,以及不支持的文档时需要调用 setActivityResultLauncher
  * @date 2024/8/20 17:39
  */
 object OpenFileUtils {
@@ -32,30 +37,34 @@ object OpenFileUtils {
      * @param tbsLicenseKeyed 腾讯TBS授权码
      * @param isInit 0:初始化成功 1:初始化失败 -1:重新初始化
      * */
-    fun setTFBLicenseKey(context: Context,tbsLicenseKeyed: String,isInit :Int= -1) {
+    fun setTFBLicenseKey(context: Context, tbsLicenseKeyed: String, isInit: Int = -1) {
         SPUtils.getInstance().put(tbsLicenseKey, tbsLicenseKeyed)
         SharedPreferencesUtils.init(context)
-        when(isInit){
-            -1->{
+        when (isInit) {
+            -1 -> {
                 TbsInstance.getInstance().initX5Environment(context)
             }
-            0->{
+
+            0 -> {
                 // 初始化失败
                 LogUtils.e("openfile setTFBLicenseKey- 腾讯TBS初始化失败")
                 SharedPreferencesUtils.put(TbsInstance.TBS, 0)
             }
-            1->{
+
+            1 -> {
                 // 初始化成功
                 LogUtils.e("openfile setTFBLicenseKey- 腾讯TBS初始化成功")
                 SharedPreferencesUtils.put(TbsInstance.TBS, 1)
             }
         }
     }
-    fun setTFBLicenseKey(context: Context,tbsLicenseKeyed: String) {
+
+    fun setTFBLicenseKey(context: Context, tbsLicenseKeyed: String) {
         SPUtils.getInstance().put(tbsLicenseKey, tbsLicenseKeyed)
         TbsInstance.getInstance().initX5Environment(context)
     }
-    fun setIsSanHuApp(isSanHu : Boolean) {
+
+    fun setIsSanHuApp(isSanHu: Boolean) {
         SPUtils.getInstance().put(isSanHuApp, isSanHu)
     }
 
@@ -63,13 +72,14 @@ object OpenFileUtils {
      * @param fileUrl 文件下载地址
      * */
     fun openFile(context: FragmentActivity, fileUrl: String, filePrivate: String = "") {
-        openFile(context, context.filesDir.path, fileUrl, null, filePrivate)
+        openFile(context, context.filesDir.path, fileUrl, null, filePrivate, null)
     }
+
     /**
      * @param fileUrl 文件下载地址
      * */
     fun openFile(context: FragmentActivity, fileUrl: String) {
-        openFile(context, context.filesDir.path, fileUrl, null, null)
+        openFile(context, context.filesDir.path, fileUrl, null, null, null)
     }
 
     /**
@@ -77,7 +87,12 @@ object OpenFileUtils {
      * @param name 文件名 有时下载地址没有文件名
      * */
     fun openFile(context: FragmentActivity, fileUrl: String, name: String, filePrivate: String = "") {
-        openFile(context, context.filesDir.path, fileUrl, name, filePrivate)
+        openFile(context, context.filesDir.path, fileUrl, name, filePrivate, null)
+    }
+
+    private var launcher: ActivityResultLauncher<Intent>? = null
+    fun setActivityResultLauncher(launch: ActivityResultLauncher<Intent>?) {
+        launcher = launch
     }
 
     /**
@@ -85,7 +100,7 @@ object OpenFileUtils {
      * @param downUri 文件下载地址
      * @param fileName 文件名,后台反馈的下载路径有时没有文件名,识别文件格式需要传文件名, 没有文件名可以传null
      * */
-    fun openFile(context: FragmentActivity, savePath: String?, downUri: String, fileName: String?, filePrivate: String? = "") {
+    fun openFile(context: FragmentActivity, savePath: String?, downUri: String, fileName: String?, filePrivate: String? = "", resultListener: ICell<Unit>? = null) {
         try {
             SharedPreferencesUtils.init(context.application)
             if (!Toaster.isInit()) {
@@ -96,12 +111,14 @@ object OpenFileUtils {
                 filePrivate = getOpenFilePrivate(context)
             }
             var suffix = getSuffixName1(downUri)
-            if (!fileName.isNullOrBlank()&& fileName!="null") {
+            if (!fileName.isNullOrBlank() && fileName != "null") {
                 suffix = getSuffixName1(fileName)
             }
             when (suffix.uppercase()) {
                 FileType.TXT.name -> {
-                    openFileViewModel.openTxt(context, downUri, savePath)
+                    openFileViewModel.openTxt(context, downUri, savePath) {
+                        resultListener?.cell(Unit)
+                    }
                 }
 
                 FileType.DOC.name,
@@ -114,14 +131,22 @@ object OpenFileUtils {
                 FileType.DWG.name,
                 FileType.CHM.name,
                 FileType.RTF.name -> {
-                    if (!openFileViewModel.openTBS(context,downUri,fileName, filePrivate)) {
-                        openFileViewModel.openOther(context, downUri, filePrivate)
+                    if (!openFileViewModel.openTBS(context, downUri, fileName, filePrivate) {
+                            resultListener?.cell(Unit)
+                        }) {
+                        openFileViewModel.openOther(context, downUri, filePrivate, launcher)
                     }
                 }
 
                 FileType.PDF.name -> {
-                    if (!openFileViewModel.openTBS(context, downUri,fileName, filePrivate)) {
-                        savePath?.let { openFileViewModel.openPDF(context, it, downUri, fileName) }
+                    if (!openFileViewModel.openTBS(context, downUri, fileName, filePrivate) {
+                            resultListener?.cell(Unit)
+                        }) {
+                        savePath?.let {
+                            openFileViewModel.openPDF(context, it, downUri, fileName) {
+                                resultListener?.cell(Unit)
+                            }
+                        }
                     }
                 }
                 //EPUB 目前lib包集成引用太多,使用频率太低,暂不加入
@@ -134,7 +159,9 @@ object OpenFileUtils {
 //                ZipType.EXE.name->{}
 //                ZipType.ISO.name->{}
                 ZipType.HTML.name -> {
-                    openFileViewModel.openHTML(context, downUri)
+                    openFileViewModel.openHTML(context, downUri){
+                        resultListener?.cell(Unit)
+                    }
                 }
 
 //                ImageType.TIFF.name,
@@ -143,25 +170,29 @@ object OpenFileUtils {
 //                ImageType.BMP.name,
                 ImageType.JPEG.name,
                 ImageType.GIF.name -> {
-                    openFileViewModel.openImage(context, downUri,fileName)
+                    openFileViewModel.openImage(context, downUri, fileName){
+                        resultListener?.cell(Unit)
+                    }
                 }
 //                ImageType.WAV.name->{}
 //                ImageType.WMA.name->{}
 
                 ImageType.MP3.name -> {
-                    openFileViewModel.openVideo(context, downUri,fileName)
+                    openFileViewModel.openVideo(context, downUri, fileName, launcher)
                 }
 
                 ImageType.MP4.name -> {
-                    openFileViewModel.openVideo(context, downUri,fileName)
+                    openFileViewModel.openVideo(context, downUri, fileName, launcher)
                 }
 //                ImageType.MOV.name->{}
 //                ImageType.MPEG.name->{}
 //                ImageType.AVI.name->{}
 //                ImageType.FLV.name->{}
                 else -> {
-                    if (!openFileViewModel.openTBS(context, downUri,fileName, filePrivate)) {
-                        openFileViewModel.openOther(context, downUri, filePrivate)
+                    if (!openFileViewModel.openTBS(context, downUri, fileName, filePrivate){
+                        resultListener?.cell(Unit)
+                        }) {
+                        openFileViewModel.openOther(context, downUri, filePrivate,launcher)
                     }
                 }
             }

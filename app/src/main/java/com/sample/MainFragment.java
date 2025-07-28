@@ -8,15 +8,17 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.view.Gravity;
 import android.view.View;
-import android.webkit.MimeTypeMap;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.blankj.utilcode.util.LogUtils;
 import com.example.openfilelibrary.OpenFileUtils;
 
 import java.io.File;
@@ -49,11 +51,13 @@ public class MainFragment extends Fragment {
     };
 
 
-
+    ActivityResultLauncher<Intent> result = null ;
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
+        result = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result1 -> {
+            LogUtils.i("openfile result1:"+result1);
+        });
         LinearLayout linearLayout = view.findViewById(R.id.samples);
         linearLayout.addView(createLabel(""));
         for (String title : titles) {
@@ -93,7 +97,12 @@ public class MainFragment extends Fragment {
                     String path = fileUrls[index];
                     File file = new File(path);
                     boolean isex = file.exists();
-                    OpenFileUtils.INSTANCE.openFile(requireActivity(), getContext().getFilesDir() + "/efb/flight_data/", path, null,null);
+//                    if(path.endsWith(".mp3")||path.endsWith(".mp4")){
+//                        OpenFileUtils.INSTANCE.setActivityResultLauncher(result);
+//                    }
+                    OpenFileUtils.INSTANCE.openFile(requireActivity(), getContext().getFilesDir() + "/efb/flight_data/", path, null, null, cell -> {
+                        LogUtils.i("openfile cell:"+cell);
+                    });
                 }
             });
         } else {

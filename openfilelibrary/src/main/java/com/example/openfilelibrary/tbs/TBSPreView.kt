@@ -63,10 +63,10 @@ internal class TBSPreView(var FileLocalUri: Uri, var APP_File_Provider: String) 
     private fun openTbsFile(context: FragmentActivity, filePath: String, fileExt: String) {
         var code = SPUtils.getInstance().getInt(TbsInstance.TBS)//TbsInstance.getInstance().initEngine(context)
         //判断是否初始化成功
-        Log.i("TbsPreViewCallback :","TbsPreViewCallback :" + (code==1))
+        LogUtils.i("TbsPreViewCallback :","TbsPreViewCallback :" + (code==1))
         //3、设置回调
         val callback: ITbsReaderCallback = ITbsReaderCallback { actionType, args, result ->
-           Log.i("TbsPreViewCallback :", "actionType:$actionType,args:$args,result:$result")
+           LogUtils.i("TbsPreViewCallback :", "actionType:$actionType,args:$args,result:$result")
             if (ITbsReader.OPEN_FILEREADER_STATUS_UI_CALLBACK == actionType) {
                 bind.loadProgress.visibility = View.GONE
                 if (args is Bundle) {

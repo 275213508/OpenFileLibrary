@@ -2,6 +2,7 @@ package com.example.openfilelibrary.base
 
 import android.app.Dialog
 import android.content.Context
+import android.content.DialogInterface
 import android.graphics.Color
 import android.os.Bundle
 import android.view.View
@@ -152,7 +153,15 @@ abstract class BaseBottomSheetFrag : BottomSheetDialogFragment() {
             dismiss()
         }
     }
-
+    private var mOnDismissListener: DialogInterface.OnDismissListener? = null
+    fun setOnDismissListener(listener: DialogInterface.OnDismissListener?): BaseBottomSheetFrag {
+        mOnDismissListener = listener
+        return  this
+    }
+    override fun onDismiss(dialog: DialogInterface) {
+        super.onDismiss(dialog)
+        mOnDismissListener?.onDismiss(dialog)
+    }
 
     open fun show(manager: FragmentManager) {
         super.show(manager, "")

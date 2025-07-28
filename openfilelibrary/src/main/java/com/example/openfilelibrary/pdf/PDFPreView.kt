@@ -59,7 +59,7 @@ internal class PDFPreView(var FileLocalUri: Uri): BaseBottomSheetFrag() {
 //            .onDrawAll(onDrawListener)
             .onLoad(object :OnLoadCompleteListener{
                 override fun loadComplete(nbPages: Int) {
-                    Log.i(TAG, "loadComplete: "+nbPages)
+                    LogUtils.i(TAG, "loadComplete: "+nbPages)
                 }
 
             }) // called after document is loaded and starts to be rendered
@@ -68,7 +68,7 @@ internal class PDFPreView(var FileLocalUri: Uri): BaseBottomSheetFrag() {
             .onError(object :OnErrorListener{
                 override fun onError(t: Throwable?) {
                     bind.loadProgress.visibility = android.view.View.GONE
-                    Log.i(TAG, "onError: ${t?.message}")
+                    LogUtils.i(TAG, "onError: ${t?.message}")
                 }
 
             })
@@ -77,7 +77,7 @@ internal class PDFPreView(var FileLocalUri: Uri): BaseBottomSheetFrag() {
 
                 override fun onInitiallyRendered(nbPages: Int, pageWidth: Float, pageHeight: Float) {
                     bind.loadProgress.visibility = android.view.View.GONE
-                    Log.i(TAG, "onInitiallyRendered: $nbPages")
+                    LogUtils.i(TAG, "onInitiallyRendered: $nbPages")
                 }
 
             }) // called after document is rendered for the first time

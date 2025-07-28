@@ -101,7 +101,7 @@ public class DictionaryAdapter extends RecyclerView.Adapter<DictionaryAdapter.Di
 //        holder.sound.setOnClickListener(new View.OnClickListener() {
 //            @Override
 //            public void onClick(View v) {
-//                Log.i("DictionaryAdapter", "clicked");
+//                LogUtils.i("DictionaryAdapter", "clicked");
 //                if (res.getPronunciations() != null) {
 //                    final String url = getAudioUrl(res.getPronunciations());
 //                    callBack.playMedia(url);
