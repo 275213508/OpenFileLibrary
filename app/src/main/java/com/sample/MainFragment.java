@@ -43,7 +43,8 @@ public class MainFragment extends Fragment {
             "https://www.baidu.com/img/PCtm_d9c8750bed0b3c7d089fa7d55720d6cf.png",
             "https://dj-aers-gaefb.oss-cn-beijing.aliyuncs.com/gaefb_annex/20240925/a0166ee6-8f65-4643-ba33-3cd7a9597c0c.mp4",
 //            Environment.getExternalStorageDirectory()+ "/efb/flight_data/953352877-1-30011.mp4",
-            Environment.getExternalStorageDirectory() + "/storage/emulated/0/efb/flight_data/电子飞行图夹使用说明.pdf",
+//            Environment.getExternalStorageDirectory() + "/storage/emulated/0/efb/flight_data/电子飞行图夹使用说明.pdf",
+            "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf",
             Environment.getExternalStorageDirectory() + "/efb/flight_data/模块开发说明文档.docx",
             Environment.getExternalStorageDirectory() + "/efb/flight_data/text1.txt",
             Environment.getExternalStorageDirectory() + "/efb/测试.jpg",
@@ -97,9 +98,9 @@ public class MainFragment extends Fragment {
                     String path = fileUrls[index];
                     File file = new File(path);
                     boolean isex = file.exists();
-//                    if(path.endsWith(".mp3")||path.endsWith(".mp4")){
-//                        OpenFileUtils.INSTANCE.setActivityResultLauncher(result);
-//                    }
+                    if(path.endsWith(".mp3")||path.endsWith(".mp4")){
+                        OpenFileUtils.INSTANCE.setActivityResultLauncher(result);
+                    }
                     OpenFileUtils.INSTANCE.openFile(requireActivity(), getContext().getFilesDir() + "/efb/flight_data/", path, null, null, cell -> {
                         LogUtils.i("openfile cell:"+cell);
                     });

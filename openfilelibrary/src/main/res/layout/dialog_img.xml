@@ -2,12 +2,16 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
     android:background="@color/bg_toum"
     android:orientation="vertical">
     <TextView
         android:id="@+id/img_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        tools:text="图片名称"
+        android:gravity="center"
+        android:textColor="@color/white"
         />
     <com.bm.library.PhotoView
         android:id="@+id/phot"
