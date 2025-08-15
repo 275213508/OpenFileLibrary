@@ -1,15 +1,11 @@
 package com.example.openfilelibrary.utile.common
 
-import android.os.Build
-import android.os.Environment
 import android.util.Patterns
 import android.webkit.URLUtil
 import androidx.core.net.toUri
 import androidx.fragment.app.FragmentActivity
-import com.blankj.utilcode.util.FileIOUtils
 import com.blankj.utilcode.util.FileUtils
 import com.blankj.utilcode.util.LogUtils
-import com.blankj.utilcode.util.PermissionUtils
 import com.blankj.utilcode.util.ThreadUtils
 import com.blankj.utilcode.util.ThreadUtils.runOnUiThread
 import com.example.openfilelibrary.base.ICell
@@ -138,21 +134,16 @@ object DownLoadUtile {
             return
         }
         var base = urs[0] +downUri.toUri().authority
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            PermissionUtils.requestWriteSettings(object : PermissionUtils.SimpleCallback {
-                override fun onGranted() {
-                    download(base, downUri, dirpath, fileName, dialog, icell)
-                }
-
-                override fun onDenied() {
-                    dialog.dismiss()
+        XXPermissionUtil.requestWritePermission(context,true,object :ICell< Boolean>{
+            override fun cell(cell: Boolean) {
+                dialog.dismiss()
+               if (cell){
+                   download(base, downUri, dirpath, fileName, dialog, icell)
+               }else{
                    Toaster.show("需要读写权限才能下载文件")
-                }
-
-            })
-        }else {
-            download(base, downUri, dirpath, fileName, dialog, icell)
-        }
+               }
+            }
+        })
     }
     private fun saveFile(body: ResponseBody,file: File,iCell: ICell<Int>) {
         // 创建输入流
