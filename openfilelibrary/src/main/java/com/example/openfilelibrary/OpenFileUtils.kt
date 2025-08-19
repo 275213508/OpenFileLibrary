@@ -159,7 +159,7 @@ object OpenFileUtils {
 //                ZipType.EXE.name->{}
 //                ZipType.ISO.name->{}
                 ZipType.HTML.name -> {
-                    openFileViewModel.openHTML(context, downUri){
+                    openFileViewModel.openHTML(context, downUri) {
                         resultListener?.cell(Unit)
                     }
                 }
@@ -170,7 +170,7 @@ object OpenFileUtils {
 //                ImageType.BMP.name,
                 ImageType.JPEG.name,
                 ImageType.GIF.name -> {
-                    openFileViewModel.openImage(context, downUri, fileName){
+                    openFileViewModel.openImage(context, downUri, fileName) {
                         resultListener?.cell(Unit)
                     }
                 }
@@ -189,10 +189,10 @@ object OpenFileUtils {
 //                ImageType.AVI.name->{}
 //                ImageType.FLV.name->{}
                 else -> {
-                    if (!openFileViewModel.openTBS(context, downUri, fileName, filePrivate){
-                        resultListener?.cell(Unit)
+                    if (!openFileViewModel.openTBS(context, downUri, fileName, filePrivate) {
+                            resultListener?.cell(Unit)
                         }) {
-                        openFileViewModel.openOther(context, downUri, filePrivate,launcher)
+                        openFileViewModel.openOther(context, downUri, filePrivate, launcher)
                     }
                 }
             }

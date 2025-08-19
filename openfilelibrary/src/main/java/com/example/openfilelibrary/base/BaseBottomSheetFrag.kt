@@ -36,7 +36,7 @@ abstract class BaseBottomSheetFrag : BottomSheetDialogFragment() {
             //禁止拖拽，
             if (newState == BottomSheetBehavior.STATE_DRAGGING && !IsScrollable()) {
                 // 设置为收缩状态
-                mBehavior!!.state = BottomSheetBehavior.STATE_EXPANDED
+                mBehavior?.state = BottomSheetBehavior.STATE_EXPANDED
             }
         }
 
@@ -51,7 +51,7 @@ abstract class BaseBottomSheetFrag : BottomSheetDialogFragment() {
 
     override fun onStart() {
         super.onStart()
-        mBehavior!!.state = BottomSheetBehavior.STATE_EXPANDED
+        mBehavior?.state = BottomSheetBehavior.STATE_EXPANDED
     }
 
     override fun onDestroy() {
@@ -81,7 +81,7 @@ abstract class BaseBottomSheetFrag : BottomSheetDialogFragment() {
 //        ((View) rootView.getParent()).setBackgroundColor(Color.TRANSPARENT);
         //重置高度
         if (dialog != null) {
-            val bottomSheet = dialog!!.findViewById<View>(R.id.design_bottom_sheet)
+            val bottomSheet = dialog?.findViewById<View>(R.id.design_bottom_sheet)
             bottomSheet?.layoutParams?.height = getLayoutHeight()
             rootView?.post {
                 mBehavior?.setPeekHeight(rootView?.height?:100)
@@ -148,7 +148,7 @@ abstract class BaseBottomSheetFrag : BottomSheetDialogFragment() {
      */
     fun close(isAnimation: Boolean) {
         if (isAnimation) {
-            if (mBehavior != null) mBehavior!!.state = BottomSheetBehavior.STATE_HIDDEN
+            if (mBehavior != null) mBehavior?.state = BottomSheetBehavior.STATE_HIDDEN
         } else {
             dismiss()
         }

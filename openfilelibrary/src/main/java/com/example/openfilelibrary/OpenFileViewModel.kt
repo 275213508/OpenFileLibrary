@@ -64,15 +64,21 @@ class OpenFileViewModel {
      * @return true:打开腾讯阅读器 false:tbs没有使用权限,需要购买
      * */
     fun openTBS(context: FragmentActivity, fileUrl: String, fileName: String?, APP_File_Provider: String, listener: DialogInterface.OnDismissListener? = null): Boolean {
-        var filePrivater = getfilePrivate(context, APP_File_Provider)
-        var isSanHu = SPUtils.getInstance().getBoolean(config.isSanHuApp)
-        val suffix = if (fileName.isNullOrBlank()) getSuffixName1(fileUrl) else fileName
-        var isinit = SharedPreferencesUtils.getInt(TbsInstance.TBS)
-        LogUtils.i("TbsPreViewCallback url:", "openTBS: $fileUrl/$fileName/$APP_File_Provider")
-        if (isSanHu && isinit == 1 && TbsFileInterfaceImpl.canOpenFileExt(File(fileUrl).extension)) {
-            LogUtils.i("TBS打开文档", "openTBS: $fileUrl/$fileName/$APP_File_Provider")
-            TBSPreView(fileUrl.toUri(), filePrivater).setOnDismissListener(listener).show(context.supportFragmentManager)
-            return true
+        try {
+            var filePrivater = getfilePrivate(context, APP_File_Provider)
+            var isSanHu = SPUtils.getInstance().getBoolean(config.isSanHuApp)
+            val suffix = if (fileName.isNullOrBlank()) getSuffixName1(fileUrl) else fileName
+            var isinit = SharedPreferencesUtils.getInt(TbsInstance.TBS)
+            LogUtils.i("TbsPreViewCallback url:", "openTBS: $fileUrl/$fileName/$APP_File_Provider")
+            if (isSanHu && isinit == 1 && TbsFileInterfaceImpl.canOpenFileExt(File(fileUrl).extension)) {
+                LogUtils.i("TBS打开文档", "openTBS: $fileUrl/$fileName/$APP_File_Provider")
+                TBSPreView(fileUrl.toUri(), filePrivater).setOnDismissListener(listener).show(context.supportFragmentManager)
+                return true
+            }
+        }catch (e: Exception){
+            return false
+        }catch (e:Throwable){
+            return false
         }
         LogUtils.i("TBS无法打开文档", "openTBS: $fileUrl/$fileName/$APP_File_Provider")
         return false

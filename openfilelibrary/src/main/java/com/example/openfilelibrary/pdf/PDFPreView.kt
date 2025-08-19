@@ -20,7 +20,7 @@ import com.github.barteksc.pdfviewer.listener.OnRenderListener
  * @date 2024/8/27 10:23
  * @see 效果不如第三方的wps让用户下载个wps
  */
-internal class PDFPreView(var FileLocalUri: Uri): BaseBottomSheetFrag() {
+class PDFPreView(var FileLocalUri: Uri): BaseBottomSheetFrag() {
 
     private var TAG ="PDFPreView"
     private lateinit var bind: PdfLayoutBinding

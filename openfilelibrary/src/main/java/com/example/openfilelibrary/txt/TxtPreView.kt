@@ -13,7 +13,7 @@ import com.hjq.toast.Toaster
  * @date 2024/9/12 9:20
  * @param type 1:富文本
  */
-internal class TxtPreView(var name:String = "",var str: String?, var type: Int?) : BaseBottomSheetFrag() {
+class TxtPreView(var name:String = "",var str: String?, var type: Int?) : BaseBottomSheetFrag() {
     private lateinit var binding: TxtPlayerBinding
 
     override fun getLayoutHeight(): Int {

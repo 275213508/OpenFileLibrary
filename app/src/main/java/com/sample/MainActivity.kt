@@ -21,7 +21,10 @@ class MainActivity : AppCompatActivity() {
             Manifest.permission.ACCESS_FINE_LOCATION,
             Manifest.permission.ACCESS_LOCATION_EXTRA_COMMANDS,
         ).onForwardToSettings { scope, deniedList ->
-            scope.showForwardToSettingsDialog(deniedList, "需要权限", "确认", "取消")
+            supportFragmentManager.beginTransaction()
+                .replace(R.id.content_frame, MainFragment())
+                .commit()
+//            scope.showForwardToSettingsDialog(deniedList, "需要权限", "确认", "取消")
         }.request { allGranted, grantedList, deniedList ->
             if (allGranted) {
                 supportFragmentManager.beginTransaction()

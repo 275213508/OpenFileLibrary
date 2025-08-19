@@ -31,7 +31,7 @@ import java.io.File
  * @author zyju
  * @date 2024/8/27 10:23
  */
-internal class TBSPreView(var FileLocalUri: Uri, var APP_File_Provider: String) : BaseBottomSheetFrag() {
+class TBSPreView(var FileLocalUri: Uri, var APP_File_Provider: String) : BaseBottomSheetFrag() {
 
     private lateinit var bind: TbsLayoutBinding
 
