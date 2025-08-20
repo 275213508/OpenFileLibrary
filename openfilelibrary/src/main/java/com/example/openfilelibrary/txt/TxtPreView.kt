@@ -4,6 +4,7 @@ import android.text.Html
 import com.example.openfilelibrary.R
 import com.example.openfilelibrary.base.BaseBottomSheetFrag
 import com.example.openfilelibrary.databinding.TxtPlayerBinding
+import com.example.openfilelibrary.tbs.TBSPreView
 import com.example.openfilelibrary.utile.ScreenUtils
 import com.example.openfilelibrary.utile.common.SingleClick
 import com.hjq.toast.Toaster
@@ -13,9 +14,9 @@ import com.hjq.toast.Toaster
  * @date 2024/9/12 9:20
  * @param type 1:富文本
  */
-class TxtPreView(var name:String = "",var str: String?, var type: Int?) : BaseBottomSheetFrag() {
+class TxtPreView(var name:String = "",var str: String?="", var type: Int?=null) : BaseBottomSheetFrag() {
     private lateinit var binding: TxtPlayerBinding
-
+    constructor() : this("")
     override fun getLayoutHeight(): Int {
         return ScreenUtils.getScreenHeight(requireContext())
     }

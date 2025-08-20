@@ -15,6 +15,7 @@ import com.example.openfilelibrary.OpenFileUtils
 import com.example.openfilelibrary.R
 import com.example.openfilelibrary.base.BaseBottomSheetFrag
 import com.example.openfilelibrary.databinding.TbsLayoutBinding
+import com.example.openfilelibrary.pdf.PDFPreView
 import com.example.openfilelibrary.utile.ScreenUtils
 import com.example.openfilelibrary.utile.TbsInstance
 import com.example.openfilelibrary.utile.common.FileType
@@ -31,8 +32,8 @@ import java.io.File
  * @author zyju
  * @date 2024/8/27 10:23
  */
-class TBSPreView(var FileLocalUri: Uri, var APP_File_Provider: String) : BaseBottomSheetFrag() {
-
+class TBSPreView(var FileLocalUri: Uri? =  null, var APP_File_Provider: String="") : BaseBottomSheetFrag() {
+    constructor() : this(null)
     private lateinit var bind: TbsLayoutBinding
 
     override fun getLayoutHeight(): Int {
@@ -53,20 +54,25 @@ class TBSPreView(var FileLocalUri: Uri, var APP_File_Provider: String) : BaseBot
 
     override fun initView() {
         bind = TbsLayoutBinding.bind(rootView!!)
-        bind.tvTitle.text =  FileUtils.getFileName(FileLocalUri.path)
+        bind.tvTitle.text = FileUtils.getFileName(FileLocalUri?.path)
         SingleClick(bind.imgCancel) {
             dismiss()
         }
-        openTbsFile(requireActivity(), FileLocalUri.path!!, File(FileLocalUri.path).extension)
+        if (FileLocalUri == null) {
+            Toaster.show("文件不存在")
+            dismiss()
+            return
+        }
+        openTbsFile(requireActivity(), FileLocalUri?.path!!, File(FileLocalUri?.path).extension)
     }
 
     private fun openTbsFile(context: FragmentActivity, filePath: String, fileExt: String) {
         var code = SPUtils.getInstance().getInt(TbsInstance.TBS)//TbsInstance.getInstance().initEngine(context)
         //判断是否初始化成功
-        LogUtils.i("TbsPreViewCallback :","TbsPreViewCallback :" + (code==1))
+        LogUtils.i("TbsPreViewCallback :", "TbsPreViewCallback :" + (code == 1))
         //3、设置回调
         val callback: ITbsReaderCallback = ITbsReaderCallback { actionType, args, result ->
-           LogUtils.i("TbsPreViewCallback :", "actionType:$actionType,args:$args,result:$result")
+            LogUtils.i("TbsPreViewCallback :", "actionType:$actionType,args:$args,result:$result")
             if (ITbsReader.OPEN_FILEREADER_STATUS_UI_CALLBACK == actionType) {
                 bind.loadProgress.visibility = View.GONE
                 if (args is Bundle) {
@@ -156,7 +162,7 @@ class TBSPreView(var FileLocalUri: Uri, var APP_File_Provider: String) : BaseBot
         super.onDestroy()
         try {
             TbsFileInterfaceImpl.getInstance().closeFileReader()
-        }catch (e:Throwable){
+        } catch (e: Throwable) {
             e.printStackTrace()
         }
     }
