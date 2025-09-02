@@ -231,7 +231,7 @@ class OpenFileViewModel {
                 val file = File(downUri)
                 // 检查文件是否可访问
                 if (!PermissionManager.isFileAccessible(context, file)) {
-                    Toaster.show("无权限访问该文件，请检查存储权限设置")
+                    Toaster.show("打开错误,请检查文件是否存在")
                     return
                 }
                 
