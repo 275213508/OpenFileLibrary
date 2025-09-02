@@ -19,6 +19,7 @@ import com.example.openfilelibrary.tbs.TBSPreView
 import com.example.openfilelibrary.txt.TxtPreView
 import com.example.openfilelibrary.utile.TbsInstance
 import com.example.openfilelibrary.utile.common.DownLoadUtile
+import com.example.openfilelibrary.utile.common.PermissionManager
 import com.example.openfilelibrary.utile.common.config
 import com.example.openfilelibrary.utile.common.getSuffixName1
 import com.example.openfilelibrary.video.OpenVideoPlayActivity
@@ -228,6 +229,12 @@ class OpenFileViewModel {
         if (!isValid) {
             try {
                 val file = File(downUri)
+                // 检查文件是否可访问
+                if (!PermissionManager.isFileAccessible(context, file)) {
+                    Toaster.show("无权限访问该文件，请检查存储权限设置")
+                    return
+                }
+                
                 val intent = Intent(Intent.ACTION_VIEW)
                 val fileUri = FileProvider.getUriForFile(context, filePrivater, file)
                 intent.setDataAndType(fileUri, OpenFileUtils.getFileIntentType(file.extension))

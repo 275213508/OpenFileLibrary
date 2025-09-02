@@ -5,6 +5,7 @@ import android.Manifest.permission.READ_EXTERNAL_STORAGE
 import android.Manifest.permission.WRITE_EXTERNAL_STORAGE
 import android.content.Context
 import android.os.Build
+import android.os.Environment
 import androidx.fragment.app.FragmentActivity
 import com.example.openfilelibrary.base.ICell
 import com.permissionx.guolindev.PermissionX
@@ -43,13 +44,16 @@ public class XXPermissionUtil {
         context: FragmentActivity,
         permission: List<String>,
         permissionString: StringBuilder,
+        iCell: ICell<Boolean>,
         callback: RequestCallback
     ) {
         PermissionX.init(context).permissions(*permission.toTypedArray())
             .onExplainRequestReason { scope, deniedList ->
+                iCell.cell(false)
                 scope.showRequestReasonDialog(deniedList, permissionString.toString(), "授权", "取消")
             }
             .onForwardToSettings { scope, deniedList ->
+                iCell.cell(false)
                 scope.showForwardToSettingsDialog(
                     deniedList,
                     "您需要在“设置”中手动授予必要的权限\n${permissionString}",
@@ -85,25 +89,27 @@ public class XXPermissionUtil {
                 permissionString.clear()
                 permissionString.append("需要使用本地文件存储,请允许读写权限")
             }
-            XXPermissionUtil().requestPermission(context, needPermission.toList(), permissionString) { allGranted, grantedList, deniedList -> iCell?.cell(allGranted) }
+            XXPermissionUtil().requestPermission(context, needPermission.toList(), permissionString, object : ICell<Boolean> {
+                override fun cell(cell: Boolean) {
+                    iCell?.cell(false)
+                }
+            }) { allGranted, grantedList, deniedList -> iCell?.cell(allGranted)}
 
         }
 
         fun isGrantedFromWrite(context: Context): Boolean {
-            return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-                PermissionX.isGranted(context, Manifest.permission.MANAGE_EXTERNAL_STORAGE)
-            } else {
-                PermissionX.isGranted(context, WRITE_EXTERNAL_STORAGE)
-            }
+            return PermissionManager.hasStoragePermission(context)
         }
 
         fun getWritePermission(context: Context): ArrayList<String> {
             var permission = ArrayList<String>()
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-                if (!PermissionX.isGranted(context, Manifest.permission.MANAGE_EXTERNAL_STORAGE)) {
+                // Android 11及以上版本检查管理外部存储权限
+                if (!Environment.isExternalStorageManager()) {
                     permission.add(Manifest.permission.MANAGE_EXTERNAL_STORAGE)
                 }
             } else {
+                // Android 11以下版本检查读写权限
                 if (!PermissionX.isGranted(context, WRITE_EXTERNAL_STORAGE)) {
                     permission.add(WRITE_EXTERNAL_STORAGE)
                 }
