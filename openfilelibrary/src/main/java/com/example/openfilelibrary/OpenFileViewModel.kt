@@ -13,6 +13,7 @@ import com.blankj.utilcode.util.FileIOUtils
 import com.blankj.utilcode.util.LogUtils
 import com.blankj.utilcode.util.SPUtils
 import com.example.openfilelibrary.base.ICell
+import com.example.openfilelibrary.doc.DocWebViewPreview
 import com.example.openfilelibrary.image.PreImageDialog
 import com.example.openfilelibrary.pdf.PDFPreView
 import com.example.openfilelibrary.tbs.TBSPreView
@@ -219,7 +220,32 @@ class OpenFileViewModel {
 //        context.startActivity(intent);
 //        VideoPreView(videoUrl.toUri()).show(context.supportFragmentManager, null)
     }
-
+//    /**
+//     * 打开DOC文档（基于BaseBottomSheetFrag和WebView的实现）
+//     * @param context 上下文
+//     * @param docUrl DOC文档地址
+//     * @param savePath 保存路径
+//     * @param fileName 文件名
+//     * @param listener 关闭监听器
+//     */
+//    fun openDocWithWebView(context: FragmentActivity, docUrl: String, savePath: String? = context.filesDir.path, fileName: String? = null, listener: DialogInterface.OnDismissListener? = null) {
+//        DownLoadUtile.downloadFile(
+//            context,
+//            savePath ?: context.filesDir.path,
+//            docUrl,
+//            fileName,
+//            object : ICell<File> {
+//                override fun cell(cell: File) {
+//                    // 使用基于BaseBottomSheetFrag和WebView的DOC预览
+//                    DocWebViewPreview.showDocPreview(
+//                        activity = context,
+//                        filePath = cell.absolutePath,
+//                        listener = listener
+//                    )
+//                }
+//            }
+//        )
+//    }
     /**
      * @param listener 当前版本不支持其他格式返回反馈
      * */

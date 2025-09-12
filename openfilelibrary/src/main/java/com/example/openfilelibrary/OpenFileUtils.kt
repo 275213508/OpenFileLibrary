@@ -78,16 +78,16 @@ object OpenFileUtils {
     /**
      * @param fileUrl 文件下载地址
      * */
-    fun openFile(context: FragmentActivity, fileUrl: String) {
-        openFile(context, context.filesDir.path, fileUrl, null, null, null)
+    fun openFile(context: FragmentActivity, fileUrl: String, resultListener: ICell<Unit>? = null) {
+        openFile(context, context.filesDir.path, fileUrl, null, null, resultListener)
     }
 
     /**
      * @param fileUrl 文件下载地址
      * @param name 文件名 有时下载地址没有文件名
      * */
-    fun openFile(context: FragmentActivity, fileUrl: String, name: String, filePrivate: String = "") {
-        openFile(context, context.filesDir.path, fileUrl, name, filePrivate, null)
+    fun openFile(context: FragmentActivity, fileUrl: String, name: String, filePrivate: String = "", resultListener: ICell<Unit>? = null) {
+        openFile(context, context.filesDir.path, fileUrl, name, filePrivate, resultListener)
     }
 
     private var launcher: ActivityResultLauncher<Intent>? = null
@@ -121,7 +121,14 @@ object OpenFileUtils {
                     }
                 }
 
-                FileType.DOC.name,
+//                FileType.DOC.name -> {
+//                    savePath?.let {
+//                        openFileViewModel.openDocWithWebView(context, downUri, it, fileName) {
+//                            resultListener?.cell(Unit)
+//                        }
+//                    }
+//                }
+
                 FileType.DOCX.name,
                 FileType.PPT.name,
                 FileType.PPTX.name,
