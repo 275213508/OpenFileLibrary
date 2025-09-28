@@ -45,7 +45,7 @@ public class MainFragment extends Fragment {
 //            Environment.getExternalStorageDirectory()+ "/efb/flight_data/953352877-1-30011.mp4",
 //            Environment.getExternalStorageDirectory() + "/storage/emulated/0/efb/flight_data/电子飞行图夹使用说明.pdf",
             "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf",
-            Environment.getExternalStorageDirectory() + "/efb/转场放行单.doc",
+            Environment.getExternalStorageDirectory() + "/efb/flight_data/转场放行单.doc",
             Environment.getExternalStorageDirectory() + "/efb/flight_data/text1.txt",
             Environment.getExternalStorageDirectory() + "/efb/测试.jpg",
             Environment.getExternalStorageDirectory() + "/efb/flight_data/三体3：死神永生.epub",
