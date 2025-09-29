@@ -7,8 +7,8 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
 apply plugin: 'com.kezong.fat-aar'
 apply from: '../versions.gradle'
-group='com.github.openfilelibrary'
-
+def versionaad = '1.0.0'
+def groupaad = 'com.github.275213508'
 android {
 //    namespace 'com.example.openfilelibrary'
     compileSdk 33
@@ -50,7 +50,25 @@ android {
     lintOptions {
         abortOnError false
     }
+    
+    // 添加库的版本和分组信息
+    group = groupaad
+    version =  versionaad
+}
 
+// 配置发布
+afterEvaluate {
+    publishing {
+        publications {
+            release(MavenPublication) {
+                from components.release
+
+                groupId = groupaad
+                artifactId = 'OpenFileLibrary'
+                version = versionaad
+            }
+        }
+    }
 }
 
 //fataar {
@@ -84,8 +102,8 @@ dependencies {
 
 
     //[通用弹窗 https://github.com/li-xiaojun/XPopup]
-    implementation(deps.photoview)//"com.bm.photoview:library:1.4.1")
-    implementation files('libs/TbsFileSdk_base_arm64_release_1.0.5.6000030.20231109143447.aar')
+    embed(deps.photoview)//"com.bm.photoview:library:1.4.1")
+    embed files('libs/TbsFileSdk_base_arm64_release_1.0.5.6000030.20231109143447.aar')
 //    implementation files('libs/folioreader-debug.aar')
 //    implementation project(path: ':folioreader')
     implementation(openfilelibs.openfile)
