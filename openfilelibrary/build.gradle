@@ -1,13 +1,26 @@
 plugins {
     id 'com.android.library'
     id 'org.jetbrains.kotlin.android'
+    id 'maven-publish'//添加maven仓库
 }
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
 apply plugin: 'com.kezong.fat-aar'
 apply from: '../versions.gradle'
-group='com.gitee.275213508@qq.com:Repo:1.0'
 
+afterEvaluate {
+    publishing {
+        publications {
+            release(MavenPublication) {
+                from components.release
+
+                groupId = 'com.gitee.275213508@qq.com'
+                artifactId = 'openfilelibrary'
+                version = '1.0.0' // 根据需要修改版本号
+            }
+        }
+    }
+}
 android {
 //    namespace 'com.example.openfilelibrary'
     compileSdk 33
