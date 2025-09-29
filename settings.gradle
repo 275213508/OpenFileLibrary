@@ -1,4 +1,3 @@
 rootProject.name = "OpenFileLibrary"
 include ':app'
 include ':openfilelibrary'
-include ':folioreader'
