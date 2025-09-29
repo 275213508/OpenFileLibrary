@@ -6,7 +6,7 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
 apply plugin: 'com.kezong.fat-aar'
 apply from: '../versions.gradle'
-group='com.gitee.275213508@qq.com'
+
 
 android {
 //    namespace 'com.example.openfilelibrary'
