@@ -1,12 +1,13 @@
 plugins {
     id 'com.android.library'
     id 'org.jetbrains.kotlin.android'
+    id 'maven-publish'
 }
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
 apply plugin: 'com.kezong.fat-aar'
 apply from: '../versions.gradle'
-group='com.gitee.275213508@qq.com'
+group='com.github.openfilelibrary'
 
 android {
 //    namespace 'com.example.openfilelibrary'
