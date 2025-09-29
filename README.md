@@ -12,6 +12,50 @@
 
 #### 使用说明
 
+1. 在项目根目录的 `build.gradle` 文件中添加 JitPack 仓库：
+
+```gradle
+allprojects {
+    repositories {
+        ...
+        maven { url 'https://jitpack.io' }
+    }
+}
+```
+
+2. 在应用模块的 `build.gradle` 文件中添加依赖：
+
+```gradle
+dependencies {
+    implementation 'com.github.275213508:OpenFileLibrary:1.0.0'
+}
+```
+
+或者，如果您使用的是新版本的 Gradle (在 `settings.gradle` 中配置仓库)：
+
+1. 在 `settings.gradle` 文件中添加 JitPack 仓库：
+
+```gradle
+dependencyResolutionManagement {
+    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
+    repositories {
+        google()
+        mavenCentral()
+        maven { url 'https://jitpack.io' }
+    }
+}
+```
+
+2. 在应用模块的 `build.gradle` 文件中添加依赖：
+
+```gradle
+dependencies {
+    implementation 'com.github.275213508:OpenFileLibrary:1.0.0'
+}
+```
+
+#### 手动集成方式
+
 ```
     //引用项目必须添加一下依赖
     复制 versions.gradle 到 project根目录
