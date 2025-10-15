@@ -86,31 +86,11 @@ dependencies {
     //[权限处理 https://github.com/guolindev/PermissionX]
     implementation 'com.guolindev.permissionx:permissionx:1.5.0'
     implementation files('libs/TbsFileSdk_base_arm64_release_1.0.5.6000030.20231109143447.aar')
-    implementation project(path: ':openfilelibrary')
+//    implementation project(path: ':openfilelibrary')
 //    implementation project(path: ':folioreader')
-//    implementation files('libs/openfilelibrary-release.aar')
+    implementation files('libs/openfilelibrary-release.aar')
     implementation(openfilelibs.openfile)
 //    implementation files('libs/folioreader-release.aar')
-//    implementation(deps.folioreader){
-//        exclude group: 'com.fasterxml.jackson.core', module: 'jackson-core'
-//        exclude group: 'com.fasterxml.jackson.core', module: 'jackson-annotations'
-//        exclude group: 'com.fasterxml.jackson.core', module: 'jackson-databind'
-//    }
-    //=============================集成openfilelibrary.aar时添加
-
-//    implementation("com.blankj:utilcodex:1.31.1")
-//    implementation 'com.github.bumptech.glide:glide:4.12.0'
-//    implementation("com.github.getActivity:Toaster:12.6")
-//    implementation("com.github.getActivity:GsonFactory:9.5")
-//    implementation('com.github.barteksc:android-pdf-viewer:2.8.1')
-//    implementation('com.github.CarGuo.GSYVideoPlayer:gsyVideoPlayer-java:v8.3.5-release-jitpack') {
-//        exclude group: 'androidx.appcompat'
-//        exclude group: 'androidx.core'
-//    }
-//    implementation('com.github.CarGuo.GSYVideoPlayer:gsyVideoPlayer-arm64:v8.3.5-release-jitpack') {
-//        exclude group: 'androidx.appcompat'
-//        exclude group: 'androidx.core'
-//    }
     implementation 'com.squareup.leakcanary:leakcanary-android:2.14'
 //    implementation "com.squareup.leakcanary:leakcanary-android-no-op:1.5.2"
     implementation files('libs/blur-behind-1.1.aar')
