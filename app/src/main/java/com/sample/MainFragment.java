@@ -101,9 +101,10 @@ public class MainFragment extends Fragment {
                     if(path.endsWith(".mp3")||path.endsWith(".mp4")){
                         OpenFileUtils.INSTANCE.setActivityResultLauncher(result);
                     }
-                    OpenFileUtils.INSTANCE.openFile(requireActivity(), getContext().getFilesDir() + "/efb/flight_data/", path, null, null, cell -> {
-                        LogUtils.i("openfile cell:"+cell);
-                    });
+                    OpenFileUtils.INSTANCE.openFile(requireActivity(), path, "1.xls", null, null);
+//                    OpenFileUtils.INSTANCE.openFile(requireActivity(), getContext().getFilesDir() + "/efb/flight_data/", path, null, null, cell -> {
+//                        LogUtils.i("openfile cell:"+cell);
+//                    });
                 }
             });
         } else {

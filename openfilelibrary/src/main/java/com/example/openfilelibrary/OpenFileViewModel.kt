@@ -248,8 +248,8 @@ class OpenFileViewModel {
     /**
      * @param listener 当前版本不支持其他格式返回反馈
      * */
-    fun openOther(context: FragmentActivity, downUri: String, filePrivate: String = "",listener: ActivityResultLauncher<Intent>? = null) {
-        var filePrivater = getfilePrivate(context, filePrivate)
+    fun openOther(context: FragmentActivity, downUri: String, filePrivate: String? = "",listener: ActivityResultLauncher<Intent>? = null) {
+        var filePrivater = getfilePrivate(context, filePrivate ?: "")
         val isValid = URLUtil.isValidUrl(downUri) && Patterns.WEB_URL.matcher(downUri).matches()
         if (!isValid) {
             try {
@@ -286,7 +286,7 @@ class OpenFileViewModel {
         }
             .show()
     }
-    fun openOther(context: FragmentActivity, downUri: String, filePrivate: String = "") {
+    fun openOther(context: FragmentActivity, downUri: String, filePrivate: String? = "") {
         openOther(context, downUri, filePrivate, null)
     }
 }

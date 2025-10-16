@@ -77,7 +77,7 @@ object OpenFileUtils {
     /**
      * @param fileUrl 文件下载地址
      * */
-    fun openFile(context: FragmentActivity, fileUrl: String, filePrivate: String = "") {
+    fun openFile(context: FragmentActivity, fileUrl: String, filePrivate: String? = "") {
         openFile(context, context.filesDir.path, fileUrl, null, filePrivate, null)
     }
 
@@ -92,7 +92,7 @@ object OpenFileUtils {
      * @param fileUrl 文件下载地址
      * @param name 文件名 有时下载地址没有文件名
      * */
-    fun openFile(context: FragmentActivity, fileUrl: String, name: String, filePrivate: String = "", resultListener: ICell<Unit>? = null) {
+    fun openFile(context: FragmentActivity, fileUrl: String, name: String, filePrivate: String? = "", resultListener: ICell<Unit>? = null) {
         openFile(context, context.filesDir.path, fileUrl, name, filePrivate, resultListener)
     }
 

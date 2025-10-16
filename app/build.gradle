@@ -86,9 +86,9 @@ dependencies {
     //[权限处理 https://github.com/guolindev/PermissionX]
     implementation 'com.guolindev.permissionx:permissionx:1.5.0'
     implementation files('libs/TbsFileSdk_base_arm64_release_1.0.5.6000030.20231109143447.aar')
-//    implementation project(path: ':openfilelibrary')
+    implementation project(path: ':openfilelibrary')
 //    implementation project(path: ':folioreader')
-    implementation files('libs/openfilelibrary-release.aar')
+//    implementation files('libs/openfilelibrary-release.aar')
     implementation(openfilelibs.openfile)
 //    implementation files('libs/folioreader-release.aar')
     implementation 'com.squareup.leakcanary:leakcanary-android:2.14'
