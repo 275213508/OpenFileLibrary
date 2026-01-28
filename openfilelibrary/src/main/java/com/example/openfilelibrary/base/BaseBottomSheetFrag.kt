@@ -26,6 +26,9 @@ abstract class BaseBottomSheetFrag : BottomSheetDialogFragment() {
     protected var dialog: BottomSheetDialog? = null
 
     protected var mBehavior: BottomSheetBehavior<*>? = null
+
+    private val handler = android.os.Handler(android.os.Looper.getMainLooper())
+    private val widthRunnable = Runnable { reviewWidthLogic() } // 将逻辑提取出来
     private val mBottomSheetBehaviorCallback
             : BottomSheetBehavior.BottomSheetCallback = object : BottomSheetBehavior.BottomSheetCallback() {
         override fun onStateChanged(bottomSheet: View, newState: Int) {
@@ -57,8 +60,20 @@ abstract class BaseBottomSheetFrag : BottomSheetDialogFragment() {
     override fun onDestroy() {
         super.onDestroy()
         //解除缓存View和当前ViewGroup的关联
-        val vi = (rootView?.parent as ViewGroup)
-        vi.removeView(rootView)
+//        val vi = (rootView?.parent as ViewGroup)
+//        vi.removeView(rootView)
+
+        try {
+            // 在销毁时取消所有待处理的 reviewWidth 任务
+            handler.removeCallbacks(widthRunnable)
+            mBehavior?.removeBottomSheetCallback(mBottomSheetBehaviorCallback)
+            //解除缓存View和当前ViewGroup的关联
+            (rootView?.parent as? ViewGroup)?.removeView(rootView)
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+        rootView = null
+        mBehavior = null
     }
 
 
@@ -93,17 +108,44 @@ abstract class BaseBottomSheetFrag : BottomSheetDialogFragment() {
         return dialog!!
     }
 
+    // 实际执行逻辑的函数
+    private fun reviewWidthLogic() {
+        // 1. 安全检查（同上）
+        if (rootView == null || !isAdded || dialog == null || !dialog!!.isShowing) {
+            return
+        }
+        scanSize++// 每次执行逻辑时递增计数
+        var wid = (rootView?.width ?: 0)
+        // 2. 尝试安全地获取并转换父视图
+        val parentFrameLayout = rootView?.parent as? FrameLayout
+        if (wid < ScreenUtils.getScreenWidth()&& parentFrameLayout != null) {
+            // 达到条件，设置宽度
+            parentFrameLayout.layoutParams.width = ScreenUtils.getScreenWidth()
+            parentFrameLayout.layoutParams = parentFrameLayout.layoutParams
+            // 任务完成，不需要再调用 reviewWidthLogic
+        } else if (scanSize < 20) {
+            // 未达到条件且次数未上限，安排下一次检查
+            handler.postDelayed(widthRunnable, 30)
+        }
+
+
+    }
+
+    var scanSize = 0
     private fun reviewWidth() {
-        rootView?.postDelayed(Runnable {
-            var wid = (rootView?.width ?: 0)
-           if (wid!=0&&wid< ScreenUtils.getScreenWidth()) {
-                var pa1 = (rootView?.parent as FrameLayout)
-                pa1.layoutParams.width = ScreenUtils.getScreenWidth()
-                pa1.layoutParams = pa1.layoutParams
-            }else{
-               reviewWidth()
-           }
-        }, 30)
+        scanSize = 0// 重置计数器
+        handler.removeCallbacks(widthRunnable) // 防止重复启动
+        handler.postDelayed(widthRunnable, 30)
+//        rootView?.postDelayed(Runnable {
+//            var wid = (rootView?.width ?: 0)
+//           if (wid!=0&&wid< ScreenUtils.getScreenWidth()) {
+//                var pa1 = (rootView?.parent as FrameLayout)
+//                pa1.layoutParams.width = ScreenUtils.getScreenWidth()
+//                pa1.layoutParams = pa1.layoutParams
+//            }else{
+//               reviewWidth()
+//           }
+//        }, 30)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
